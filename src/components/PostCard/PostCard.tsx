@@ -40,6 +40,10 @@ const useStyles = createStyles((theme) => ({
         fontWeight: 700,
         lineHeight: 1,
     },
+
+    image: {
+        cursor: 'pointer',
+    }
 }));
 
 const MIN_RATING = 0
@@ -53,6 +57,8 @@ export type PostCardProps = {
     category: string;
     description: string;
     rating?: number
+    onClick?: () => void
+    onLikeClick?: () => void;
 }
 
 /**
@@ -64,49 +70,47 @@ export function PostCard(props: PostCardProps) {
     const { classes } = useStyles();
     const rating = props.rating || 0
 
-    return (
-        <Card withBorder radius="md" p="md" className={classes.card}>
-            <Card.Section>
-                <Image src={props.image} alt={props.title} height={180} />
-            </Card.Section>
+    return <Card withBorder radius="md" p="md" className={classes.card}>
+        <Card.Section>
+            <Image onClick={props.onClick} className={classes.image} src={props.image} alt={props.title} height={180} />
+        </Card.Section>
 
-            <Card.Section className={classes.section} mt="md">
+        <Card.Section className={classes.section} mt="md">
+            <Spoiler
+                maxHeight={120}
+                hideLabel="Show less"
+                showLabel="Show more"
+                styles={{
+                    control: {
+                        fontSize: '0.9rem',
+                    },
+                }}
+            >
                 <Group position="apart" spacing={0}>
                     <Text fz="lg" fw={500}>
                         {props.title}
                     </Text>
                     <Badge size="sm">{props.category}</Badge>
                 </Group>
-                <Spoiler
-                    maxHeight={90}
-                    hideLabel="Show less"
-                    showLabel="Show more"
-                    styles={{
-                        control: {
-                            fontSize: '0.9rem',
-                        },
-                    }}
-                >
-                    <Text fz="0.8rem" mt="xs">
-                        {props.description}
-                    </Text>
-                </Spoiler>
-            </Card.Section>
+                <Text fz="0.8rem" mt="xs">
+                    {props.description}
+                </Text>
+            </Spoiler>
+    </Card.Section>
 
-            <Group mt="xs">
-                <Button radius="md" style={{ flex: 1 }}>
-                    Show details
-                </Button>
-                <ActionIcon variant="default" radius="md" size={36}>
-                    <IconThumbUp size="1.1rem" className={classes.like} stroke={1.5} />
-                </ActionIcon>
-                { rating > MIN_RATING && <Flex gap="0.2rem" align="center">
-                    <Text ta="center" fz="sm" className={classes.label}>
-                        {rating.toFixed(1)}
-                    </Text>
-                    <IconStarFilled className={classes.rating} size="0.8rem"/>
-                </Flex> }
-            </Group>
-        </Card>
-    );
+        <Group mt="xs">
+            <Button onClick={props.onClick} px={5} radius="md" style={{ flex: 1 }}>
+                Show details
+            </Button>
+            <ActionIcon onClick={props.onLikeClick} variant="default" radius="md" size={36}>
+                <IconThumbUp size="1.1rem" className={classes.like} stroke={1.5} />
+            </ActionIcon>
+            { rating > MIN_RATING && <Flex gap="0.2rem" align="center">
+                <Text ta="center" fz="sm" className={classes.label}>
+                    {rating.toFixed(1)}
+                </Text>
+                <IconStarFilled className={classes.rating} size="0.8rem"/>
+            </Flex> }
+        </Group>
+    </Card>;
 }

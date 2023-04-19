@@ -60,7 +60,7 @@ export function HomePage(props: HomePageProps){
                     to={`/feeds/${feedName(f)}`}
                     color={activeFilter === f ? "filled" : "gray"}
                     variant={activeFilter === f ? "filled": "light"}
-                    size="sm"
+                    size="xs"
                     fw={500}>
                     {f}
                 </Button>
@@ -71,7 +71,7 @@ export function HomePage(props: HomePageProps){
         return <PostCard {...p}/>
     })
 
-    return <Container size="lg" py="xl">
+    return <Container size="lg" pb="xl">
         <Stack spacing="lg">
             {/* Content filters */}
             <Carousel
