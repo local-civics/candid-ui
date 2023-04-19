@@ -10,7 +10,7 @@ import {
     IconHome2,
     IconSectionSign,
     IconBook,
-    IconClockPause,
+    IconTimelineEvent,
     IconThumbUp,
     IconLayoutKanban,
     IconFlame,
@@ -27,6 +27,7 @@ import {
     IconMoodCheck,
     IconBackpack,
     IconBallpen,
+    IconClockRecord,
 } from '@tabler/icons-react';
 import {NavbarLink} from "../NavbarLink/NavbarLink";
 
@@ -61,22 +62,18 @@ const useStyles = createStyles((theme, _params) => {
     }
 });
 
-type ActiveLink = "Home" | "Library" | "Liked content" | "Assignments" | "History" | "Classes" | "Organizations" |
-    "Trending" | "Top Rated" | "Under 5min." | "College & Career" | "Civics" | "Recreation" |
-    "Arts & Culture" | "Volunteer" | "Live" | "Elementary & Middle School" | "High School"
-
 /**
  * NavbarProps
  */
 export interface NavbarProps {
-    defaultActive?: ActiveLink
+    defaultActive?: string
     loading?: boolean
     menu: boolean
 }
 
 export function Navbar(props: NavbarProps) {
     const { classes, cx } = useStyles();
-    const [active, setActive] = React.useState<string>(props.defaultActive || "Home")
+    const [active, setActive] = React.useState(props.defaultActive || "Home")
     const onNavigate = (next: string) => setActive(next)
 
     return <Transition mounted={props.menu} transition="slide-right" duration={100} timingFunction="ease">
@@ -105,7 +102,7 @@ export function Navbar(props: NavbarProps) {
                     <NavbarLink
                         active={active === "Liked content"}
                         icon={IconThumbUp}
-                        href="/library/likes"
+                        href="/library/liked-content"
                         label="Liked content"
                         onNavigate={onNavigate}
                     />
@@ -117,8 +114,15 @@ export function Navbar(props: NavbarProps) {
                         onNavigate={onNavigate}
                     />
                     <NavbarLink
+                        active={active === "Saved for later"}
+                        icon={IconClockRecord}
+                        href="/library/saved-for-later"
+                        label="Saved for later"
+                        onNavigate={onNavigate}
+                    />
+                    <NavbarLink
                         active={active === "History"}
-                        icon={IconClockPause}
+                        icon={IconTimelineEvent}
                         href="/library/history"
                         label="History"
                         onNavigate={onNavigate}
@@ -145,7 +149,7 @@ export function Navbar(props: NavbarProps) {
                     <NavbarLink
                         active={active === "Under 5min."}
                         icon={IconHourglassLow}
-                        href="/feeds/under-5"
+                        href="/feeds/under-5min"
                         label="Under 5min."
                         onNavigate={onNavigate}
                     />

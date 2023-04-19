@@ -5,20 +5,24 @@ import {
     ActionIcon,
     Flex,
     useMantineTheme,
-    createStyles,
     Group,
     Center,
-    Avatar, Image, Burger
-}                                   from '@mantine/core'
+    Avatar, Image, Burger, createStyles
+} from '@mantine/core'
 import {IconSearch, IconArrowRight} from '@tabler/icons-react'
 import {useNavigate}                                                                  from "react-router-dom";
 import {UserButton, UserButtonProps}                                                  from "../UserButton/UserButton";
 
 const useStyles = createStyles((theme) => {
     return {
-
+        search: {
+            [theme.fn.smallerThan('sm')]: {
+                display: 'none',
+            }
+        }
     }
 })
+
 
 /**
  * HeaderProps
@@ -35,6 +39,7 @@ export type HeaderProps = UserButtonProps & {
  */
 export function Header(props: HeaderProps){
     const theme = useMantineTheme();
+    const {classes} = useStyles()
     const navigate = useNavigate()
     const [query, setQuery] = React.useState("")
     const search = () => {
@@ -43,7 +48,7 @@ export function Header(props: HeaderProps){
 
     return <MantineHeader height={60} px="xl" py="xs">
         <Group position="apart">
-            <Group position="apart">
+            <Group position="apart" spacing="sm">
                 <Burger opened={false} onClick={props.onMenuClick} size="sm" />
                 <Center>
                     <Avatar color="blue" radius="sm">
@@ -53,7 +58,11 @@ export function Header(props: HeaderProps){
                     </Avatar>
                 </Center>
             </Group>
-            <Flex w={{base: 200, sm: "auto"}} pl={{sm: 300}} mr="auto" gap="sm" justify="center" align="center">
+            <Flex
+                className={classes.search}
+                w={{base: 200, sm: "auto"}}
+                mx="auto" gap="sm" justify="center" align="center"
+            >
                 <TextInput
                     miw={{sm: 450}}
                     icon={<IconSearch size="1.1rem" stroke={1.5} />}
