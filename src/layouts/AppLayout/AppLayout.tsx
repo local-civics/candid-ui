@@ -27,11 +27,7 @@ const useStyles = createStyles((theme) => ({
         paddingLeft: 350,
     },
 
-    page: {
-        [theme.fn.smallerThan('sm')]: {
-            paddingTop: theme.spacing.xl,
-        }
-    },
+    page: {},
 
     logo: {
         maxWidth: 200,

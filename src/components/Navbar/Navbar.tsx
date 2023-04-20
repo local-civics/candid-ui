@@ -27,7 +27,7 @@ import {
     IconMoodCheck,
     IconBackpack,
     IconBallpen,
-    IconClockRecord,
+    IconBookmark,
 } from '@tabler/icons-react';
 import {NavbarLink} from "../NavbarLink/NavbarLink";
 
@@ -115,7 +115,7 @@ export function Navbar(props: NavbarProps) {
                     />
                     <NavbarLink
                         active={active === "Saved for later"}
-                        icon={IconClockRecord}
+                        icon={IconBookmark}
                         href="/library/saved-for-later"
                         label="Saved for later"
                         onNavigate={onNavigate}
