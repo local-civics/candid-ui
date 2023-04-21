@@ -11,7 +11,7 @@ import {
 } from '@mantine/core'
 import {IconSearch, IconArrowRight} from '@tabler/icons-react'
 import {useNavigate}                                                                  from "react-router-dom";
-import {UserButton, UserButtonProps}                                                  from "../UserButton/UserButton";
+import {AppUserButton, AppUserButtonProps}                                                  from "./AppUserButton";
 
 const useStyles = createStyles((theme) => {
     return {
@@ -25,19 +25,19 @@ const useStyles = createStyles((theme) => {
 
 
 /**
- * HeaderProps
+ * AppHeaderProps
  */
-export type HeaderProps = UserButtonProps & {
+export type AppHeaderProps = AppUserButtonProps & {
     menu: boolean
     onMenuClick: () => void;
 }
 
 /**
- * Header
+ * AppHeader
  * @param props
  * @constructor
  */
-export function Header(props: HeaderProps){
+export function AppHeader(props: AppHeaderProps){
     const theme = useMantineTheme();
     const {classes} = useStyles()
     const navigate = useNavigate()
@@ -79,7 +79,7 @@ export function Header(props: HeaderProps){
                     {...props}
                 />
             </Flex>
-            <UserButton {...props} />
+            <AppUserButton {...props} />
         </Group>
     </MantineHeader>
 }

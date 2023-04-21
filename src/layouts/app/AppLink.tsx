@@ -72,7 +72,7 @@ type NavbarLinkProps = {
  * @param props
  * @constructor
  */
-export function NavbarLink(props: NavbarLinkProps) {
+export function AppLink(props: NavbarLinkProps) {
     const { classes, cx } = useStyles();
     return (
         <>

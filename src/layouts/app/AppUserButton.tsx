@@ -25,9 +25,9 @@ const useStyles = createStyles((theme) => ({
 }));
 
 /**
- * UserButtonProps
+ * AppUserButtonProps
  */
-export interface UserButtonProps  {
+export interface AppUserButtonProps  {
     name?: string;
     email?: string;
     image?: string;
@@ -35,11 +35,11 @@ export interface UserButtonProps  {
 }
 
 /**
- * UserButton
+ * AppUserButton
  * @param props
  * @constructor
  */
-export function UserButton(props: UserButtonProps) {
+export function AppUserButton(props: AppUserButtonProps) {
     const { classes } = useStyles();
     if(!props.name || !props.email){
         return <Button leftIcon={<IconUserCircle size={16} />} variant="outline">Sign in</Button>

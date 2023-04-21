@@ -6,7 +6,7 @@ import {
 import {Carousel}                                                             from '@mantine/carousel'
 import {useMediaQuery}                                                        from "@mantine/hooks";
 import {Link}                    from "react-router-dom";
-import {PostCard, PostCardProps} from "../../components/PostCard/PostCard"
+import {PostCard, PostCardProps} from "../../components/post/PostCard"
 
 const DEFAULT_FILTERS_PREFIX = [
     "All"
@@ -75,12 +75,17 @@ export function HomePage(props: HomePageProps){
         <Stack spacing="lg">
             {/* Content filters */}
             <Carousel
-                px={50}
+                pl="2rem"
+                pr={0}
                 slideGap="xs"
                 align="start"
                 slidesToScroll={mobile ? 2 : 4}
                 withIndicators
                 styles={{
+                    controls: {
+                        paddingLeft: 0,
+                        paddingRight: 0,
+                    },
                     indicators: {
                       bottom: '-0.5rem'
                     },

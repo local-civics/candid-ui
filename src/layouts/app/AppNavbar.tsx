@@ -29,7 +29,7 @@ import {
     IconBallpen,
     IconBookmark,
 } from '@tabler/icons-react';
-import {NavbarLink} from "../NavbarLink/NavbarLink";
+import {AppLink} from "./AppLink";
 
 const useStyles = createStyles((theme, _params) => {
     return {
@@ -63,15 +63,20 @@ const useStyles = createStyles((theme, _params) => {
 });
 
 /**
- * NavbarProps
+ * AppNavbarProps
  */
-export interface NavbarProps {
+export interface AppNavbarProps {
     defaultActive?: string
     loading?: boolean
     menu: boolean
 }
 
-export function Navbar(props: NavbarProps) {
+/**
+ * AppNavbar
+ * @param props
+ * @constructor
+ */
+export function AppNavbar(props: AppNavbarProps) {
     const { classes, cx } = useStyles();
     const [active, setActive] = React.useState(props.defaultActive || "Home")
     const onNavigate = (next: string) => setActive(next)
@@ -81,7 +86,7 @@ export function Navbar(props: NavbarProps) {
             <MantineNavbar.Section component={ScrollArea} grow className={cx({[classes.sectionHidden]: !props.menu})}>
                 {/* Navbar Section I - Personalization */}
                 <MantineNavbar.Section className={cx(classes.sectionOne)}>
-                    <NavbarLink
+                    <AppLink
                         active={active === "Home"}
                         icon={IconHome2}
                         href="/home"
@@ -92,35 +97,35 @@ export function Navbar(props: NavbarProps) {
 
                 {/* Navbar Section II - Library */}
                 <MantineNavbar.Section className={cx(classes.section)}>
-                    <NavbarLink
+                    <AppLink
                         active={active === "Library"}
                         icon={IconBook}
                         href="/library"
                         label="Library"
                         onNavigate={onNavigate}
                     />
-                    <NavbarLink
+                    <AppLink
                         active={active === "Liked content"}
                         icon={IconThumbUp}
                         href="/library/liked-content"
                         label="Liked content"
                         onNavigate={onNavigate}
                     />
-                    <NavbarLink
+                    <AppLink
                         active={active === "Assignments"}
                         icon={IconLayoutKanban}
                         href="/library/assignments"
                         label="Assignments"
                         onNavigate={onNavigate}
                     />
-                    <NavbarLink
+                    <AppLink
                         active={active === "Saved for later"}
                         icon={IconBookmark}
                         href="/library/saved-for-later"
                         label="Saved for later"
                         onNavigate={onNavigate}
                     />
-                    <NavbarLink
+                    <AppLink
                         active={active === "History"}
                         icon={IconTimelineEvent}
                         href="/library/history"
@@ -132,77 +137,77 @@ export function Navbar(props: NavbarProps) {
                 {/* Navbar Section III - Explore */}
                 <MantineNavbar.Section className={cx(classes.section)}>
                     <Title className={classes.sectionTitle} mb={5} size="medium">Explore</Title>
-                    <NavbarLink
+                    <AppLink
                         active={active === "Trending"}
                         icon={IconFlame}
                         href="/feeds/trending"
                         label="Trending"
                         onNavigate={onNavigate}
                     />
-                    <NavbarLink
+                    <AppLink
                         active={active === "Top Rated"}
                         icon={IconMoodCheck}
                         href="/feeds/top-rated"
                         label="Top Rated"
                         onNavigate={onNavigate}
                     />
-                    <NavbarLink
+                    <AppLink
                         active={active === "Under 5min."}
                         icon={IconHourglassLow}
                         href="/feeds/under-5min"
                         label="Under 5min."
                         onNavigate={onNavigate}
                     />
-                    <NavbarLink
+                    <AppLink
                         active={active === "Elementary & Middle School"}
                         icon={IconBackpack}
                         href="/feeds/elementary-and-middle-school"
                         label="Elementary & Middle School"
                         onNavigate={onNavigate}
                     />
-                    <NavbarLink
+                    <AppLink
                         active={active === "High School"}
                         icon={IconBallpen}
                         href="/feeds/high-school"
                         label="High School"
                         onNavigate={onNavigate}
                     />
-                    <NavbarLink
+                    <AppLink
                         active={active === "College & Career"}
                         icon={IconSchool}
                         href="/feeds/college-and-career"
                         label="College & Career"
                         onNavigate={onNavigate}
                     />
-                    <NavbarLink
+                    <AppLink
                         active={active === "Civics"}
                         icon={IconGavel}
                         href="/feeds/civics"
                         label="Civics"
                         onNavigate={onNavigate}
                     />
-                    <NavbarLink
+                    <AppLink
                         active={active === "Recreation"}
                         icon={IconOlympics}
                         href="/feeds/recreation"
                         label="Recreation"
                         onNavigate={onNavigate}
                     />
-                    <NavbarLink
+                    <AppLink
                         active={active === "Arts & Culture"}
                         icon={IconPalette}
                         href="/feeds/arts-and-culture"
                         label="Arts & Culture"
                         onNavigate={onNavigate}
                     />
-                    <NavbarLink
+                    <AppLink
                         active={active === "Volunteer"}
                         icon={IconRecycle}
                         href="/feeds/volunteer"
                         label="Volunteer"
                         onNavigate={onNavigate}
                     />
-                    <NavbarLink
+                    <AppLink
                         active={active === "Live"}
                         icon={IconLivePhoto}
                         href="/feeds/live"
@@ -213,10 +218,10 @@ export function Navbar(props: NavbarProps) {
 
                 {/* Navbar Section IV - Documentation */}
                 <MantineNavbar.Section className={cx(classes.section)}>
-                    <NavbarLink icon={Icon360} label="Getting started" href="/getting-started"/>
-                    <NavbarLink icon={IconHelpSquareRounded} label="Help" href="/help"/>
-                    <NavbarLink icon={IconCookie} label="Privacy Policy" href="/privacy-policy"/>
-                    <NavbarLink icon={IconSectionSign} label="Terms & Conditions" href="/terms-and-conditions"/>
+                    <AppLink icon={Icon360} label="Getting started" href="/getting-started"/>
+                    <AppLink icon={IconHelpSquareRounded} label="Help" href="/help"/>
+                    <AppLink icon={IconCookie} label="Privacy Policy" href="/privacy-policy"/>
+                    <AppLink icon={IconSectionSign} label="Terms & Conditions" href="/terms-and-conditions"/>
                 </MantineNavbar.Section>
             </MantineNavbar.Section>
     </MantineNavbar>}

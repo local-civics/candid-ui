@@ -1,4 +1,4 @@
-import { AppLayout } from '../src/layouts/AppLayout/AppLayout';
+import { AppLayout } from '../src/layouts/app/AppLayout';
 import {MemoryRouter} from "react-router-dom";
 import * as React from "react";
 

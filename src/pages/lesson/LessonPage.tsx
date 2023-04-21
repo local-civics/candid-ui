@@ -1,0 +1,342 @@
+import {Carousel}      from "@mantine/carousel";
+import {useMediaQuery} from "@mantine/hooks";
+import * as React      from 'react';
+import {
+    Container,
+    Tabs,
+    Stack,
+    Button,
+    Title,
+    Text,
+    Group,
+    Popover,
+    Input,
+    CopyButton,
+    ActionIcon,
+    createStyles, rem, useMantineTheme,
+}                      from '@mantine/core'
+import {Link}                            from "react-router-dom";
+import {PostFAQ}                         from "../../components/post/PostFAQ";
+import {PostOverview, PostOverviewProps} from "../../components/post/PostOverview";
+import {PostPreview, PostPreviewProps}   from "../../components/post/PostPreview";
+import {compactNumber}                   from "../../utils/numbers";
+import {Dots}                            from "./Dots";
+import {
+    IconTargetArrow, IconShare3, IconThumbUp, IconBookmark,
+    IconThumbUpFilled, IconBookmarkOff, IconCopy,
+    IconBrandGoogle, IconBrandWhatsapp, IconBrandFacebook, IconBrandTwitter, IconBrandReddit, IconBrandLinkedin,
+    IconAt, IconTransitionRight, IconLetterC
+}                                        from "@tabler/icons-react";
+
+const useStyles = createStyles((theme) => {
+    return {
+        root: {
+            marginTop: '-1rem',
+            marginLeft: '-1rem',
+            maxWidth: 'initial',
+        },
+        inner: {
+            display: 'flex',
+            position: 'relative',
+            justifyContent: 'space-between',
+
+            [theme.fn.smallerThan('md')]: {
+                flexDirection: 'column',
+            },
+        },
+
+        dots: {
+            position: 'absolute',
+            color: theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[1],
+
+            [theme.fn.smallerThan('md')]: {
+                display: 'none',
+            },
+        },
+
+        content: {
+            zIndex: 1,
+            paddingTop: `calc(${theme.spacing.xl} * 3)`,
+            paddingBottom: `calc(${theme.spacing.xl} * 3)`,
+            width: '100%',
+            overflowX: 'hidden',
+
+            [theme.fn.smallerThan('md')]: {
+                marginRight: 0,
+            },
+        },
+
+        title: {
+            color: theme.white,
+            textAlign: 'center',
+            fontFamily: `Greycliff CF, ${theme.fontFamily}`,
+            fontWeight: 900,
+            lineHeight: 1.05,
+            maxWidth: rem(500),
+            fontSize: rem(48),
+        },
+
+        control: {
+            paddingLeft: rem(50),
+            paddingRight: rem(50),
+            fontFamily: `Greycliff CF, ${theme.fontFamily}`,
+            fontSize: rem(22),
+
+            [theme.fn.smallerThan('md')]: {
+                width: '100%',
+            },
+        },
+    }
+})
+
+const FAQ_QUESTIONS = [
+    {
+        control: "When can I start this lesson?",
+        panel: ""
+    },
+    {
+        control: "Can I earn class credit for this lesson?",
+        panel: ""
+    },
+    {
+        control: "How do I assign a lesson?",
+        panel: ""
+    },
+    {
+        control: "Will my responses be auto-saved?",
+        panel: ""
+    },
+    {
+        control: "Can I try a lesson for free?",
+        panel: ""
+    },
+    {
+        control: "Can I download a lesson offline?",
+        panel: ""
+    },
+    {
+        control: "Who can I contact if I have another question?",
+        panel: ""
+    },
+]
+
+const SHARE_LINKS = [
+    {
+        title: 'Assign',
+        icon: IconTransitionRight,
+    },
+    {
+        title: 'Google',
+        icon: IconBrandGoogle,
+        href: 'https://accounts.google.com/ServiceLogin?continue=https%3A%2F%2Fclassroom.google.com&passive=true',
+    },
+    {
+        title: 'Clever',
+        icon: IconLetterC,
+        href: 'https://clever.com/login',
+    },
+    {
+        title: 'WhatsApp',
+        icon: IconBrandWhatsapp,
+        href: (target: string) => `https://api.whatsapp.com/send/?text=${encodeURIComponent(target)}`
+    },
+    {
+        title: 'Facebook',
+        icon: IconBrandFacebook,
+        href: 'https://www.facebook.com/login'
+    },
+    {
+        title: 'Twitter',
+        icon: IconBrandTwitter,
+        href: 'https://twitter.com/i/flow/login',
+    },
+    {
+        title: 'Email',
+        icon: IconAt,
+    },
+    {
+        title: 'Reddit',
+        icon: IconBrandReddit,
+        href: (target: string) => `https://www.reddit.com/submit?url=${encodeURIComponent(target)}`
+    },
+    {
+        title: 'LinkedIn',
+        icon: IconBrandLinkedin,
+        href: 'https://www.linkedin.com/checkpoint/lg/login'
+    },
+]
+
+/**
+ * LessonPageProps
+ */
+export type LessonPageProps = PostOverviewProps & PostPreviewProps & {
+    title: string
+    href: string
+    liked?: boolean
+    saved?: boolean
+    likes?: number
+    onLikeClick: () => void;
+    onSaveClick: () => void;
+}
+
+/**
+ * LessonPage
+ * @param props
+ * @constructor
+ */
+export function LessonPage(props: LessonPageProps){
+    const {classes} = useStyles()
+    const theme = useMantineTheme();
+    const mobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
+    const LikeIcon = !props.liked ? IconThumbUp : IconThumbUpFilled
+    const SaveIcon = !props.saved ? IconBookmark : IconBookmarkOff
+    const likeLabel = !props.liked ? "Like" : "Liked by you"
+    const saveLabel = !props.saved ? "Save" : "Saved for later"
+    const likes = props.likes || 0
+    const shareLinks = SHARE_LINKS.map(l => {
+        return <Carousel.Slide py={6} size={20}>
+            <Stack w="3.5rem" align="center" spacing={10}>
+                <ActionIcon<typeof Link>
+                    component={Link}
+                    to={!l.href ? "#" : typeof l.href === 'string' ? l.href : l.href(props.href)}
+                    about="_blank"
+                    size="xl" variant="light" radius="xl">
+                    <l.icon size="1rem" />
+                </ActionIcon>
+                <Text color="dark.4" size="xs">{l.title}</Text>
+            </Stack>
+        </Carousel.Slide>
+    })
+    return <Container className={classes.root} fluid size="lg" px={0} pb="xl">
+        <Stack
+               pl={0}
+               pr={5}
+               pb={5}
+               sx={(theme) => ({
+                   backgroundSize: 'cover',
+                   backgroundPosition: 'center',
+                   backgroundImage: theme.fn.gradient({ from: 'blue.9', to: 'blue.5', deg: 20 }),
+                   color: theme.white,
+               })}
+        >
+            <Dots className={classes.dots} style={{ left: 0, top: 0 }} />
+            <Dots className={classes.dots} style={{ left: 60, top: 0 }} />
+            <Dots className={classes.dots} style={{ left: 0, top: 140 }} />
+            <Dots className={classes.dots} style={{ right: 25, top: 60 }} />
+
+            <Stack spacing={25} px={0} className={classes.content} align="center">
+                <IconTargetArrow size={24} />
+
+                <Title className={classes.title}>
+                    {props.title}
+                </Title>
+
+                <div style={{width: "max-content"}}>
+                    <Button<typeof Link>
+                        component={Link}
+                        to={props.href}
+                        variant="gradient"
+                        gradient={{ from: 'indigo', to: 'cyan' }}
+                        size="xl"
+                        className={classes.control}
+                        mt={10}
+                    >
+                        Get started
+                    </Button>
+                </div>
+            </Stack>
+
+            <Stack ml="auto" mb={5} mr={5}>
+                { likes > 1 && <Group ml="auto" pr={5} spacing={2} color="white">
+                    <Text size="sm">Liked by</Text>
+                    <Text size="sm" weight={700}>{compactNumber(likes)}+</Text>
+                    <Text size="sm">people</Text>
+                </Group> }
+                <Button.Group>
+                    <Button radius="lg" size="xs"
+                            leftIcon={<LikeIcon size="1rem"/>} variant="filled"
+                            onClick={props.onLikeClick}>{likeLabel}</Button>
+                    <Popover position="bottom-end" width={props.href.length * 8} withArrow withinPortal shadow="md">
+                        <Popover.Target>
+                            <Button size="xs" leftIcon={<IconShare3 size="1rem"/>} variant="filled">
+                                Share
+                            </Button>
+                        </Popover.Target>
+                        <Popover.Dropdown w="25rem !important">
+                            <Stack px={5} mx={0} spacing={15}>
+                                <Text weight={700} size="sm" color="dark.4" mt={5}>Share</Text>
+                                <Carousel
+                                    pl="2rem"
+                                    pr={0}
+                                    slideGap="xs"
+                                    align="start"
+                                    slidesToScroll={mobile ? 2 : 4}
+                                    styles={{
+                                        controls: {
+                                          paddingLeft: 0,
+                                          paddingRight: 0,
+                                        },
+                                        indicators: {
+                                            bottom: '-0.5rem'
+                                        },
+                                        indicator: {
+                                            backgroundColor: theme.colors.gray[6],
+                                            width: rem(12),
+                                            height: rem(4),
+                                            transition: 'width 250ms ease',
+
+                                            '&[data-active]': {
+                                                width: rem(40),
+                                            },
+                                        },
+                                    }}
+                                >
+                                    {shareLinks}
+                                </Carousel>
+                                <Group grow>
+                                    <Input
+                                        disabled
+                                        maw="initial"
+                                        value={props.href}
+                                        icon={<IconCopy size="1rem" />}
+                                        placeholder="Uh, something is not right"
+                                    />
+                                    <CopyButton value={props.href}>
+                                        {({ copied, copy }) => (
+                                            <Button color={copied ? 'teal' : 'blue'} onClick={copy}>
+                                                {copied ? 'Copied' : 'Copy'}
+                                            </Button>
+                                        )}
+                                    </CopyButton>
+                                </Group>
+                            </Stack>
+                        </Popover.Dropdown>
+                    </Popover>
+                    <Button radius="lg" size="xs"
+                            leftIcon={<SaveIcon size="1rem"/>} variant="filled"
+                            onClick={props.onSaveClick}>{saveLabel}</Button>
+                </Button.Group>
+            </Stack>
+        </Stack>
+
+        <Tabs defaultValue="overview">
+            <Tabs.List>
+                <Tabs.Tab value="overview"><Text px={15} py={10}>Overview</Text></Tabs.Tab>
+                <Tabs.Tab value="preview"><Text px={15} py={10}>Preview</Text></Tabs.Tab>
+                <Tabs.Tab value="faq"><Text px={15} py={10}>FAQ</Text></Tabs.Tab>
+            </Tabs.List>
+
+            <Tabs.Panel value="overview" pt="xs">
+                <PostOverview {...props}/>
+            </Tabs.Panel>
+
+            <Tabs.Panel value="preview" pt="xs">
+                <PostPreview {...props}/>
+            </Tabs.Panel>
+
+            <Tabs.Panel value="faq" pt="xs">
+                <PostFAQ questions={FAQ_QUESTIONS}/>
+            </Tabs.Panel>
+        </Tabs>
+    </Container>
+}

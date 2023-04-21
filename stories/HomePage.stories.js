@@ -1,7 +1,7 @@
-import { HomePage } from '../src/pages/HomePage/HomePage';
-import {MemoryRouter} from "react-router-dom";
 import * as React from "react";
-import {AppLayout} from "../src/layouts/AppLayout/AppLayout";
+import {MemoryRouter} from "react-router-dom";
+import { HomePage } from '../src/pages/home/HomePage';
+import {AppLayout} from "../src/layouts/app/AppLayout";
 
 export default {
   title: 'HomePage',

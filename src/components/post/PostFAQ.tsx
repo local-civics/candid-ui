@@ -21,18 +21,18 @@ const useStyles = createStyles((theme) => ({
 }));
 
 /**
- * FAQProps
+ * PostFAQProps
  */
-export type FAQProps = {
+export type PostFAQProps = {
     questions: {control: string, panel: string}[]
 }
 
 /**
- * FAQ
+ * PostFAQ
  * @param props
  * @constructor
  */
-export function FAQ(props: FAQProps) {
+export function PostFAQ(props: PostFAQProps) {
     const { classes } = useStyles();
     const questions = props.questions.map(q => {
         return <Accordion.Item className={classes.item} value={q.control}>
@@ -42,8 +42,8 @@ export function FAQ(props: FAQProps) {
     })
 
     return (
-        <Container size="sm" className={classes.wrapper}>
-            <Title align="center" className={classes.title}>
+        <Container size="sm" p={25} mx={0} className={classes.wrapper}>
+            <Title className={classes.title}>
                 Frequently Asked Questions
             </Title>
 

@@ -1,10 +1,8 @@
 import {Loader, Center, ActionIcon, AppShell, Container, createStyles, Group, Image, Text, Title} from "@mantine/core";
 import {IconBrandFacebook, IconBrandInstagram, IconBrandLinkedin}                                 from "@tabler/icons-react";
 import * as React                                                                                 from 'react';
-import {
-    Header
-}                                                                                                 from "../../components/Header/Header";
-import {Navbar, NavbarProps}                                                                      from "../../components/Navbar/Navbar";
+import {AppHeader}                                                                                from "./AppHeader";
+import {AppNavbar, AppNavbarProps}                                                                      from "./AppNavbar";
 
 const useStyles = createStyles((theme) => ({
     footer: {
@@ -117,7 +115,7 @@ const useStyles = createStyles((theme) => ({
 /**
  * AppLayoutProps
  */
-export type AppLayoutProps = NavbarProps & {
+export type AppLayoutProps = AppNavbarProps & {
     page: React.ReactNode
 }
 
@@ -132,8 +130,8 @@ export const AppLayout = (props: AppLayoutProps) => {
     const onMenuClick = () => setMenu(!menu)
     return <AppShell
         padding="xs"
-        header={<Header {...props} menu={menu} onMenuClick={onMenuClick} />}
-        navbar={<Navbar {...props} menu={menu}/>}
+        header={<AppHeader {...props} menu={menu} onMenuClick={onMenuClick} />}
+        navbar={<AppNavbar {...props} menu={menu}/>}
         footer={<footer className={cx(classes.footer, {[classes.footerWithMenu]: menu})}>
             <Container className={classes.inner}>
                 <div className={classes.logo}>
