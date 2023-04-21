@@ -1,10 +1,11 @@
 import * as React from "react";
-import { AppLayout } from '../src/layouts/app/AppLayout';
 import {MemoryRouter} from "react-router-dom";
+import {AppLayout} from "../src/layouts/app/AppLayout";
+import { AssignmentListPage } from '../src/pages/assignment/AssignmentListPage';
 
 export default {
-  title: 'AppLayout',
-  component: AppLayout,
+  title: 'AssignmentListPage',
+  component: AssignmentListPage,
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/react/writing-docs/autodocs
   tags: ['autodocs'],
   parameters: {
@@ -16,20 +17,14 @@ export default {
 const Template = {
   render: (args) => <div className="h-full w-full overscroll-none font-proxima">
     <MemoryRouter>
-      <AppLayout {...args}/>
+      <AppLayout
+          page=<AssignmentListPage {...args}
+          />
+      />
     </MemoryRouter>
   </div>,
 }
 
-export const LoggedIn = {
-  ...Template,
-  args: {
-    name: 'Jane Doe',
-    email: 'jane.doe@site.com',
-    image: '',
-  },
-};
-
-export const LoggedOut = {
+export const Default = {
   ...Template,
 };

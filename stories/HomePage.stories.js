@@ -15,25 +15,26 @@ export default {
 };
 
 const MOCK_POSTS = [{
-  "image": "https://images.unsplash.com/photo-1437719417032-8595fd9e9dc6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
+  "image": "https://cdn.localcivics.io/hub/landing.jpg",
   "title": "Verudela Beach w. A Side of Fries",
   "category": "Badge Opportunity",
   "rating": 4.567,
+  "liked": true,
   "description": "Completely renovated for the season 2020, Arena Verudela Bech Apartments are fully equipped and modernly furnished 4-star self-service apartments located on the Adriatic coastline by one of the most beautiful beaches in Pula.",
 },{
-  "image": "https://images.unsplash.com/photo-1437719417032-8595fd9e9dc6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
+  "image": "https://cdn.localcivics.io/hub/landing.jpg",
   "title": "Verudela Beach",
   "category": "Lesson Opportunity",
   "rating": 4.167,
   "description": "Completely renovated for the season 2020, Arena Verudela Bech Apartments are fully equipped and modernly furnished 4-star self-service apartments located on the Adriatic coastline by one of the most beautiful beaches in Pula.",
 },{
-  "image": "https://images.unsplash.com/photo-1437719417032-8595fd9e9dc6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
+  "image": "https://cdn.localcivics.io/hub/landing.jpg",
   "title": "Verudela Beach",
   "category": "Lesson Opportunity",
   "rating": 4,
   "description": "Completely renovated for the season 2020, Arena Verudela Bech Apartments are fully equipped and modernly furnished 4-star self-service apartments located on the Adriatic coastline by one of the most beautiful beaches in Pula.",
 },{
-  "image": "https://images.unsplash.com/photo-1437719417032-8595fd9e9dc6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
+  "image": "https://cdn.localcivics.io/hub/landing.jpg",
   "title": "Verudela Beach w. A Side of Fries",
   "category": "Badge Opportunity",
   "rating": 2.567,

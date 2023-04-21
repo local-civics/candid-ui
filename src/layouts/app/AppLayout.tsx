@@ -1,6 +1,6 @@
+import * as React from "react";
 import {Loader, Center, ActionIcon, AppShell, Container, createStyles, Group, Image, Text, Title} from "@mantine/core";
 import {IconBrandFacebook, IconBrandInstagram, IconBrandLinkedin}                                 from "@tabler/icons-react";
-import * as React                                                                                 from 'react';
 import {AppHeader}                                                                                from "./AppHeader";
 import {AppNavbar, AppNavbarProps}                                                                      from "./AppNavbar";
 

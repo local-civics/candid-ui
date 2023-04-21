@@ -1,11 +1,11 @@
 import * as React                                                             from 'react';
 import {
     Container, Stack, Button, Center, SimpleGrid,
+    Box, LoadingOverlay,
     rem, useMantineTheme
 } from '@mantine/core'
 import {Carousel}                                                             from '@mantine/carousel'
 import {useMediaQuery}                                                        from "@mantine/hooks";
-import {Link}                    from "react-router-dom";
 import {PostCard, PostCardProps} from "../../components/post/PostCard"
 
 const DEFAULT_FILTERS_PREFIX = [
@@ -37,8 +37,10 @@ const DEFAULT_FILTERS_SUFFIX = [
  */
 export type HomePageProps = {
     posts: PostCardProps[],
+    loading: boolean
     defaultActiveFilter?: string
     filters?: string[]
+    onFilterClick?: (name: string) => void;
 }
 
 /**
@@ -50,14 +52,16 @@ export function HomePage(props: HomePageProps){
     const theme = useMantineTheme();
     const mobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
     const [activeFilter, setActiveFilter] = React.useState(props.defaultActiveFilter || "All")
+    const onFilterClick = (name: string) => {
+        setActiveFilter(name)
+        props.onFilterClick && props.onFilterClick(name)
+    }
     const filterNames = [...new Set([...DEFAULT_FILTERS_PREFIX, ...props.filters||[], ...DEFAULT_FILTERS_SUFFIX])]
     const filters = filterNames.map(f => {
         return <Carousel.Slide py={6} size={f.length}>
             <Center>
-                <Button<typeof Link>
-                    component={Link}
-                    onClick={() => setActiveFilter(f)}
-                    to={`/feeds/${feedName(f)}`}
+                <Button
+                    onClick={() => onFilterClick(f)}
                     color={activeFilter === f ? "filled" : "gray"}
                     variant={activeFilter === f ? "filled": "light"}
                     size="xs"
@@ -105,20 +109,19 @@ export function HomePage(props: HomePageProps){
             </Carousel>
 
             {/* Content posts */}
-            <SimpleGrid
-                cols={3}
-                spacing="lg"
-                breakpoints={[
-                    { maxWidth: '70rem', cols: 2, spacing: 'sm' },
-                    { maxWidth: '36rem', cols: 1, spacing: 'sm' },
-                ]}
-            >
-                {posts}
-            </SimpleGrid>
+            <Box pos="relative">
+                <LoadingOverlay visible={props.loading} overlayBlur={2} />
+                <SimpleGrid
+                    cols={3}
+                    spacing="lg"
+                    breakpoints={[
+                        { maxWidth: '70rem', cols: 2, spacing: 'sm' },
+                        { maxWidth: '36rem', cols: 1, spacing: 'sm' },
+                    ]}
+                >
+                    {posts}
+                </SimpleGrid>
+            </Box>
         </Stack>
     </Container>
-}
-
-function feedName(from: string){
-    return ""
 }
