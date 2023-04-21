@@ -56,7 +56,7 @@ const useStyles = createStyles((theme) => {
 
         content: {
             zIndex: 1,
-            paddingTop: `calc(${theme.spacing.xl} * 3)`,
+            paddingTop: `calc(${theme.spacing.xl} * 4)`,
             paddingBottom: `calc(${theme.spacing.xl} * 3)`,
             width: '100%',
             overflowX: 'hidden',
@@ -124,6 +124,7 @@ const SHARE_LINKS = [
     {
         title: 'Assign',
         icon: IconTransitionRight,
+        href: (props: LessonPageProps) => props.assignURL,
     },
     {
         title: 'Google',
@@ -138,7 +139,7 @@ const SHARE_LINKS = [
     {
         title: 'WhatsApp',
         icon: IconBrandWhatsapp,
-        href: (target: string) => `https://api.whatsapp.com/send/?text=${encodeURIComponent(target)}`
+        href: (props: LessonPageProps) => `https://api.whatsapp.com/send/?text=${encodeURIComponent(props.href)}`
     },
     {
         title: 'Facebook',
@@ -153,11 +154,12 @@ const SHARE_LINKS = [
     {
         title: 'Email',
         icon: IconAt,
+        href: (props: LessonPageProps) => `mailto:?body=${encodeURIComponent(props.href)}`
     },
     {
         title: 'Reddit',
         icon: IconBrandReddit,
-        href: (target: string) => `https://www.reddit.com/submit?url=${encodeURIComponent(target)}`
+        href: (props: LessonPageProps) => `https://www.reddit.com/submit?url=${encodeURIComponent(props.href)}`
     },
     {
         title: 'LinkedIn',
@@ -172,6 +174,7 @@ const SHARE_LINKS = [
 export type LessonPageProps = PostOverviewProps & PostPreviewProps & {
     title: string
     href: string
+    assignURL: string,
     liked?: boolean
     saved?: boolean
     likes?: number
@@ -198,8 +201,9 @@ export function LessonPage(props: LessonPageProps){
             <Stack w="3.5rem" align="center" spacing={10}>
                 <ActionIcon<typeof Link>
                     component={Link}
-                    to={!l.href ? "#" : typeof l.href === 'string' ? l.href : l.href(props.href)}
-                    about="_blank"
+                    to={!l.href ? "#" : typeof l.href === 'string' ? l.href : l.href(props)}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     size="xl" variant="light" radius="xl">
                     <l.icon size="1rem" />
                 </ActionIcon>

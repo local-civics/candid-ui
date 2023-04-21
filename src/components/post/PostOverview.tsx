@@ -161,7 +161,7 @@ export function PostOverview(props: PostOverviewProps) {
             </Container>
             <Stack spacing={20}>
                 <Title underline color="dark.5" mt={50} size="sm">
-                    Our commitments
+                    Other features
                 </Title>
                 <Group spacing={5}>{features}</Group>
             </Stack>
