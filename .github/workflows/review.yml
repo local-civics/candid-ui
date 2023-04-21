@@ -7,7 +7,7 @@ name: "Review"
 on:
   pull_request:
     branches:
-      - master
+      - main
 
 # List of jobs
 jobs:
