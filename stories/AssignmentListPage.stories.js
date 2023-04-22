@@ -3,7 +3,7 @@ import {MemoryRouter} from "react-router-dom";
 import {AppLayout} from "../src/layouts/app/AppLayout";
 import { AssignmentListPage } from '../src/pages/assignment/AssignmentListPage';
 
-const MOCK_DATA = [
+const MOCK_ASSIGMENT_DATA = [
   {
     title: 'Assignment #1',
     status: 'open',
@@ -30,6 +30,25 @@ const MOCK_DATA = [
   },
 ]
 
+const MOCK_ASSIGNEE_DATA = [
+  [
+    { value: 'react', label: 'React', group: 'Classes'},
+    { value: 'ng', label: 'Angular', group: 'Classes' },
+    { value: 'next', label: 'Next.js', group: 'Classes' },
+    { value: 'blitz', label: 'Blitz.js' , group: 'Students'},
+    { value: 'gatsby', label: 'Gatsby.js', group: 'Students' },
+    { value: 'vue', label: 'Vue', group: 'Students' },
+    { value: 'jq', label: 'jQuery', group: 'Classes' },
+  ],
+  [
+    { value: 'sv', label: 'Svelte' },
+    { value: 'rw', label: 'Redwood' },
+    { value: 'np', label: 'NumPy' },
+    { value: 'dj', label: 'Django' },
+    { value: 'fl', label: 'Flask' },
+  ],
+];
+
 export default {
   title: 'AssignmentListPage',
   component: AssignmentListPage,
@@ -42,6 +61,10 @@ export default {
 };
 
 const Template = {
+  args: {
+    assigneeData: MOCK_ASSIGNEE_DATA,
+    assignments: [],
+  },
   render: (args) => <div className="h-full w-full overscroll-none font-proxima">
     <MemoryRouter>
       <AppLayout
@@ -51,28 +74,38 @@ const Template = {
   </div>,
 }
 
-export const NoAssignments = {
+export const SignInRequired = {
   ...Template,
   args: {
-    assignments: [],
+    ...Template.args,
+    permissionRequired: true,
   }
+};
+
+export const NoAssignments = {
+  ...Template,
 };
 
 export const WithAssignments = {
   ...Template,
   args: {
-    assignments: MOCK_DATA,
+    ...Template.args,
+    assignments: MOCK_ASSIGMENT_DATA,
   }
 };
 
 export const AssignedToMe = {
   ...Template,
   args: {
-    assignments: MOCK_DATA.filter(a => a.status === 'assigned to me'),
+    ...Template.args,
+    assignments: MOCK_ASSIGMENT_DATA.filter(a => a.status === 'assigned to me'),
   }
 };
 
 export const Archived = {
   ...Template,
-  assignments: MOCK_DATA.filter(a => a.status === 'archived'),
+  args: {
+    ...Template.args,
+    assignments: MOCK_ASSIGMENT_DATA.filter(a => a.status === 'archived'),
+  }
 };

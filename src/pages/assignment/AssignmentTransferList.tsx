@@ -3,30 +3,12 @@ import {
     TransferList, TransferListData,
 } from '@mantine/core'
 
-const initialValues: TransferListData = [
-    [
-        { value: 'react', label: 'React' },
-        { value: 'ng', label: 'Angular' },
-        { value: 'next', label: 'Next.js' },
-        { value: 'blitz', label: 'Blitz.js' },
-        { value: 'gatsby', label: 'Gatsby.js' },
-        { value: 'vue', label: 'Vue' },
-        { value: 'jq', label: 'jQuery' },
-    ],
-    [
-        { value: 'sv', label: 'Svelte' },
-        { value: 'rw', label: 'Redwood' },
-        { value: 'np', label: 'NumPy' },
-        { value: 'dj', label: 'Django' },
-        { value: 'fl', label: 'Flask' },
-    ],
-];
-
 /**
  * AssignmentTransferListProps
  */
 export type AssignmentTransferListProps = {
-
+    data: TransferListData,
+    onChange?: (next: TransferListData) => void;
 }
 
 /**
@@ -35,19 +17,19 @@ export type AssignmentTransferListProps = {
  * @constructor
  */
 export function AssignmentTransferList(props: AssignmentTransferListProps){
-    const [data, setData] = React.useState<TransferListData>(initialValues);
-    return <div>
-        <TransferList
-            value={data}
-            onChange={setData}
-            searchPlaceholder="Search"
-            titles={['Classes', 'Assignees']}
-            listHeight={300}
-            breakpoint="sm"
-            filter={(query, item) =>
-                item.label.toLowerCase().includes(query.toLowerCase().trim()) ||
-                item.description.toLowerCase().includes(query.toLowerCase().trim())
-            }
-        />
-    </div>
+    const [data, setData] = React.useState<TransferListData>(props.data);
+    const onChange = (next: TransferListData) => {
+        setData(next)
+        props.onChange && props.onChange(next)
+    }
+    return <TransferList
+        miw={200}
+        value={data}
+        onChange={onChange}
+        searchPlaceholder="Search"
+        titles={['Options', 'Assignees']}
+        listHeight={300}
+        breakpoint="sm"
+        filter={(query, item) => item.label.toLowerCase().includes(query.toLowerCase().trim())}
+    />
 }
