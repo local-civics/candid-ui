@@ -48,6 +48,7 @@ const Template = {
   render: (args) => <div className="h-full w-full overscroll-none font-proxima">
     <MemoryRouter>
       <AppLayout
+          {...args}
           page=<LessonPage {...args}
             title={args.title || "30 Second Elevator Pitch"}
             likes={args.likes || 30000}

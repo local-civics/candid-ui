@@ -1,5 +1,6 @@
 import {useForm as useMantineForm}       from "@mantine/form";
 import {useDisclosure} from "@mantine/hooks";
+import { modals } from '@mantine/modals';
 import * as React      from 'react';
 import {
     Container,
@@ -13,7 +14,6 @@ import {
     Text,
     ActionIcon,
     Menu,
-    Box,
     TextInput,
     useMantineTheme, createStyles, rem, TransferListData,
 } from '@mantine/core'
@@ -46,13 +46,24 @@ const useStyles = createStyles((theme) => {
 })
 
 /**
+ * AssignmentData
+ */
+export type AssignmentData = {title: string, status: "open" | "assigned to me" | "archived"}
+
+/**
  * AssignmentListPageProps
  */
 export type AssignmentListPageProps = {
     permissionRequired: boolean
-    assigneeData: TransferListData,
-    assignments: {title: string, status: "open" | "assigned to me" | "archived"}[]
-    onSubmit?: (data: TransferListData) => void;
+    assignees: TransferListData,
+    assignments: AssignmentData[]
+    onCreate?: (name: string, assignees: TransferListData) => void;
+    onRename?: (data: AssignmentData, newName: string) => void;
+    onArchive?: (data: AssignmentData) => void;
+    onOpen?: (data: AssignmentData) => void;
+    onViewProgress?: (data: AssignmentData) => void;
+    onUpdateAssignees?: (newAssignees: TransferListData) => void;
+    onSignIn?: () => void
 }
 
 /**
@@ -63,8 +74,7 @@ export type AssignmentListPageProps = {
 export function AssignmentListPage(props: AssignmentListPageProps){
     const theme = useMantineTheme()
     const {classes} = useStyles()
-    const [opened, { open, close }] = useDisclosure(false);
-    const form = useForm(props.assigneeData, close, props.onSubmit)
+    const form = useForm(props)
     const openAssignments = props.assignments.filter(a => a.status === 'open').map(a => {
         return <Card withBorder radius="md" p="md" className={classes.card}>
             <Card.Section
@@ -91,8 +101,33 @@ export function AssignmentListPage(props: AssignmentListPageProps){
                             </ActionIcon>
                         </Menu.Target>
                         <Menu.Dropdown>
-                            <Menu.Item icon={<IconAbc size="1rem" stroke={1.5} />}>Rename</Menu.Item>
-                            <Menu.Item color="red" icon={<IconArchive size="1rem" stroke={1.5} />}>Archive</Menu.Item>
+                            <Menu.Item icon={<IconAbc size="1rem" stroke={1.5} />}
+                                       onClick={() => {
+                                           modals.open({
+                                               title: 'Rename assignment',
+                                               centered: true,
+                                               children: <RenameAssignment {...props} a={a} />,
+                                           });
+                                       }}>
+                                Rename
+                            </Menu.Item>
+                            <Menu.Item color="red" icon={<IconArchive size="1rem" stroke={1.5} />}
+                                       onClick={() => {
+                                           modals.openConfirmModal({
+                                               title: 'Archive assignment',
+                                               centered: true,
+                                               children: (
+                                                   <Text size="sm">
+                                                       Are you sure you want to archive your assignment? This action is not reversible.
+                                                   </Text>
+                                               ),
+                                               labels: { confirm: 'Archive assignment', cancel: "No don't archive it" },
+                                               confirmProps: { color: 'red' },
+                                               onConfirm: () => props.onArchive && props.onArchive(a),
+                                           });
+                                       }}>
+                                Archive
+                            </Menu.Item>
                         </Menu.Dropdown>
                     </Menu>
                 </Group>
@@ -101,13 +136,13 @@ export function AssignmentListPage(props: AssignmentListPageProps){
             <Card.Section className={classes.section} mt="md">
                 <Group spacing={20}>
                     <Tooltip label="Open assignment">
-                        <ActionIcon color="blue"><IconFocusCentered /></ActionIcon>
+                        <ActionIcon onClick={() => props.onOpen && props.onOpen(a)} color="blue"><IconFocusCentered /></ActionIcon>
                     </Tooltip>
                     <Tooltip label="View progress">
-                        <ActionIcon color="blue"><IconPresentationAnalytics /></ActionIcon>
+                        <ActionIcon onClick={() => props.onViewProgress && props.onViewProgress(a)} color="blue"><IconPresentationAnalytics /></ActionIcon>
                     </Tooltip>
                     <Tooltip label="Edit assignees">
-                        <ActionIcon color="blue"><IconUserEdit /></ActionIcon>
+                        <ActionIcon onClick={form.editAssignees} color="blue"><IconUserEdit /></ActionIcon>
                     </Tooltip>
                 </Group>
             </Card.Section>
@@ -134,7 +169,7 @@ export function AssignmentListPage(props: AssignmentListPageProps){
             <Card.Section className={classes.section} mt="md">
                 <Group spacing={20}>
                     <Tooltip label="Open assignment">
-                        <ActionIcon color="blue"><IconFocusCentered /></ActionIcon>
+                        <ActionIcon onClick={() => props.onOpen && props.onOpen(a)} color="blue"><IconFocusCentered /></ActionIcon>
                     </Tooltip>
                 </Group>
             </Card.Section>
@@ -161,10 +196,10 @@ export function AssignmentListPage(props: AssignmentListPageProps){
             <Card.Section className={classes.section} mt="md">
                 <Group spacing={20}>
                     <Tooltip label="Open assignment">
-                        <ActionIcon color="blue"><IconFocusCentered /></ActionIcon>
+                        <ActionIcon onClick={() => props.onOpen && props.onOpen(a)} color="blue"><IconFocusCentered /></ActionIcon>
                     </Tooltip>
                     <Tooltip label="View progress">
-                        <ActionIcon color="blue"><IconPresentationAnalytics /></ActionIcon>
+                        <ActionIcon onClick={() => props.onViewProgress && props.onViewProgress(a)} color="blue"><IconPresentationAnalytics /></ActionIcon>
                     </Tooltip>
                 </Group>
             </Card.Section>
@@ -179,16 +214,16 @@ export function AssignmentListPage(props: AssignmentListPageProps){
                 </Group>
                 <Title size={20} align="center" color="dark.4">Track progress on your assignments</Title>
                 <Text align="center" color="dark.4">Sign in to access Assignments</Text>
-                <Button variant="filled" color="dark" mx="auto" maw="max-content" leftIcon={<IconUserCircle size={16} />}>Sign in</Button>
+                <Button variant="filled" color="dark" mx="auto" maw="max-content"
+                        onClick={props.onSignIn}
+                        leftIcon={<IconUserCircle size={16} />}>Sign in</Button>
             </Stack>
         </Container>
     }
 
     return <>
-        <Modal opened={opened} onClose={close} size="auto" withCloseButton={false} centered>
-            <Box maw={400} mx="auto">
-                {form}
-            </Box>
+        <Modal opened={form.opened} onClose={close} size="auto" withCloseButton={false} centered>
+            {form.children()}
         </Modal>
         <Container size="lg" pb="xl">
             <Stack spacing={10}>
@@ -197,7 +232,7 @@ export function AssignmentListPage(props: AssignmentListPageProps){
                     <Title color="dark.4">Assignments</Title>
                 </Group>
                 <Divider/>
-                <Button onClick={open} maw="max-content" variant="subtle" leftIcon={<IconPlus />}>New assignment</Button>
+                <Button onClick={form.open} maw="max-content" variant="subtle" leftIcon={<IconPlus />}>New assignment</Button>
                 <Flex mt={10} gap={15}>
                     {openAssignments}
                 </Flex>
@@ -216,50 +251,112 @@ export function AssignmentListPage(props: AssignmentListPageProps){
      </>
 }
 
-function useForm(initialAssigneeData: TransferListData, close: () => void, onSubmit?: (data: TransferListData) => void){
-    const [assigneeData, setAssigneeData] = React.useState(initialAssigneeData)
+function RenameAssignment(props: AssignmentListPageProps & {a: AssignmentData}){
+    const [newName, setNewName] = React.useState("")
+    const rename = (data: AssignmentData, newName: string) => {
+        props.onRename && props.onRename(data, newName)
+        setNewName("")
+        modals.closeAll()
+    }
+    const a = props.a
+    return (
+        <>
+            <TextInput label="New name" defaultValue={a.title} placeholder="Assignment name" data-autofocus onChange={(e) => setNewName(e.target.value)} />
+            <Button fullWidth onClick={() => rename(a, newName)} mt="md">
+                Rename
+            </Button>
+        </>
+    )
+}
+
+function useForm(props: AssignmentListPageProps){
     const form = useMantineForm({
         initialValues: {
+            opened: false,
             stage: 0,
+            node: undefined as React.ReactNode,
             name: '',
-            assignees: [],
+            assignees: props.assignees,
+        },
+        transformValues: (values) => {
+            return {
+                name: values.name,
+                assignees: values.assignees,
+            }
         },
     });
+    const open = () => form.setValues({...form.values, opened: true})
+    const close = () => form.setValues({...form.values, opened: false})
+    const openStage = (stage: number, node?: React.ReactNode) => form.setValues({...form.values, opened: true, stage, node})
+    const previous = () => openStage(form.values.stage - 1)
+    const next = () => openStage(form.values.stage + 1)
+    const setAssignees = (assignees: TransferListData) => form.setValues({...form.values, assignees})
     const submit = () => {
         close()
         form.reset()
-        onSubmit && onSubmit(assigneeData)
+        props.onCreate && props.onCreate(form.values.name, form.values.assignees)
     }
 
-    switch(form.getInputProps('stage').value){
-    case 0:
-        return <>
-            <TextInput
-                miw="25rem"
-                label="Assignment Name"
-                placeholder="Assignment Name"
-                {...form.getInputProps('name')}
-            />
-            <Group mt="lg" spacing={5}>
-                <Button variant="outline" type="button" onClick={close}>
+    const cancel = () => {
+        close()
+        form.reset()
+    }
+
+    return {
+        opened: form.values.opened,
+        open,
+        editAssignees: () => openStage(1, <>
+            <AssignmentTransferList data={form.values.assignees} onChange={(assignees) => setAssignees(assignees)}/>
+            <Group mt="md" spacing={5}>
+                <Button variant="outline" type="button" onClick={cancel}>
                     Cancel
                 </Button>
-                <Button disabled={!form.getInputProps("name").value} type="button" onClick={() => form.setValues({...form.values, stage: form.values.stage + 1})}>
-                    Next
-                </Button>
-            </Group>
-        </>
-    default:
-        return <>
-            <AssignmentTransferList data={initialAssigneeData} onChange={setAssigneeData}/>
-            <Group mt="md" spacing={5}>
-                <Button variant="outline" type="button" onClick={() => form.setValues({...form.values, stage: form.values.stage - 1})}>
-                    Back
-                </Button>
-                <Button type="submit" onClick={submit}>
+                <Button type="submit"
+                        onClick={() => {
+                            close()
+                            form.reset()
+                            props.onUpdateAssignees && props.onUpdateAssignees(form.values.assignees)
+                        }}>
                     Submit
                 </Button>
             </Group>
-        </>
+        </>),
+        children: () => {
+            if(form.values.node){
+                return form.values.node
+            }
+
+            switch(form.getInputProps('stage').value){
+            case 0:
+                return <>
+                    <TextInput
+                        miw="25rem"
+                        label="Assignment Name"
+                        placeholder="Assignment Name"
+                        {...form.getInputProps('name')}
+                    />
+                    <Group mt="lg" spacing={5}>
+                        <Button variant="default" type="button" onClick={cancel}>
+                            Cancel
+                        </Button>
+                        <Button disabled={!form.getInputProps("name").value} type="button" onClick={next}>
+                            Next
+                        </Button>
+                    </Group>
+                </>
+            default:
+                return <>
+                    <AssignmentTransferList data={form.values.assignees} onChange={(assignees) => setAssignees(assignees)}/>
+                    <Group mt="md" spacing={5}>
+                        <Button variant="outline" type="button" onClick={previous}>
+                            Back
+                        </Button>
+                        <Button type="submit" onClick={submit}>
+                            Submit
+                        </Button>
+                    </Group>
+                </>
+            }
+        }
     }
 }

@@ -45,6 +45,7 @@ const Template = {
   render: (args) => <div className="h-full w-full overscroll-none font-proxima">
     <MemoryRouter>
       <AppLayout
+          {...args}
           page=<HomePage {...args} posts={MOCK_POSTS}/>
       />
     </MemoryRouter>

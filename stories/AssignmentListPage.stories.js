@@ -62,12 +62,13 @@ export default {
 
 const Template = {
   args: {
-    assigneeData: MOCK_ASSIGNEE_DATA,
+    assignees: MOCK_ASSIGNEE_DATA,
     assignments: [],
   },
   render: (args) => <div className="h-full w-full overscroll-none font-proxima">
     <MemoryRouter>
       <AppLayout
+          {...args}
           page=<AssignmentListPage {...args}/>
       />
     </MemoryRouter>

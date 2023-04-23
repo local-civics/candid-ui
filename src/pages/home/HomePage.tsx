@@ -6,7 +6,7 @@ import {
 } from '@mantine/core'
 import {Carousel}                                                             from '@mantine/carousel'
 import {useMediaQuery}                                                        from "@mantine/hooks";
-import {PostCard, PostCardProps} from "../../components/post/PostCard"
+import {PostCard, PostCardData} from "../../components/post/PostCard"
 
 const DEFAULT_FILTERS_PREFIX = [
     "All"
@@ -36,11 +36,15 @@ const DEFAULT_FILTERS_SUFFIX = [
  * HomePageProps
  */
 export type HomePageProps = {
-    posts: PostCardProps[],
+    posts: PostCardData[],
     loading: boolean
     defaultActiveFilter?: string
     filters?: string[]
     onFilterClick?: (name: string) => void;
+    onLikePost?: (post: PostCardData) => void;
+    onSavePost?: (post: PostCardData) => void;
+    onAssignPost?: (post: PostCardData) => void;
+    onOpenPost?: (post: PostCardData) => void;
 }
 
 /**
@@ -72,7 +76,13 @@ export function HomePage(props: HomePageProps){
         </Carousel.Slide>
     })
     const posts = props.posts.map(p => {
-        return <PostCard {...p}/>
+        return <PostCard
+            data={p}
+            onLikeClick={() => props.onLikePost && props.onLikePost(p)}
+            onSave={() => props.onSavePost && props.onSavePost(p)}
+            onAssign={() => props.onAssignPost && props.onAssignPost(p)}
+            onOpen={() => props.onOpenPost && props.onOpenPost(p)}
+        />
     })
 
     return <Container size="lg" pb="xl">

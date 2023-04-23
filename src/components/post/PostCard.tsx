@@ -60,18 +60,26 @@ const useStyles = createStyles((theme) => ({
 const MIN_RATING = 0
 
 /**
- * PostCardProps
+ * PostCardData
  */
-export type PostCardProps = {
+export type PostCardData = {
     image: string;
     title: string;
     description: string;
     href: string;
-    assignURL: string
     rating?: number
     liked?: boolean
+}
+
+/**
+ * PostCardProps
+ */
+export type PostCardProps = {
+    data: PostCardData
     onLikeClick?: () => void;
     onSave?: () => void;
+    onAssign?: () => void;
+    onOpen?: () => void;
 }
 
 /**
@@ -81,13 +89,13 @@ export type PostCardProps = {
  */
 export function PostCard(props: PostCardProps) {
     const { classes } = useStyles();
-    const rating = props.rating || 0
-    const LikeIcon = !props.liked ? IconThumbUp : IconThumbUpFilled
+    const rating = props.data.rating || 0
+    const LikeIcon = !props.data.liked ? IconThumbUp : IconThumbUpFilled
 
     return <Card withBorder radius="md" p="md" className={classes.card}>
         <Card.Section>
-            <UnstyledButton<typeof Link> component={Link} to={props.href}>
-                <Image className={classes.image} src={props.image} alt={props.title} height={180} />
+            <UnstyledButton<typeof Link> component={Link} to={props.data.href} onClick={props.onOpen}>
+                <Image className={classes.image} src={props.data.image} alt={props.data.title} height={180} />
             </UnstyledButton>
         </Card.Section>
 
@@ -104,7 +112,7 @@ export function PostCard(props: PostCardProps) {
             >
                 <Group grow align="start" position="apart" spacing={0}>
                     <Text fz="lg" maw="initial" fw={500}>
-                        {props.title}
+                        {props.data.title}
                     </Text>
                     <Menu
                         transitionProps={{ transition: 'pop' }}
@@ -119,21 +127,19 @@ export function PostCard(props: PostCardProps) {
                         </Menu.Target>
                         <Menu.Dropdown>
                             <Menu.Item onClick={props.onSave} icon={<IconBookmark size="1rem" stroke={1.5} />}>Save for later</Menu.Item>
-                            <Menu.Item<typeof Link>
-                                component={Link}
-                                to={props.assignURL}
-                                icon={<IconTransitionRight size="1rem" stroke={1.5} />}>Assign</Menu.Item>
+                            <Menu.Item onClick={props.onAssign} icon={<IconTransitionRight size="1rem" stroke={1.5} />}>Assign</Menu.Item>
                         </Menu.Dropdown>
                     </Menu>
                 </Group>
                 <Text fz="0.8rem" mt="xs">
-                    {props.description}
+                    {props.data.description}
                 </Text>
             </Spoiler>
     </Card.Section>
 
         <Group mt="xs">
-            <Button<typeof Link> component={Link} to={props.href} px={5} radius="md" style={{ flex: 1 }}>
+            <Button<typeof Link> component={Link} to={props.data.href} px={5} radius="md" style={{ flex: 1 }}
+                onClick={props.onOpen}>
                 Show details
             </Button>
             <ActionIcon onClick={props.onLikeClick} variant="default" radius="md" size={36}>

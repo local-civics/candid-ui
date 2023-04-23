@@ -67,7 +67,7 @@ const useStyles = createStyles((theme, _params) => {
  */
 export interface AppNavbarProps {
     defaultActive?: string
-    loading?: boolean
+    loading: boolean
     menu: boolean
 }
 

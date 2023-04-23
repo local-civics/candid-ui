@@ -10,7 +10,6 @@ import {
     Avatar, Image, Burger, createStyles
 } from '@mantine/core'
 import {IconSearch, IconArrowRight} from '@tabler/icons-react'
-import {useNavigate}                                                                  from "react-router-dom";
 import {AppUserButton, AppUserButtonProps}                                                  from "./AppUserButton";
 
 const useStyles = createStyles((theme) => {
@@ -30,6 +29,7 @@ const useStyles = createStyles((theme) => {
 export type AppHeaderProps = AppUserButtonProps & {
     menu: boolean
     onMenuClick: () => void;
+    onSearch?: (q: string) => void;
 }
 
 /**
@@ -40,12 +40,7 @@ export type AppHeaderProps = AppUserButtonProps & {
 export function AppHeader(props: AppHeaderProps){
     const theme = useMantineTheme();
     const {classes} = useStyles()
-    const navigate = useNavigate()
     const [query, setQuery] = React.useState("")
-    const search = () => {
-        navigate(query ? `/search?q=${encodeURIComponent(query)}` : `/search`)
-    }
-
     return <MantineHeader height={60} px="xl" py="xs">
         <Group position="apart">
             <Group position="apart" spacing="sm">
@@ -70,7 +65,7 @@ export function AppHeader(props: AppHeaderProps){
                     size="md"
                     onChange={(e) => setQuery(e.target.value)}
                     rightSection={
-                        <ActionIcon onClick={search} size={32} radius="xl" color={theme.primaryColor} variant="filled">
+                        <ActionIcon onClick={() => props.onSearch && props.onSearch(query)} size={32} radius="xl" color={theme.primaryColor} variant="filled">
                             <IconArrowRight size="1.1rem" stroke={1.5} />
                         </ActionIcon>
                     }

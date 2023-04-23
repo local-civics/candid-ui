@@ -32,6 +32,7 @@ export interface AppUserButtonProps  {
     email?: string;
     image?: string;
     icon?: React.ReactNode;
+    onSignIn?: () => void;
 }
 
 /**
@@ -42,7 +43,7 @@ export interface AppUserButtonProps  {
 export function AppUserButton(props: AppUserButtonProps) {
     const { classes } = useStyles();
     if(!props.name || !props.email){
-        return <Button leftIcon={<IconUserCircle size={16} />} variant="outline">Sign in</Button>
+        return <Button onClick={props.onSignIn} leftIcon={<IconUserCircle size={16} />} variant="outline">Sign in</Button>
     }
 
     const image = getImageOrBuildFromName(props.image, props.name)

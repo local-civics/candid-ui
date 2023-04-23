@@ -124,7 +124,7 @@ const SHARE_LINKS = [
     {
         title: 'Assign',
         icon: IconTransitionRight,
-        href: (props: LessonPageProps) => props.assignURL,
+        onClick: (props: LessonPageProps) => props.onAssign && props.onAssign(),
     },
     {
         title: 'Google',
@@ -174,12 +174,15 @@ const SHARE_LINKS = [
 export type LessonPageProps = PostOverviewProps & PostPreviewProps & {
     title: string
     href: string
-    assignURL: string,
     liked?: boolean
     saved?: boolean
     likes?: number
-    onLikeClick: () => void;
-    onSaveClick: () => void;
+    onStart?: () => void;
+    onLike?: () => void;
+    onSave?: () => void;
+    onAssign?: () => void;
+    onCopy?: () => void;
+    onShare?: (via: string) => void;
 }
 
 /**
@@ -199,14 +202,20 @@ export function LessonPage(props: LessonPageProps){
     const shareLinks = SHARE_LINKS.map(l => {
         return <Carousel.Slide py={6} size={20}>
             <Stack w="3.5rem" align="center" spacing={10}>
-                <ActionIcon<typeof Link>
+                {!!l.href && <ActionIcon<typeof Link>
                     component={Link}
                     to={!l.href ? "#" : typeof l.href === 'string' ? l.href : l.href(props)}
                     target="_blank"
+                    onClick={() => props.onShare && props.onShare(l.title)}
                     rel="noopener noreferrer"
                     size="xl" variant="light" radius="xl">
                     <l.icon size="1rem" />
-                </ActionIcon>
+                </ActionIcon> }
+                {!!l.onClick && <ActionIcon
+                    onClick={() => {l.onClick(props)}}
+                    size="xl" variant="light" radius="xl">
+                    <l.icon size="1rem" />
+                </ActionIcon> }
                 <Text color="dark.4" size="xs">{l.title}</Text>
             </Stack>
         </Carousel.Slide>
@@ -236,9 +245,8 @@ export function LessonPage(props: LessonPageProps){
                 </Title>
 
                 <div style={{width: "max-content"}}>
-                    <Button<typeof Link>
-                        component={Link}
-                        to={props.href}
+                    <Button
+                        onClick={props.onStart}
                         variant="gradient"
                         gradient={{ from: 'indigo', to: 'cyan' }}
                         size="xl"
@@ -259,7 +267,7 @@ export function LessonPage(props: LessonPageProps){
                 <Button.Group>
                     <Button radius="lg" size="xs"
                             leftIcon={<LikeIcon size="1rem"/>} variant="filled"
-                            onClick={props.onLikeClick}>{likeLabel}</Button>
+                            onClick={props.onLike}>{likeLabel}</Button>
                     <Popover position="bottom-end" width={props.href.length * 8} withArrow withinPortal shadow="md">
                         <Popover.Target>
                             <Button size="xs" leftIcon={<IconShare3 size="1rem"/>} variant="filled">
@@ -307,7 +315,7 @@ export function LessonPage(props: LessonPageProps){
                                     />
                                     <CopyButton value={props.href}>
                                         {({ copied, copy }) => (
-                                            <Button color={copied ? 'teal' : 'blue'} onClick={copy}>
+                                            <Button color={copied ? 'teal' : 'blue'} onClick={() => {copy(); props.onCopy && props.onCopy()}}>
                                                 {copied ? 'Copied' : 'Copy'}
                                             </Button>
                                         )}
@@ -318,7 +326,7 @@ export function LessonPage(props: LessonPageProps){
                     </Popover>
                     <Button radius="lg" size="xs"
                             leftIcon={<SaveIcon size="1rem"/>} variant="filled"
-                            onClick={props.onSaveClick}>{saveLabel}</Button>
+                            onClick={props.onSave}>{saveLabel}</Button>
                 </Button.Group>
             </Stack>
         </Stack>
