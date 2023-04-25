@@ -30,24 +30,24 @@ jobs:
           registry-url: "https://registry.npmjs.org"
       - name: Install dependencies
         run: npm install
-      - name: Build
+      - name: Build code
         run: npm run build
-      - name: Build Storybook
+      - name: Build docs
         run: npm run build-storybook
-      - name: Deploy Storybook
-        uses: JamesIves/github-pages-deploy-action@3.6.2
-        with:
-          branch: gh-pages
-          folder: docs
       - name: Bump patch version
         run: npm version patch
-      - name: Publish to GitHub
+      - name: Commit and push version
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "[skip ci] Publish new patch version"
           push_options: --force
         # commit the latest version
-      - name: Publish to NPM
+      - name: Publish code to NPM
         run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Publish docs to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@3.6.2
+        with:
+          branch: gh-pages
+          folder: docs
