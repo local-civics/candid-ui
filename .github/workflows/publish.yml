@@ -38,7 +38,7 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@3.6.2
         with:
           branch: gh-pages
-          folder: storybook-static
+          folder: docs
       - name: Bump patch version
         run: npm version patch
       - name: Publish to GitHub

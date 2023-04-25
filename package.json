@@ -10,7 +10,7 @@
     "build": "rollup -c && tsc",
     "watch": "rollup -cw",
     "test": "jest --coverage=true --passWithNoTests",
-    "build-storybook": "storybook build",
+    "build-storybook": "storybook build -o docs",
     "chromatic": "npx chromatic",
     "fmt": "npx prettier --write src",
     "storybook": "storybook dev -p 6006"

@@ -12,6 +12,7 @@ coverage
 build
 storybook-static
 dist
+docs
 
 # misc
 .DS_Store
