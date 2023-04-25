@@ -35,7 +35,7 @@ jobs:
       - name: Build docs
         run: npm run build-storybook
       - name: Bump patch version
-        run: npm version patch
+        run: npm version patch --git-tag-version false
       - name: Commit and push version
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
