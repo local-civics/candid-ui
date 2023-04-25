@@ -1,5 +1,4 @@
 import {useForm as useMantineForm}       from "@mantine/form";
-import {useDisclosure} from "@mantine/hooks";
 import { modals } from '@mantine/modals';
 import * as React      from 'react';
 import {
@@ -21,7 +20,7 @@ import {
     IconPlus,
     IconLayoutKanban, IconDotsVertical, IconAbc, IconArchive,
     IconPresentationAnalytics, IconUserEdit, IconFocusCentered,
-    IconFlag3, IconUserCircle,
+    IconWorldShare,
 }                               from '@tabler/icons-react'
 import {PlaceholderBanner}                                   from "../../components/placeholder/PlaceholderBanner";
 import {AssignmentTransferList} from "./AssignmentTransferList";
@@ -54,7 +53,6 @@ export type AssignmentData = {title: string, status: "open" | "assigned to me" |
  * AssignmentListPageProps
  */
 export type AssignmentListPageProps = {
-    permissionRequired: boolean
     assignees: TransferListData,
     assignments: AssignmentData[]
     onCreate?: (name: string, assignees: TransferListData) => void;
@@ -63,7 +61,7 @@ export type AssignmentListPageProps = {
     onOpen?: (data: AssignmentData) => void;
     onViewProgress?: (data: AssignmentData) => void;
     onUpdateAssignees?: (newAssignees: TransferListData) => void;
-    onSignIn?: () => void
+    onGeneratePublicLink?: (data: AssignmentData) => void;
 }
 
 /**
@@ -75,7 +73,7 @@ export function AssignmentListPage(props: AssignmentListPageProps){
     const theme = useMantineTheme()
     const {classes} = useStyles()
     const form = useForm(props)
-    const openAssignments = props.assignments.filter(a => a.status === 'open').map(a => {
+    const openAssignments = props.assignments.filter(v => v.status === 'open').map(v => {
         return <Card withBorder radius="md" p="md" className={classes.card}>
             <Card.Section
                 sx={(theme) => ({
@@ -87,7 +85,7 @@ export function AssignmentListPage(props: AssignmentListPageProps){
                 px={20} pt={20} pb={50}>
                 <Group grow align="start" position="apart" spacing={0}>
                     <Text fz="lg" maw="initial" fw={500}>
-                        {a.title}
+                        {v.title}
                     </Text>
                     <Menu
                         transitionProps={{ transition: 'pop' }}
@@ -106,7 +104,7 @@ export function AssignmentListPage(props: AssignmentListPageProps){
                                            modals.open({
                                                title: 'Rename assignment',
                                                centered: true,
-                                               children: <RenameAssignment {...props} a={a} />,
+                                               children: <RenameAssignment {...props} data={v} />,
                                            });
                                        }}>
                                 Rename
@@ -118,12 +116,12 @@ export function AssignmentListPage(props: AssignmentListPageProps){
                                                centered: true,
                                                children: (
                                                    <Text size="sm">
-                                                       Are you sure you want to archive your assignment? This action is not reversible.
+                                                       Are you sure you want to archive your assignment? You will no longer be able to track progress on it.
                                                    </Text>
                                                ),
                                                labels: { confirm: 'Archive assignment', cancel: "No don't archive it" },
                                                confirmProps: { color: 'red' },
-                                               onConfirm: () => props.onArchive && props.onArchive(a),
+                                               onConfirm: () => props.onArchive && props.onArchive(v),
                                            });
                                        }}>
                                 Archive
@@ -136,20 +134,23 @@ export function AssignmentListPage(props: AssignmentListPageProps){
             <Card.Section className={classes.section} mt="md">
                 <Group spacing={20}>
                     <Tooltip label="Open assignment">
-                        <ActionIcon onClick={() => props.onOpen && props.onOpen(a)} color="blue"><IconFocusCentered /></ActionIcon>
+                        <ActionIcon onClick={() => props.onOpen && props.onOpen(v)} color="blue"><IconFocusCentered /></ActionIcon>
                     </Tooltip>
                     <Tooltip label="View progress">
-                        <ActionIcon onClick={() => props.onViewProgress && props.onViewProgress(a)} color="blue"><IconPresentationAnalytics /></ActionIcon>
+                        <ActionIcon onClick={() => props.onViewProgress && props.onViewProgress(v)} color="blue"><IconPresentationAnalytics /></ActionIcon>
                     </Tooltip>
                     <Tooltip label="Edit assignees">
                         <ActionIcon onClick={form.editAssignees} color="blue"><IconUserEdit /></ActionIcon>
                     </Tooltip>
+                    <Tooltip label="Generate public link">
+                        <ActionIcon onClick={() => props.onGeneratePublicLink && props.onGeneratePublicLink(v)} color="blue"><IconWorldShare /></ActionIcon>
+                    </Tooltip>
                 </Group>
             </Card.Section>
         </Card>
     })
 
-    const assignedToMe = props.assignments.filter(a => a.status === 'assigned to me').map(a => {
+    const assignedToMe = props.assignments.filter(v => v.status === 'assigned to me').map(v => {
         return <Card withBorder radius="md" p="md" className={classes.card}>
             <Card.Section
                 sx={(theme) => ({
@@ -161,7 +162,7 @@ export function AssignmentListPage(props: AssignmentListPageProps){
                 px={20} pt={20} pb={50}>
                 <Group grow align="start" position="apart" spacing={0}>
                     <Text fz="lg" maw="initial" fw={500}>
-                        {a.title}
+                        {v.title}
                     </Text>
                 </Group>
             </Card.Section>
@@ -169,14 +170,14 @@ export function AssignmentListPage(props: AssignmentListPageProps){
             <Card.Section className={classes.section} mt="md">
                 <Group spacing={20}>
                     <Tooltip label="Open assignment">
-                        <ActionIcon onClick={() => props.onOpen && props.onOpen(a)} color="blue"><IconFocusCentered /></ActionIcon>
+                        <ActionIcon onClick={() => props.onOpen && props.onOpen(v)} color="blue"><IconFocusCentered /></ActionIcon>
                     </Tooltip>
                 </Group>
             </Card.Section>
         </Card>
     })
 
-    const archivedAssignments = props.assignments.filter(a => a.status === 'archived').map(a => {
+    const archivedAssignments = props.assignments.filter(v => v.status === 'archived').map(v => {
         return <Card withBorder radius="md" p="md" className={classes.card}>
             <Card.Section
                 sx={(theme) => ({
@@ -188,7 +189,7 @@ export function AssignmentListPage(props: AssignmentListPageProps){
                 px={20} pt={20} pb={50}>
                 <Group grow align="start" position="apart" spacing={0}>
                     <Text fz="lg" maw="initial" fw={500}>
-                        {a.title}
+                        {v.title}
                     </Text>
                 </Group>
             </Card.Section>
@@ -196,30 +197,12 @@ export function AssignmentListPage(props: AssignmentListPageProps){
             <Card.Section className={classes.section} mt="md">
                 <Group spacing={20}>
                     <Tooltip label="Open assignment">
-                        <ActionIcon onClick={() => props.onOpen && props.onOpen(a)} color="blue"><IconFocusCentered /></ActionIcon>
-                    </Tooltip>
-                    <Tooltip label="View progress">
-                        <ActionIcon onClick={() => props.onViewProgress && props.onViewProgress(a)} color="blue"><IconPresentationAnalytics /></ActionIcon>
+                        <ActionIcon onClick={() => props.onOpen && props.onOpen(v)} color="blue"><IconFocusCentered /></ActionIcon>
                     </Tooltip>
                 </Group>
             </Card.Section>
         </Card>
     })
-
-    if(props.permissionRequired){
-        return <Container size="lg" pb="xl">
-            <Stack mx="auto" mt={100} maw="max-content" align="center" justify="center" spacing={20} px={30} py={20}>
-                <Group mx="auto">
-                    <IconFlag3 size={75} color={theme.colors.dark[4]}/>
-                </Group>
-                <Title size={20} align="center" color="dark.4">Track progress on your assignments</Title>
-                <Text align="center" color="dark.4">Sign in to access Assignments</Text>
-                <Button variant="filled" color="dark" mx="auto" maw="max-content"
-                        onClick={props.onSignIn}
-                        leftIcon={<IconUserCircle size={16} />}>Sign in</Button>
-            </Stack>
-        </Container>
-    }
 
     return <>
         <Modal opened={form.opened} onClose={close} size="auto" withCloseButton={false} centered>
@@ -251,18 +234,17 @@ export function AssignmentListPage(props: AssignmentListPageProps){
      </>
 }
 
-function RenameAssignment(props: AssignmentListPageProps & {a: AssignmentData}){
+function RenameAssignment(props: AssignmentListPageProps & {data: AssignmentData}){
     const [newName, setNewName] = React.useState("")
     const rename = (data: AssignmentData, newName: string) => {
         props.onRename && props.onRename(data, newName)
         setNewName("")
         modals.closeAll()
     }
-    const a = props.a
     return (
         <>
-            <TextInput label="New name" defaultValue={a.title} placeholder="Assignment name" data-autofocus onChange={(e) => setNewName(e.target.value)} />
-            <Button fullWidth onClick={() => rename(a, newName)} mt="md">
+            <TextInput label="New name" defaultValue={props.data.title} placeholder="Assignment name" data-autofocus onChange={(e) => setNewName(e.target.value)} />
+            <Button fullWidth onClick={() => rename(props.data, newName)} mt="md">
                 Rename
             </Button>
         </>
@@ -307,7 +289,7 @@ function useForm(props: AssignmentListPageProps){
         open,
         editAssignees: () => openStage(1, <>
             <AssignmentTransferList data={form.values.assignees} onChange={(assignees) => setAssignees(assignees)}/>
-            <Group mt="md" spacing={5}>
+            <Group ml="auto" w="max-content" mt="md" spacing={10}>
                 <Button variant="outline" type="button" onClick={cancel}>
                     Cancel
                 </Button>
@@ -335,7 +317,7 @@ function useForm(props: AssignmentListPageProps){
                         placeholder="Assignment Name"
                         {...form.getInputProps('name')}
                     />
-                    <Group mt="lg" spacing={5}>
+                    <Group ml="auto" w="max-content" mt="md" spacing={10}>
                         <Button variant="default" type="button" onClick={cancel}>
                             Cancel
                         </Button>
@@ -347,7 +329,7 @@ function useForm(props: AssignmentListPageProps){
             default:
                 return <>
                     <AssignmentTransferList data={form.values.assignees} onChange={(assignees) => setAssignees(assignees)}/>
-                    <Group mt="md" spacing={5}>
+                    <Group ml="auto" w="max-content" mt="md" spacing={10}>
                         <Button variant="outline" type="button" onClick={previous}>
                             Back
                         </Button>

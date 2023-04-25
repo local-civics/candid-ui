@@ -33,3 +33,21 @@ export const LoggedIn = {
 export const LoggedOut = {
   ...Template,
 };
+
+export const SignInRequired = {
+  ...Template,
+  args: {
+    ...Template.args,
+    signInRequired: true,
+    signInRequiredTitle: 'Track progress on your assignments',
+    signInRequiredDescription: 'Sign in to access Assignments',
+  }
+};
+
+export const PermissionRequired = {
+  ...Template,
+  args: {
+    ...Template.args,
+    permissionRequired: true,
+  }
+};

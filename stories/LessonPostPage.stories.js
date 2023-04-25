@@ -1,7 +1,7 @@
 import * as React from "react";
 import {MemoryRouter} from "react-router-dom";
 import {AppLayout} from "../src/layouts/app/AppLayout";
-import { LessonPage } from '../src/pages/lesson/LessonPage';
+import { LessonPostPage } from '../src/pages/post/LessonPostPage';
 
 const MOCK_DESCRIPTION = 'Every once in a while, you’ll see a Golbat that’s missing some fangs. This happens when hunger drives it to try biting a Steel-type Pokémon.'
 const MOCK_QUESTIONS = [
@@ -34,8 +34,8 @@ const MOCK_TAGS = [
 const MOCK_QUESTION_COUNT = 25
 
 export default {
-  title: 'LessonPage',
-  component: LessonPage,
+  title: 'LessonPostPage',
+  component: LessonPostPage,
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/react/writing-docs/autodocs
   tags: ['autodocs'],
   parameters: {
@@ -49,12 +49,13 @@ const Template = {
     <MemoryRouter>
       <AppLayout
           {...args}
-          page=<LessonPage {...args}
+          page=<LessonPostPage {...args}
             title={args.title || "30 Second Elevator Pitch"}
             likes={args.likes || 30000}
             href="https://www.localcivics.io/L_1uo12y431982"
             overviewDescription={args.overviewDescription || MOCK_DESCRIPTION}
             overviewTags={args.overviewTags || MOCK_TAGS}
+            overviewEstimate={args.overviewEstimate || "30m"}
             previewItems={args.previewItems || MOCK_QUESTIONS}
             previewItemCount={args.previewItemCount || MOCK_QUESTION_COUNT}
           />

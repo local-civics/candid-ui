@@ -72,9 +72,6 @@ export function AppUserButton(props: AppUserButtonProps) {
                 component={Link} to="/my/profile"
                 icon={<IconCertificate2 size="1rem" stroke={1.5} />}>My profile</Menu.Item>
             <Menu.Item<typeof Link>
-                component={Link} to="/my/work"
-                icon={<IconChecklist size="1rem" stroke={1.5} />}>My work</Menu.Item>
-            <Menu.Item<typeof Link>
                 component={Link} to="/my/classes"
                 icon={<IconChalkboard size="1rem" stroke={1.5} />}>My classes</Menu.Item>
             <Menu.Item<typeof Link>

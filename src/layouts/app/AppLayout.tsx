@@ -10,13 +10,16 @@ import {
     Image,
     Text,
     Title,
-    MantineProvider
-} from "@mantine/core";
-import {ModalsProvider} from "@mantine/modals";
-import {Notifications} from "@mantine/notifications";
-import {IconBrandFacebook, IconBrandInstagram, IconBrandLinkedin} from "@tabler/icons-react";
-import {AppHeader}                                                                                from "./AppHeader";
-import {AppNavbar, AppNavbarProps}                                                                      from "./AppNavbar";
+    MantineProvider, Stack, Button, useMantineTheme
+}                                                                                            from "@mantine/core";
+import {ModalsProvider}                                                                      from "@mantine/modals";
+import {Notifications}                                                                       from "@mantine/notifications";
+import {
+    IconBrandFacebook, IconBrandInstagram, IconBrandLinkedin, IconEyeExclamation, IconUserCircle, IconAt
+} from "@tabler/icons-react";
+import {Link}                                                                                from "react-router-dom";
+import {AppHeader}                                                                           from "./AppHeader";
+import {AppNavbar, AppNavbarProps}                                                           from "./AppNavbar";
 
 const useStyles = createStyles((theme) => ({
     footer: {
@@ -131,6 +134,11 @@ const useStyles = createStyles((theme) => ({
  */
 export type AppLayoutProps = AppNavbarProps & {
     page: React.ReactNode
+    signInRequired?: boolean
+    permissionRequired?: boolean
+    signInRequiredTitle?: string
+    signInRequiredDescription?: string
+    onSignIn?: () => void;
 }
 
 /**
@@ -222,10 +230,52 @@ export const AppLayout = (props: AppLayoutProps) => {
                 })}
             >
                 <div className={classes.page} style={{ position: 'relative' }}>
-                    { props.loading && <Center style={{ height: 400 }}><Loader/></Center> }
-                    { !props.loading && props.page }
+                    <Page {...props} />
                 </div>
             </AppShell>
         </ModalsProvider>
     </MantineProvider>
+}
+
+function Page(props: AppLayoutProps){
+    const theme = useMantineTheme()
+
+    if(props.loading){
+        return <Center style={{ height: 400 }}><Loader/></Center>
+    }
+
+    if(props.signInRequired){
+        return <Container size="lg" pb="xl">
+            <Stack mx="auto" mt={100} maw="max-content" align="center" justify="center" spacing={20} px={30} py={20}>
+                <Group mx="auto">
+                    <IconEyeExclamation size={75} color={theme.colors.dark[4]}/>
+                </Group>
+                { props.signInRequiredTitle && <Title size={20} align="center" color="dark.4">{props.signInRequiredTitle}</Title>}
+                { props.signInRequiredDescription && <Text align="center" color="dark.4">{props.signInRequiredDescription}</Text>}
+                <Button variant="filled" color="dark" mx="auto" maw="max-content"
+                        onClick={props.onSignIn}
+                        leftIcon={<IconUserCircle size={16} />}>Sign in</Button>
+            </Stack>
+        </Container>
+    }
+
+    if(props.permissionRequired){
+        return <Container size="lg" pb="xl">
+            <Stack mx="auto" mt={100} maw="max-content" align="center" justify="center" spacing={20} px={30} py={20}>
+                <Group mx="auto">
+                    <IconEyeExclamation size={75} color={theme.colors.dark[4]}/>
+                </Group>
+                <Title size={20} align="center" color="dark.4">You don't have permission</Title>
+                <Text align="center" color="dark.4">Contact customer support if you believe you should have access</Text>
+                <Button<typeof Link> component={Link} variant="filled" color="dark" mx="auto" maw="max-content"
+                        to="mailto:support@localcivics.io"
+                        leftIcon={<IconAt size={16} />}>Contact us</Button>
+            </Stack>
+        </Container>
+    }
+
+
+    return <>
+        {props.page}
+    </>
 }

@@ -124,7 +124,7 @@ const SHARE_LINKS = [
     {
         title: 'Assign',
         icon: IconTransitionRight,
-        onClick: (props: LessonPageProps) => props.onAssign && props.onAssign(),
+        onClick: (props: LessonPostPageProps) => props.onAssign && props.onAssign(),
     },
     {
         title: 'Google',
@@ -139,7 +139,7 @@ const SHARE_LINKS = [
     {
         title: 'WhatsApp',
         icon: IconBrandWhatsapp,
-        href: (props: LessonPageProps) => `https://api.whatsapp.com/send/?text=${encodeURIComponent(props.href)}`
+        href: (props: LessonPostPageProps) => `https://api.whatsapp.com/send/?text=${encodeURIComponent(props.href)}`
     },
     {
         title: 'Facebook',
@@ -154,12 +154,12 @@ const SHARE_LINKS = [
     {
         title: 'Email',
         icon: IconAt,
-        href: (props: LessonPageProps) => `mailto:?body=${encodeURIComponent(props.href)}`
+        href: (props: LessonPostPageProps) => `mailto:?body=${encodeURIComponent(props.href)}`
     },
     {
         title: 'Reddit',
         icon: IconBrandReddit,
-        href: (props: LessonPageProps) => `https://www.reddit.com/submit?url=${encodeURIComponent(props.href)}`
+        href: (props: LessonPostPageProps) => `https://www.reddit.com/submit?url=${encodeURIComponent(props.href)}`
     },
     {
         title: 'LinkedIn',
@@ -169,9 +169,9 @@ const SHARE_LINKS = [
 ]
 
 /**
- * LessonPageProps
+ * LessonPostPageProps
  */
-export type LessonPageProps = PostOverviewProps & PostPreviewProps & {
+export type LessonPostPageProps = PostOverviewProps & PostPreviewProps & {
     title: string
     href: string
     liked?: boolean
@@ -186,11 +186,11 @@ export type LessonPageProps = PostOverviewProps & PostPreviewProps & {
 }
 
 /**
- * LessonPage
+ * LessonPostPage
  * @param props
  * @constructor
  */
-export function LessonPage(props: LessonPageProps){
+export function LessonPostPage(props: LessonPostPageProps){
     const {classes} = useStyles()
     const theme = useMantineTheme();
     const mobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);

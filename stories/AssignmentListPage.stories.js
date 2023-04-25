@@ -75,14 +75,6 @@ const Template = {
   </div>,
 }
 
-export const SignInRequired = {
-  ...Template,
-  args: {
-    ...Template.args,
-    permissionRequired: true,
-  }
-};
-
 export const NoAssignments = {
   ...Template,
 };

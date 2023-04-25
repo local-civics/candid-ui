@@ -68,6 +68,7 @@ const FEATURES_DATA = [
 export type PostOverviewProps = {
     overviewTitle?: string
     overviewDescription?: string
+    overviewEstimate?: string
     overviewTags: string[]
 }
 
@@ -106,15 +107,15 @@ export function PostOverview(props: PostOverviewProps) {
             <Container size="sm" px={0} mx={0}>
                 {!!props.overviewDescription && <Text size="md"> {props.overviewDescription} </Text>}
 
-                <Group mt={20} spacing={5} color="dark.4">
+                {!!props.overviewEstimate && <Group mt={20} spacing={5} color="dark.4">
                     <IconClock size={18}/>
                     <Text size="md">
                         You'll need about
                     </Text>
                     <Text weight={700} size="md">
-                        30m
+                        {props.overviewEstimate}
                     </Text>
-                </Group>
+                </Group> }
                 <Group mt={10} spacing={5} color="dark.4">
                     <IconBookUpload size={18}/>
                     <Text size="md">
