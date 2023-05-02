@@ -1,7 +1,7 @@
 import * as React from "react";
 import {MemoryRouter} from "react-router-dom";
 import {AppLayout} from "../src/layouts/app/AppLayout";
-import { BadgePostPage } from '../src/pages/post/BadgePostPage';
+import { BadgePage } from '../src/pages/post/badge/BadgePage.tsx';
 
 const MOCK_DESCRIPTION = 'Every once in a while, you’ll see a Golbat that’s missing some fangs. This happens when hunger drives it to try biting a Steel-type Pokémon.'
 const MOCK_SYLLABUS_ITEMS = [
@@ -44,8 +44,8 @@ const MOCK_TAGS = [
 ]
 
 export default {
-  title: 'BadgePostPage',
-  component: BadgePostPage,
+  title: 'BadgePage',
+  component: BadgePage,
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/react/writing-docs/autodocs
   tags: ['autodocs'],
   parameters: {
@@ -59,7 +59,7 @@ const Template = {
     <MemoryRouter>
       <AppLayout
           {...args}
-          page=<BadgePostPage {...args}
+          page=<BadgePage {...args}
             title={args.title || "30 Second Elevator Pitch"}
             likes={args.likes || 30000}
             href="https://www.localcivics.io/L_1uo12y431982"

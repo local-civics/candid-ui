@@ -16,11 +16,11 @@ import {
     createStyles, rem, useMantineTheme,
 }                                        from '@mantine/core'
 import {Link}                            from "react-router-dom";
-import {PostFAQ}                         from "../../components/post/PostFAQ";
-import {PostOverview, PostOverviewProps} from "../../components/post/PostOverview";
-import {PostSyllabus, PostSyllabusProps} from "../../components/post/PostSyllabus";
-import {compactNumber}                   from "../../utils/numbers";
-import {Dots}                            from "./Dots";
+import {PostFAQ}                         from "../../../components/post/PostFAQ";
+import {PostOverview, PostOverviewProps} from "../../../components/post/PostOverview";
+import {PostSyllabus, PostSyllabusProps} from "../../../components/post/PostSyllabus";
+import {compactNumber}                   from "../../../utils/numbers";
+import {PostDots}                            from "../../../components/post/PostDots";
 import {
     IconTargetArrow, IconShare3, IconThumbUp, IconBookmark,
     IconThumbUpFilled, IconBookmarkOff, IconCopy,
@@ -120,7 +120,7 @@ const SHARE_LINKS = [
     {
         title: 'Assign',
         icon: IconTransitionRight,
-        onClick: (props: BadgePostPageProps) => props.onAssign && props.onAssign(),
+        onClick: (props: BadgePageProps) => props.onAssign && props.onAssign(),
     },
     {
         title: 'Google',
@@ -135,7 +135,7 @@ const SHARE_LINKS = [
     {
         title: 'WhatsApp',
         icon: IconBrandWhatsapp,
-        href: (props: BadgePostPageProps) => `https://api.whatsapp.com/send/?text=${encodeURIComponent(props.href)}`
+        href: (props: BadgePageProps) => `https://api.whatsapp.com/send/?text=${encodeURIComponent(props.href)}`
     },
     {
         title: 'Facebook',
@@ -150,12 +150,12 @@ const SHARE_LINKS = [
     {
         title: 'Email',
         icon: IconAt,
-        href: (props: BadgePostPageProps) => `mailto:?body=${encodeURIComponent(props.href)}`
+        href: (props: BadgePageProps) => `mailto:?body=${encodeURIComponent(props.href)}`
     },
     {
         title: 'Reddit',
         icon: IconBrandReddit,
-        href: (props: BadgePostPageProps) => `https://www.reddit.com/submit?url=${encodeURIComponent(props.href)}`
+        href: (props: BadgePageProps) => `https://www.reddit.com/submit?url=${encodeURIComponent(props.href)}`
     },
     {
         title: 'LinkedIn',
@@ -165,9 +165,9 @@ const SHARE_LINKS = [
 ]
 
 /**
- * BadgePostPageProps
+ * BadgePageProps
  */
-export type BadgePostPageProps = PostOverviewProps & PostSyllabusProps & {
+export type BadgePageProps = PostOverviewProps & PostSyllabusProps & {
     title: string
     href: string
     liked?: boolean
@@ -182,11 +182,11 @@ export type BadgePostPageProps = PostOverviewProps & PostSyllabusProps & {
 }
 
 /**
- * BadgePostPage
+ * BadgePage
  * @param props
  * @constructor
  */
-export function BadgePostPage(props: BadgePostPageProps){
+export function BadgePage(props: BadgePageProps){
     const {classes} = useStyles()
     const theme = useMantineTheme();
     const mobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
@@ -228,10 +228,10 @@ export function BadgePostPage(props: BadgePostPageProps){
                    color: theme.white,
                })}
         >
-            <Dots className={classes.dots} style={{ left: 0, top: 0 }} />
-            <Dots className={classes.dots} style={{ left: 60, top: 0 }} />
-            <Dots className={classes.dots} style={{ left: 0, top: 140 }} />
-            <Dots className={classes.dots} style={{ right: 25, top: 60 }} />
+            <PostDots className={classes.dots} style={{ left: 0, top: 0 }} />
+            <PostDots className={classes.dots} style={{ left: 60, top: 0 }} />
+            <PostDots className={classes.dots} style={{ left: 0, top: 140 }} />
+            <PostDots className={classes.dots} style={{ right: 25, top: 60 }} />
 
             <Stack spacing={25} px={0} className={classes.content} align="center">
                 <IconTargetArrow size={24} />

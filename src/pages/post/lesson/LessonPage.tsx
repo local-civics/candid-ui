@@ -16,11 +16,11 @@ import {
     createStyles, rem, useMantineTheme,
 }                      from '@mantine/core'
 import {Link}                            from "react-router-dom";
-import {PostFAQ}                         from "../../components/post/PostFAQ";
-import {PostOverview, PostOverviewProps} from "../../components/post/PostOverview";
-import {PostPreview, PostPreviewProps}   from "../../components/post/PostPreview";
-import {compactNumber}                   from "../../utils/numbers";
-import {Dots}                            from "./Dots";
+import {PostFAQ}                         from "../../../components/post/PostFAQ";
+import {PostOverview, PostOverviewProps} from "../../../components/post/PostOverview";
+import {PostPreview, PostPreviewProps}   from "../../../components/post/PostPreview";
+import {compactNumber}                   from "../../../utils/numbers";
+import {PostDots}                            from "../../../components/post/PostDots";
 import {
     IconTargetArrow, IconShare3, IconThumbUp, IconBookmark,
     IconThumbUpFilled, IconBookmarkOff, IconCopy,
@@ -124,7 +124,7 @@ const SHARE_LINKS = [
     {
         title: 'Assign',
         icon: IconTransitionRight,
-        onClick: (props: LessonPostPageProps) => props.onAssign && props.onAssign(),
+        onClick: (props: LessonPageProps) => props.onAssign && props.onAssign(),
     },
     {
         title: 'Google',
@@ -139,7 +139,7 @@ const SHARE_LINKS = [
     {
         title: 'WhatsApp',
         icon: IconBrandWhatsapp,
-        href: (props: LessonPostPageProps) => `https://api.whatsapp.com/send/?text=${encodeURIComponent(props.href)}`
+        href: (props: LessonPageProps) => `https://api.whatsapp.com/send/?text=${encodeURIComponent(props.href)}`
     },
     {
         title: 'Facebook',
@@ -154,12 +154,12 @@ const SHARE_LINKS = [
     {
         title: 'Email',
         icon: IconAt,
-        href: (props: LessonPostPageProps) => `mailto:?body=${encodeURIComponent(props.href)}`
+        href: (props: LessonPageProps) => `mailto:?body=${encodeURIComponent(props.href)}`
     },
     {
         title: 'Reddit',
         icon: IconBrandReddit,
-        href: (props: LessonPostPageProps) => `https://www.reddit.com/submit?url=${encodeURIComponent(props.href)}`
+        href: (props: LessonPageProps) => `https://www.reddit.com/submit?url=${encodeURIComponent(props.href)}`
     },
     {
         title: 'LinkedIn',
@@ -169,9 +169,9 @@ const SHARE_LINKS = [
 ]
 
 /**
- * LessonPostPageProps
+ * LessonPageProps
  */
-export type LessonPostPageProps = PostOverviewProps & PostPreviewProps & {
+export type LessonPageProps = PostOverviewProps & PostPreviewProps & {
     title: string
     href: string
     liked?: boolean
@@ -186,11 +186,11 @@ export type LessonPostPageProps = PostOverviewProps & PostPreviewProps & {
 }
 
 /**
- * LessonPostPage
+ * LessonPage
  * @param props
  * @constructor
  */
-export function LessonPostPage(props: LessonPostPageProps){
+export function LessonPage(props: LessonPageProps){
     const {classes} = useStyles()
     const theme = useMantineTheme();
     const mobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
@@ -232,10 +232,10 @@ export function LessonPostPage(props: LessonPostPageProps){
                    color: theme.white,
                })}
         >
-            <Dots className={classes.dots} style={{ left: 0, top: 0 }} />
-            <Dots className={classes.dots} style={{ left: 60, top: 0 }} />
-            <Dots className={classes.dots} style={{ left: 0, top: 140 }} />
-            <Dots className={classes.dots} style={{ right: 25, top: 60 }} />
+            <PostDots className={classes.dots} style={{ left: 0, top: 0 }} />
+            <PostDots className={classes.dots} style={{ left: 60, top: 0 }} />
+            <PostDots className={classes.dots} style={{ left: 0, top: 140 }} />
+            <PostDots className={classes.dots} style={{ right: 25, top: 60 }} />
 
             <Stack spacing={25} px={0} className={classes.content} align="center">
                 <IconTargetArrow size={24} />
