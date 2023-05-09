@@ -1,17 +1,15 @@
-import * as React                                                             from 'react';
+import * as React from "react";
 
 /**
  * LessonInsightsPageProps
  */
-export type LessonInsightsPageProps = {
-
-}
+export type LessonInsightsPageProps = {};
 
 /**
  * LessonInsightsPage
  * @param props
  * @constructor
  */
-export function LessonInsightsPage(props: LessonInsightsPageProps){
-  throw new Error("not implemented")
+export function LessonInsightsPage(props: LessonInsightsPageProps) {
+  throw new Error("not implemented");
 }
