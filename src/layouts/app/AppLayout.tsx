@@ -152,14 +152,14 @@ export type AppLayoutProps = AppNavbarProps & {
  * @constructor
  */
 export const AppLayout = (props: AppLayoutProps) => {
-  const theme = useMantineTheme()
+  const theme = useMantineTheme();
   const { classes, cx } = useStyles();
   const isSmallDevice = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
   const [menu, setMenu] = React.useState(!isSmallDevice);
 
   React.useEffect(() => {
-    setMenu(!isSmallDevice)
-  }, [isSmallDevice])
+    setMenu(!isSmallDevice);
+  }, [isSmallDevice]);
 
   const onMenuClick = () => setMenu(!menu);
   return (
