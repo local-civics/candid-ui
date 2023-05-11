@@ -36,24 +36,29 @@ export const MyProfile = {
       {
         displayName: "Onboarding Badge",
         iconURL: "https://cdn.localcivics.io/v1/store/images/XkYCJEdZJXEmsEQYLWiTA7?version=RcpvwzVT7sp9z3mJetAj2m",
+        description: "Introduces students to concepts and practices that concern community relationships and civic life. These introductory activities provide students with a foundation from which they can begin to explore civic life and develop there civic identity.",
       },
       {
         displayName: "College Explorer Badge",
         iconURL: "https://cdn.localcivics.io/v1/store/images/NXCee9aQQbf4K7WofxkSaw?version=6dnicD9NiKDbP66ToNXScs",
+        description: "Introduces students to concepts and practices that concern community relationships and civic life. These introductory activities provide students with a foundation from which they can begin to explore civic life and develop there civic identity.",
       },
       {
         displayName: "Civic Lens Badge",
-        iconURL: "https://cdn.localcivics.io/v1/store/images/KW8tojvnMi3rj4Dv2sCRcw?version=Ce9anGUvVwTeJs4zB4FrZK"
+        iconURL: "https://cdn.localcivics.io/v1/store/images/KW8tojvnMi3rj4Dv2sCRcw?version=Ce9anGUvVwTeJs4zB4FrZK",
+        description: "Introduces students to concepts and practices that concern community relationships and civic life. These introductory activities provide students with a foundation from which they can begin to explore civic life and develop there civic identity.",
       },
       {
         displayName: "Civic Lens 2 Badge",
         level: 1,
-        iconURL: "https://cdn.localcivics.io/v1/store/images/KW8tojvnMi3rj4Dv2sCRcw?version=Ce9anGUvVwTeJs4zB4FrZK"
+        iconURL: "https://cdn.localcivics.io/v1/store/images/KW8tojvnMi3rj4Dv2sCRcw?version=Ce9anGUvVwTeJs4zB4FrZK",
+        description: "Introduces students to concepts and practices that concern community relationships and civic life. These introductory activities provide students with a foundation from which they can begin to explore civic life and develop there civic identity.",
       },
       {
         displayName: "Civic Lens 3 Badge",
         level: 2,
-        iconURL: "https://cdn.localcivics.io/v1/store/images/KW8tojvnMi3rj4Dv2sCRcw?version=Ce9anGUvVwTeJs4zB4FrZK"
+        iconURL: "https://cdn.localcivics.io/v1/store/images/KW8tojvnMi3rj4Dv2sCRcw?version=Ce9anGUvVwTeJs4zB4FrZK",
+        description: "Introduces students to concepts and practices that concern community relationships and civic life. These introductory activities provide students with a foundation from which they can begin to explore civic life and develop there civic identity.",
       }
     ],
     ctaLabel: 'Edit Profile',

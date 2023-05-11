@@ -29,4 +29,26 @@ export const useBadgeStyles = createStyles((theme) => ({
     height: "40px",
     verticalAlign: "middle"
   },
+
+  badgeSyllabusWrapper: {
+    paddingTop: `calc(${theme.spacing.xl} * 2)`,
+    paddingBottom: `calc(${theme.spacing.xl} * 2)`,
+    minHeight: 650,
+  },
+
+  badgeSyllabusTitle: {
+    marginBottom: `calc(${theme.spacing.xl} * 1.5)`,
+  },
+
+  badgeSyllabusSessionItem: {
+    borderBottom: `1px solid ${theme.colors.gray[3]}`,
+  },
+
+  badgeSyllabusControl: {
+    fontFamily: `Greycliff CF, ${theme.fontFamily}`,
+
+    [theme.fn.smallerThan("md")]: {
+      width: "100%",
+    },
+  },
 }));

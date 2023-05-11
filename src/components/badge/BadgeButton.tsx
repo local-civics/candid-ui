@@ -1,10 +1,20 @@
 import * as React from "react";
 import "external-svg-loader";
 import { useDisclosure } from "@mantine/hooks";
-import { UnstyledButton, Text, Popover } from "@mantine/core";
-import { BadgeData } from "./data";
+import { UnstyledButton, Text, Popover, Container, Divider, createStyles, Stack, Title } from "@mantine/core";
 import { Link } from "react-router-dom";
+import { BadgeData } from "./data";
 import { useBadgeStyles } from "./styles";
+
+const useStyles = createStyles((theme) => {
+  return {
+    root: {
+      marginTop: "-1rem",
+      marginLeft: "-1rem",
+      maxWidth: "initial",
+    },
+  };
+});
 
 /**
  * BadgeButtonProps
@@ -19,16 +29,22 @@ export type BadgeButtonProps = BadgeData & {
  * @constructor
  */
 export function BadgeButton(props: BadgeButtonProps) {
+  const { classes } = useStyles();
   const [opened, { close, open }] = useDisclosure(false);
   return (
-    <Popover width={200} position="bottom" withArrow shadow="md" opened={opened}>
+    <Popover width={400} position="bottom" withArrow shadow="md" opened={opened}>
       <Popover.Target>
         <UnstyledButton<typeof Link> component={Link} to={props.href||"#"} onMouseEnter={open} onMouseLeave={close} onClick={props.onClick}>
           <BadgeIcon {...props}/>
         </UnstyledButton>
       </Popover.Target>
       <Popover.Dropdown onMouseEnter={open} onMouseLeave={close}>
-        <Text size="sm">This popover is shown when user hovers the target element</Text>
+        <Container className={classes.root} fluid size="lg" py="xl">
+          <Stack spacing={10}>
+            <Title size={18}>{props.displayName}</Title>
+            <Text>{props.description}</Text>
+          </Stack>
+        </Container>
       </Popover.Dropdown>
     </Popover>
   );

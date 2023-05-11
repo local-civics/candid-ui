@@ -61,7 +61,7 @@ const Template = {
           {...args}
           page=<BadgePage {...args}
             title={args.title || "30 Second Elevator Pitch"}
-            likes={args.likes || 30000}
+            numberOfLikes={args.likes || 30000}
             href="https://www.localcivics.io/L_1uo12y431982"
             overviewDescription={args.overviewDescription || MOCK_DESCRIPTION}
             overviewEstimate={args.overviewEstimate || "30m"}

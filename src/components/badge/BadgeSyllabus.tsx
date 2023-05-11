@@ -1,47 +1,14 @@
 import * as React from "react";
-import { Container, Grid, Text, Title, Stack, Group, Button, createStyles } from "@mantine/core";
+import { Container, Grid, Text, Title, Stack, Group, Button } from "@mantine/core";
 import { IconClockFilled, IconPencil, IconPhoto, IconVideo } from "@tabler/icons-react";
-
-const useStyles = createStyles((theme) => ({
-  wrapper: {
-    paddingTop: `calc(${theme.spacing.xl} * 2)`,
-    paddingBottom: `calc(${theme.spacing.xl} * 2)`,
-    minHeight: 650,
-  },
-  title: {
-    marginBottom: `calc(${theme.spacing.xl} * 1.5)`,
-  },
-  sessionItem: {
-    borderBottom: `1px solid ${theme.colors.gray[3]}`,
-  },
-  control: {
-    fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-
-    [theme.fn.smallerThan("md")]: {
-      width: "100%",
-    },
-  },
-}));
-
-/**
- * SyllabusItem
- */
-export type SyllabusItem = {
-  title: string;
-  description: string;
-  estimate: string;
-  questionCount: number;
-  videoCount?: number;
-  imageCount?: number;
-};
+import { useBadgeStyles } from "./styles";
+import { BadgeSyllabusData, BadgeSyllabusItemData } from "./data";
 
 /**
  * BadgeSyllabusProps
  */
-export type BadgeSyllabusProps = {
-  syllabusTitle?: string;
-  syllabusItems: SyllabusItem[];
-  onStartSyllabusItem?: (item: SyllabusItem) => void;
+export type BadgeSyllabusProps = BadgeSyllabusData & {
+  onStartSyllabusItem?: (item: BadgeSyllabusItemData) => void;
 };
 
 /**
@@ -50,7 +17,7 @@ export type BadgeSyllabusProps = {
  * @constructor
  */
 export function BadgeSyllabus(props: BadgeSyllabusProps) {
-  const { classes, cx } = useStyles();
+  const { classes, cx } = useBadgeStyles();
   const title = props.syllabusTitle || "What You'll Learn";
   const sessions = props.syllabusItems.map((v, i) => {
     return (
@@ -63,7 +30,7 @@ export function BadgeSyllabus(props: BadgeSyllabusProps) {
             {i + 1}
           </Text>
         </Grid.Col>
-        <Grid.Col span={9} pb={40} className={cx({ [classes.sessionItem]: i < props.syllabusItems.length - 1 })}>
+        <Grid.Col span={9} pb={40} className={cx({ [classes.badgeSyllabusSessionItem]: i < props.syllabusItems.length - 1 })}>
           <Stack spacing={20}>
             <Group spacing={5}>
               <IconClockFilled size={18} />
@@ -94,7 +61,7 @@ export function BadgeSyllabus(props: BadgeSyllabusProps) {
                 variant="gradient"
                 gradient={{ from: "indigo", to: "cyan" }}
                 size="md"
-                className={classes.control}
+                className={classes.badgeSyllabusControl}
                 mt={10}
               >
                 Get started
@@ -107,8 +74,8 @@ export function BadgeSyllabus(props: BadgeSyllabusProps) {
   });
 
   return (
-    <Container fluid p={25} mx={0} className={classes.wrapper}>
-      <Title className={classes.title}>{title}</Title>
+    <Container fluid p={25} mx={0} className={classes.badgeSyllabusWrapper}>
+      <Title className={classes.badgeSyllabusTitle}>{title}</Title>
       <Grid>{sessions}</Grid>
     </Container>
   );
