@@ -60,7 +60,7 @@ export function UserProfilePage(props: UserProfilePageProps) {
             <Title size={30} color="dark.4">Achievements</Title>
           </Flex>
           {!badgeAchievements?.length && <Text size={18} mt={25}>I don't have any achievements yet.</Text>}
-          {badgeAchievements?.length && <Flex gap={5} py={15}>
+          {badgeAchievements?.length && <Flex gap={5} py={15} wrap="wrap">
             {badgeAchievements}
           </Flex>}
         </Grid.Col>
