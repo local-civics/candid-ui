@@ -82,7 +82,7 @@ export type PostOverviewProps = {
   overviewTitle?: string;
   overviewDescription?: string;
   overviewEstimate?: string;
-  overviewTags: string[];
+  overviewTags?: string[];
 };
 
 /**
@@ -94,7 +94,7 @@ export function PostOverview(props: PostOverviewProps) {
   const { classes } = useStyles();
   const theme = useMantineTheme();
   const title = props.overviewTitle || "Overview";
-  const tags = props.overviewTags.map((t) => {
+  const tags = props.overviewTags?.map((t) => {
     return (
       <Badge size="md" color="dark" radius="xl" variant="dot">
         {t}

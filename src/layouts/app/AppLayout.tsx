@@ -139,8 +139,9 @@ const useStyles = createStyles((theme) => ({
  */
 export type AppLayoutProps = AppNavbarProps & {
   page: React.ReactNode;
-  signInRequired?: boolean;
-  permissionRequired?: boolean;
+  isLoading?: boolean;
+  isSignInRequired?: boolean;
+  isPermissionRequired?: boolean;
   signInRequiredTitle?: string;
   signInRequiredDescription?: string;
   onSignIn?: () => void;
@@ -168,7 +169,7 @@ export const AppLayout = (props: AppLayoutProps) => {
       <ModalsProvider>
         <AppShell
           padding="xs"
-          header={<AppHeader {...props} menu={menu} onMenuClick={onMenuClick} />}
+          header={<AppHeader {...props} onMenuClick={onMenuClick} />}
           navbar={menu ? <AppNavbar {...props} /> : undefined}
           footer={
             <footer className={cx(classes.footer, { [classes.footerWithMenu]: menu })}>
@@ -258,7 +259,7 @@ export const AppLayout = (props: AppLayoutProps) => {
 function Page(props: AppLayoutProps) {
   const theme = useMantineTheme();
 
-  if (props.loading) {
+  if (props.isLoading) {
     return (
       <Center style={{ height: 400 }}>
         <Loader />
@@ -266,7 +267,7 @@ function Page(props: AppLayoutProps) {
     );
   }
 
-  if (props.signInRequired) {
+  if (props.isSignInRequired) {
     return (
       <Container size="lg" pb="xl">
         <Stack mx="auto" mt={100} maw="max-content" align="center" justify="center" spacing={20} px={30} py={20}>
@@ -298,7 +299,7 @@ function Page(props: AppLayoutProps) {
     );
   }
 
-  if (props.permissionRequired) {
+  if (props.isPermissionRequired) {
     return (
       <Container size="lg" pb="xl">
         <Stack mx="auto" mt={100} maw="max-content" align="center" justify="center" spacing={20} px={30} py={20}>

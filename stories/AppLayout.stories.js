@@ -3,7 +3,7 @@ import { AppLayout } from '../src/layouts/app/AppLayout';
 import {MemoryRouter} from "react-router-dom";
 
 export default {
-  title: 'AppLayout',
+  title: 'Layout/AppLayout',
   component: AppLayout,
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/react/writing-docs/autodocs
   tags: ['autodocs'],
@@ -24,9 +24,9 @@ const Template = {
 export const LoggedIn = {
   ...Template,
   args: {
-    name: 'Jane Doe',
-    email: 'jane.doe@site.com',
-    image: '',
+    userFullName: 'Jane Doe',
+    userEmail: 'jane.doe@site.com',
+    userProfilePictureURL: '',
   },
 };
 
@@ -38,7 +38,7 @@ export const SignInRequired = {
   ...Template,
   args: {
     ...Template.args,
-    signInRequired: true,
+    isSignInRequired: true,
     signInRequiredTitle: 'Track progress on your assignments',
     signInRequiredDescription: 'Sign in to access Assignments',
   }
@@ -48,6 +48,8 @@ export const PermissionRequired = {
   ...Template,
   args: {
     ...Template.args,
-    permissionRequired: true,
+    userFullName: 'Jane Doe',
+    userEmail: 'jane.doe@site.com',
+    isPermissionRequired: true,
   }
 };

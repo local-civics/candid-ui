@@ -36,20 +36,20 @@ export type SyllabusItem = {
 };
 
 /**
- * PostSyllabusProps
+ * BadgeSyllabusProps
  */
-export type PostSyllabusProps = {
+export type BadgeSyllabusProps = {
   syllabusTitle?: string;
   syllabusItems: SyllabusItem[];
   onStartSyllabusItem?: (item: SyllabusItem) => void;
 };
 
 /**
- * PostSyllabus
+ * BadgeSyllabus
  * @param props
  * @constructor
  */
-export function PostSyllabus(props: PostSyllabusProps) {
+export function BadgeSyllabus(props: BadgeSyllabusProps) {
   const { classes, cx } = useStyles();
   const title = props.syllabusTitle || "What You'll Learn";
   const sessions = props.syllabusItems.map((v, i) => {

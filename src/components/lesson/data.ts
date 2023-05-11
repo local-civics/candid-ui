@@ -1,0 +1,6 @@
+/**
+ * LessonData
+ */
+export type LessonData = {
+
+}

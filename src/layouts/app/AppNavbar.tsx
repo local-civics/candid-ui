@@ -52,8 +52,7 @@ const useStyles = createStyles((theme, _params) => {
  * AppNavbarProps
  */
 export interface AppNavbarProps {
-  defaultActive?: string;
-  loading: boolean;
+  defaultActiveLinkName?: string;
 }
 
 /**
@@ -63,7 +62,7 @@ export interface AppNavbarProps {
  */
 export function AppNavbar(props: AppNavbarProps) {
   const { classes, cx } = useStyles();
-  const [active, setActive] = React.useState(props.defaultActive || "Home");
+  const [active, setActive] = React.useState(props.defaultActiveLinkName);
   const onNavigate = (next: string) => setActive(next);
 
   return (
@@ -71,41 +70,41 @@ export function AppNavbar(props: AppNavbarProps) {
       <MantineNavbar.Section component={ScrollArea} grow>
         {/* Navbar Section I - Personalization */}
         <MantineNavbar.Section className={cx(classes.sectionOne)}>
-          <AppLink active={active === "Home"} icon={IconHome2} href="/home" label="Home" onNavigate={onNavigate} />
+          <AppLink isActive={active === "Home"} icon={IconHome2} href="/home" label="Home" onNavigate={onNavigate} />
         </MantineNavbar.Section>
 
         {/* Navbar Section II - Library */}
         <MantineNavbar.Section className={cx(classes.section)}>
           <AppLink
-            active={active === "Library"}
+            isActive={active === "Library"}
             icon={IconBook}
             href="/library"
             label="Library"
             onNavigate={onNavigate}
           />
           <AppLink
-            active={active === "Liked content"}
+            isActive={active === "Liked content"}
             icon={IconThumbUp}
             href="/library/liked-content"
             label="Liked content"
             onNavigate={onNavigate}
           />
           <AppLink
-            active={active === "Assignments"}
+            isActive={active === "Assignments"}
             icon={IconLayoutKanban}
             href="/library/assignments"
             label="Assignments"
             onNavigate={onNavigate}
           />
           <AppLink
-            active={active === "Saved for later"}
+            isActive={active === "Saved for later"}
             icon={IconBookmark}
             href="/library/saved-for-later"
             label="Saved for later"
             onNavigate={onNavigate}
           />
           <AppLink
-            active={active === "History"}
+            isActive={active === "History"}
             icon={IconTimelineEvent}
             href="/library/history"
             label="History"
@@ -119,77 +118,77 @@ export function AppNavbar(props: AppNavbarProps) {
             Explore
           </Title>
           <AppLink
-            active={active === "Trending"}
+            isActive={active === "Trending"}
             icon={IconFlame}
             href="/feeds/trending"
             label="Trending"
             onNavigate={onNavigate}
           />
           <AppLink
-            active={active === "Top Rated"}
+            isActive={active === "Top Rated"}
             icon={IconMoodCheck}
             href="/feeds/top-rated"
             label="Top Rated"
             onNavigate={onNavigate}
           />
           <AppLink
-            active={active === "Under 5min."}
+            isActive={active === "Under 5min."}
             icon={IconHourglassLow}
             href="/feeds/under-5min"
             label="Under 5min."
             onNavigate={onNavigate}
           />
           <AppLink
-            active={active === "Elementary & Middle School"}
+            isActive={active === "Elementary & Middle School"}
             icon={IconBackpack}
             href="/feeds/elementary-and-middle-school"
             label="Elementary & Middle School"
             onNavigate={onNavigate}
           />
           <AppLink
-            active={active === "High School"}
+            isActive={active === "High School"}
             icon={IconBallpen}
             href="/feeds/high-school"
             label="High School"
             onNavigate={onNavigate}
           />
           <AppLink
-            active={active === "College & Career"}
+            isActive={active === "College & Career"}
             icon={IconSchool}
             href="/feeds/college-and-career"
             label="College & Career"
             onNavigate={onNavigate}
           />
           <AppLink
-            active={active === "Civics"}
+            isActive={active === "Civics"}
             icon={IconGavel}
             href="/feeds/civics"
             label="Civics"
             onNavigate={onNavigate}
           />
           <AppLink
-            active={active === "Recreation"}
+            isActive={active === "Recreation"}
             icon={IconOlympics}
             href="/feeds/recreation"
             label="Recreation"
             onNavigate={onNavigate}
           />
           <AppLink
-            active={active === "Arts & Culture"}
+            isActive={active === "Arts & Culture"}
             icon={IconPalette}
             href="/feeds/arts-and-culture"
             label="Arts & Culture"
             onNavigate={onNavigate}
           />
           <AppLink
-            active={active === "Volunteer"}
+            isActive={active === "Volunteer"}
             icon={IconRecycle}
             href="/feeds/volunteer"
             label="Volunteer"
             onNavigate={onNavigate}
           />
           <AppLink
-            active={active === "Live"}
+            isActive={active === "Live"}
             icon={IconLivePhoto}
             href="/feeds/live"
             label="Live"

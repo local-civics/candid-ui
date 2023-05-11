@@ -1,5 +1,4 @@
 import * as React from "react";
-import AvatarInit from "avatar-initials";
 import { Avatar, Menu, createStyles, Text, Button } from "@mantine/core";
 import {
   IconLogout,
@@ -7,42 +6,31 @@ import {
   IconCertificate2,
   IconUserCircle,
   IconBatteryEco,
-  IconChecklist,
   IconAdjustmentsDollar,
   IconChalkboard,
   IconBuildingCommunity,
 } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
-
-const useStyles = createStyles((theme) => ({
-  user: {
-    cursor: "pointer",
-    backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[5] : theme.colors.blue[6],
-    "&:hover": {
-      backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.colors.blue[7],
-    },
-  },
-}));
+import { buildUserAvatarURL } from "./helpers";
+import { UserData } from "./data";
+import { useUserStyles } from "./styles";
 
 /**
- * AppUserButtonProps
+ * UserAvatarButtonProps
  */
-export interface AppUserButtonProps {
-  name?: string;
-  email?: string;
-  image?: string;
+export type UserAvatarButtonProps = UserData & {
   icon?: React.ReactNode;
   onSignIn?: () => void;
 }
 
 /**
- * AppUserButton
+ * UserAvatarButton
  * @param props
  * @constructor
  */
-export function AppUserButton(props: AppUserButtonProps) {
-  const { classes } = useStyles();
-  if (!props.name || !props.email) {
+export function UserAvatarButton(props: UserAvatarButtonProps) {
+  const { classes } = useUserStyles();
+  if (!props.userFullName || !props.userEmail) {
     return (
       <Button onClick={props.onSignIn} leftIcon={<IconUserCircle size={16} />} variant="outline">
         Sign in
@@ -50,21 +38,20 @@ export function AppUserButton(props: AppUserButtonProps) {
     );
   }
 
-  const image = getImageOrBuildFromName(props.image, props.name);
-
+  const avatarURL = buildUserAvatarURL(props.userAvatarURL, props.userFullName);
   return (
     <Menu transitionProps={{ transition: "pop" }} withArrow position="bottom-end" withinPortal>
       <Menu.Target>
-        <Avatar size={30} className={classes.user} src={image} radius="xl" />
+        <Avatar size={30} className={classes.userAvatarButton} src={avatarURL} radius="xl" />
       </Menu.Target>
       <Menu.Dropdown>
         <div style={{ minWidth: "12rem", padding: "0.5rem", flex: 1 }}>
           <Text size="sm" weight={500}>
-            {props.name}
+            {props.userFullName}
           </Text>
 
           <Text color="dimmed" size="xs">
-            {props.email}
+            {props.userEmail}
           </Text>
         </div>
         <Menu.Divider />
@@ -101,24 +88,4 @@ export function AppUserButton(props: AppUserButtonProps) {
       </Menu.Dropdown>
     </Menu>
   );
-}
-
-function getImageOrBuildFromName(url?: string, name?: string) {
-  if (url || !name) {
-    return url;
-  }
-
-  let initials = name
-    .split(/[ -]/)
-    .map((n) => n.charAt(0))
-    .join("");
-  return AvatarInit.initialAvatar({
-    background: "transparent",
-    color: "#fff",
-    fontFamily: "'Lato', 'Lato-Regular', 'Helvetica Neue'",
-    fontSize: 24,
-    fontWeight: 350,
-    size: 60,
-    initials: initials,
-  });
 }

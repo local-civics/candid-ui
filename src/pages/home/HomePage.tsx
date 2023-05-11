@@ -2,7 +2,7 @@ import * as React from "react";
 import { Container, Stack, Button, Center, SimpleGrid, Box, LoadingOverlay, rem, useMantineTheme } from "@mantine/core";
 import { Carousel } from "@mantine/carousel";
 import { useMediaQuery } from "@mantine/hooks";
-import { PostCard, PostCardData } from "../../components/post/PostCard";
+import { PostCard, PostCardData } from "../../components/core/post/PostCard";
 
 const DEFAULT_FILTERS_PREFIX = ["All"];
 

@@ -13,7 +13,7 @@ import {
   createStyles,
 } from "@mantine/core";
 import { IconSearch, IconArrowRight } from "@tabler/icons-react";
-import { AppUserButton, AppUserButtonProps } from "./AppUserButton";
+import { UserAvatarButton, UserAvatarButtonProps } from "../../components/user/UserAvatarButton";
 
 const useStyles = createStyles((theme) => {
   return {
@@ -28,8 +28,7 @@ const useStyles = createStyles((theme) => {
 /**
  * AppHeaderProps
  */
-export type AppHeaderProps = AppUserButtonProps & {
-  menu: boolean;
+export type AppHeaderProps = UserAvatarButtonProps & {
   onMenuClick: () => void;
   onSearch?: (q: string) => void;
 };
@@ -86,7 +85,7 @@ export function AppHeader(props: AppHeaderProps) {
             {...props}
           />
         </Flex>
-        <AppUserButton {...props} />
+        <UserAvatarButton {...props} />
       </Group>
     </MantineHeader>
   );

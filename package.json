@@ -38,6 +38,7 @@
     "@svgr/rollup": "^7.0.0",
     "@tabler/icons": "^2.16.0",
     "avatar-initials": "^6.0.0",
+    "external-svg-loader": "^1.6.5",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

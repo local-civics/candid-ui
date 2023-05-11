@@ -60,7 +60,7 @@ const useStyles = createStyles((theme, _params) => {
 type NavbarLinkProps = {
   icon: Icon;
   label: string;
-  active?: boolean;
+  isActive?: boolean;
   href: string;
   onNavigate?: (next: string) => void;
 };
@@ -75,7 +75,7 @@ export function AppLink(props: NavbarLinkProps) {
   return (
     <>
       <Group
-        className={cx(classes.link, { [classes.linkActive]: !!props.active })}
+        className={cx(classes.link, { [classes.linkActive]: !!props.isActive })}
         onClick={() => props.onNavigate && props.onNavigate(props.label)}
         position="apart"
         spacing={0}

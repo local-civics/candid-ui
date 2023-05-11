@@ -4,7 +4,7 @@ import { HomePage } from '../src/pages/home/HomePage';
 import {AppLayout} from "../src/layouts/app/AppLayout";
 
 export default {
-  title: 'HomePage',
+  title: 'Page/HomePage',
   component: HomePage,
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/react/writing-docs/autodocs
   tags: ['autodocs'],
@@ -46,6 +46,7 @@ const Template = {
     <MemoryRouter>
       <AppLayout
           {...args}
+          defaultActiveLinkName="Home"
           page=<HomePage {...args} posts={MOCK_POSTS}/>
       />
     </MemoryRouter>

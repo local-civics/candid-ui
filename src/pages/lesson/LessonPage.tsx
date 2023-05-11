@@ -18,11 +18,11 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import { Link } from "react-router-dom";
-import { PostFAQ } from "../../../components/post/PostFAQ";
-import { PostOverview, PostOverviewProps } from "../../../components/post/PostOverview";
-import { PostSyllabus, PostSyllabusProps } from "../../../components/post/PostSyllabus";
-import { compactNumber } from "../../../utils/numbers";
-import { PostDots } from "../../../components/post/PostDots";
+import { PostFAQ } from "../../components/core/post/PostFAQ";
+import { PostOverview, PostOverviewProps } from "../../components/core/post/PostOverview";
+import { PostPreview, PostPreviewProps } from "../../components/core/post/PostPreview";
+import { compactNumber } from "../../utils/numbers";
+import { PostDots } from "../../components/core/post/PostDots";
 import {
   IconTargetArrow,
   IconShare3,
@@ -105,23 +105,27 @@ const useStyles = createStyles((theme) => {
 
 const FAQ_QUESTIONS = [
   {
-    control: "When can I start this badge?",
+    control: "When can I start this lesson?",
     panel: "",
   },
   {
-    control: "Can I earn class credit for this badge?",
+    control: "Can I earn class credit for this lesson?",
     panel: "",
   },
   {
-    control: "How do I assign a badge?",
+    control: "How do I assign a lesson?",
     panel: "",
   },
   {
-    control: "How do I submit a badge?",
+    control: "Will my responses be auto-saved?",
     panel: "",
   },
   {
-    control: "Can I try a badge for free?",
+    control: "Can I try a lesson for free?",
+    panel: "",
+  },
+  {
+    control: "Can I download a lesson offline?",
     panel: "",
   },
   {
@@ -134,7 +138,7 @@ const SHARE_LINKS = [
   {
     title: "Assign",
     icon: IconTransitionRight,
-    onClick: (props: BadgePageProps) => props.onAssign && props.onAssign(),
+    onClick: (props: LessonPageProps) => props.onAssign && props.onAssign(),
   },
   {
     title: "Google",
@@ -149,7 +153,7 @@ const SHARE_LINKS = [
   {
     title: "WhatsApp",
     icon: IconBrandWhatsapp,
-    href: (props: BadgePageProps) => `https://api.whatsapp.com/send/?text=${encodeURIComponent(props.href)}`,
+    href: (props: LessonPageProps) => `https://api.whatsapp.com/send/?text=${encodeURIComponent(props.href)}`,
   },
   {
     title: "Facebook",
@@ -164,12 +168,12 @@ const SHARE_LINKS = [
   {
     title: "Email",
     icon: IconAt,
-    href: (props: BadgePageProps) => `mailto:?body=${encodeURIComponent(props.href)}`,
+    href: (props: LessonPageProps) => `mailto:?body=${encodeURIComponent(props.href)}`,
   },
   {
     title: "Reddit",
     icon: IconBrandReddit,
-    href: (props: BadgePageProps) => `https://www.reddit.com/submit?url=${encodeURIComponent(props.href)}`,
+    href: (props: LessonPageProps) => `https://www.reddit.com/submit?url=${encodeURIComponent(props.href)}`,
   },
   {
     title: "LinkedIn",
@@ -179,10 +183,10 @@ const SHARE_LINKS = [
 ];
 
 /**
- * BadgePageProps
+ * LessonPageProps
  */
-export type BadgePageProps = PostOverviewProps &
-  PostSyllabusProps & {
+export type LessonPageProps = PostOverviewProps &
+  PostPreviewProps & {
     title: string;
     href: string;
     liked?: boolean;
@@ -197,11 +201,11 @@ export type BadgePageProps = PostOverviewProps &
   };
 
 /**
- * BadgePage
+ * LessonPage
  * @param props
  * @constructor
  */
-export function BadgePage(props: BadgePageProps) {
+export function LessonPage(props: LessonPageProps) {
   const { classes } = useStyles();
   const theme = useMantineTheme();
   const mobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
@@ -376,9 +380,9 @@ export function BadgePage(props: BadgePageProps) {
               Overview
             </Text>
           </Tabs.Tab>
-          <Tabs.Tab value="syllabus">
+          <Tabs.Tab value="preview">
             <Text px={15} py={10}>
-              Syllabus
+              Preview
             </Text>
           </Tabs.Tab>
           <Tabs.Tab value="faq">
@@ -392,8 +396,8 @@ export function BadgePage(props: BadgePageProps) {
           <PostOverview {...props} />
         </Tabs.Panel>
 
-        <Tabs.Panel value="syllabus" pt="xs">
-          <PostSyllabus {...props} />
+        <Tabs.Panel value="preview" pt="xs">
+          <PostPreview {...props} />
         </Tabs.Panel>
 
         <Tabs.Panel value="faq" pt="xs">

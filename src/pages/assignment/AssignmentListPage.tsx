@@ -32,7 +32,7 @@ import {
   IconFocusCentered,
   IconWorldShare,
 } from "@tabler/icons-react";
-import { PlaceholderBanner } from "../../components/placeholder/PlaceholderBanner";
+import { PlaceholderBanner } from "../../components/core/placeholder/PlaceholderBanner";
 import { AssignmentTransferList } from "./AssignmentTransferList";
 
 const useStyles = createStyles((theme) => {
