@@ -6,9 +6,10 @@ import {
   createStyles,
 } from "@mantine/core";
 import { PostFAQ } from "../../components/core/post/PostFAQ";
-import { PostOverview, PostOverviewProps } from "../../components/core/post/PostOverview";
-import { PostPreview, PostPreviewProps } from "../../components/core/post/PostPreview";
-import { PostHero, PostHeroProps } from "../../components/core/post/PostHero";
+import { PostOverview } from "../../components/core/post/PostOverview";
+import { PostPreview } from "../../components/core/post/PostPreview";
+import { PostHero } from "../../components/core/post/PostHero";
+import { LessonData } from "../../components/lesson/data";
 
 const useStyles = createStyles((theme) => {
   return {
@@ -32,38 +33,41 @@ const useStyles = createStyles((theme) => {
 const FAQ_QUESTIONS = [
   {
     control: "When can I start this lesson?",
-    panel: "",
+    panel: "Whenever you are ready to begin the lesson you may do so. You can also stop at any time and continue later.",
   },
   {
     control: "Can I earn class credit for this lesson?",
-    panel: "",
+    panel: "Talk with your teacher about whether or not you can apply this lesson for class credit.",
   },
   {
     control: "How do I assign a lesson?",
-    panel: "",
+    panel: "Assigning a lesson is as simple as clicking share, then assign. From there follow the prompts to fill out the details of your assignment.",
   },
   {
     control: "Will my responses be auto-saved?",
-    panel: "",
+    panel: "A draft of your responses will be auto-saved every 30 seconds, and if you need to save your responses more frequently you may manually save at any time.",
   },
   {
     control: "Can I try a lesson for free?",
-    panel: "",
-  },
-  {
-    control: "Can I download a lesson offline?",
-    panel: "",
+    panel: "Some lessons may be tried for free while others require an individual or school license.",
   },
   {
     control: "Who can I contact if I have another question?",
-    panel: "",
+    panel: "Please contact support@localcivics.io if you have any additional questions.",
   },
 ];
 
 /**
  * LessonPageProps
  */
-export type LessonPageProps = PostOverviewProps & PostPreviewProps & PostHeroProps;
+export type LessonPageProps = LessonData & {
+  onStart?: () => void;
+  onLike?: () => void;
+  onSave?: () => void;
+  onAssign?: () => void;
+  onCopy?: () => void;
+  onShare?: (via: string) => void;
+};
 
 /**
  * LessonPage
@@ -95,11 +99,18 @@ export function LessonPage(props: LessonPageProps) {
         </Tabs.List>
 
         <Tabs.Panel value="overview" pt="xs">
-          <PostOverview {...props} />
+          <PostOverview
+            overviewDescription={props.description}
+            overviewEstimate={props.estimate}
+            overviewTags={props.tags}
+          />
         </Tabs.Panel>
 
         <Tabs.Panel value="preview" pt="xs">
-          <PostPreview {...props} />
+          <PostPreview
+            previewItems={props.preview || []}
+            previewItemCount={props.numberOfQuestions || 0}
+          />
         </Tabs.Panel>
 
         <Tabs.Panel value="faq" pt="xs">

@@ -3,19 +3,22 @@
  */
 export type BadgeData = {
   href?: string
-  displayName?: string
+  title?: string
   description?: string
   status?: "available" | "in progress" | "locked" | "completed"
   level?: number
   iconURL?: string
+  estimate?: string
+  tags?: string[]
+  syllabus?: BadgeSyllabusData
 }
 
 /**
  * BadgeSyllabusData
  */
 export type BadgeSyllabusData = {
-  syllabusTitle?: string;
-  syllabusItems: BadgeSyllabusItemData[];
+  title?: string;
+  items: BadgeSyllabusItemData[];
 }
 
 /**

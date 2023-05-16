@@ -115,9 +115,6 @@ export function PostOverview(props: PostOverviewProps) {
     </Card>
   ));
 
-  {
-    /* todo: description, tags, uploaded at, eta, rating, likes, number of questions  */
-  }
   return (
     <Container fluid p={25} mx={0} className={classes.wrapper}>
       <Title className={classes.title}>{title}</Title>

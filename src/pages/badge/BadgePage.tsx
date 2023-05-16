@@ -6,9 +6,10 @@ import {
   createStyles,
 } from "@mantine/core";
 import { PostFAQ } from "../../components/core/post/PostFAQ";
-import { PostOverview, PostOverviewProps } from "../../components/core/post/PostOverview";
-import { PostHero, PostHeroProps } from "../../components/core/post/PostHero";
-import { BadgeSyllabus, BadgeSyllabusProps } from "../../components/badge/BadgeSyllabus";
+import { PostOverview } from "../../components/core/post/PostOverview";
+import { PostHero } from "../../components/core/post/PostHero";
+import { BadgeSyllabus } from "../../components/badge/BadgeSyllabus";
+import { BadgeData, BadgeSyllabusItemData } from "../../components/badge/data";
 
 const useStyles = createStyles((theme) => {
   return {
@@ -32,34 +33,42 @@ const useStyles = createStyles((theme) => {
 const FAQ_QUESTIONS = [
   {
     control: "When can I start this badge?",
-    panel: "",
+    panel: "Whenever you are ready to begin the badge you may do so. You can also stop at any time and continue later.",
   },
   {
     control: "Can I earn class credit for this badge?",
-    panel: "",
+    panel: "Talk with your teacher about whether or not you can apply this badge for class credit.",
   },
   {
     control: "How do I assign a badge?",
-    panel: "",
+    panel: "Assigning a badge is as simple as clicking share, then assign. From there follow the prompts to fill out the details of your assignment.",
   },
   {
     control: "How do I submit a badge?",
-    panel: "",
+    panel: "Once you have completed all the lessons in the badge, click the submit button at the top of this page.",
   },
   {
     control: "Can I try a badge for free?",
-    panel: "",
+    panel: "Some badges may be tried for free while others require an individual or school license.",
   },
   {
     control: "Who can I contact if I have another question?",
-    panel: "",
+    panel: "Please contact support@localcivics.io if you have any additional questions.",
   },
 ];
 
 /**
  * BadgePageProps
  */
-export type BadgePageProps = PostOverviewProps & PostHeroProps & BadgeSyllabusProps;
+export type BadgePageProps = BadgeData & {
+  onStart?: () => void;
+  onLike?: () => void;
+  onSave?: () => void;
+  onAssign?: () => void;
+  onCopy?: () => void;
+  onShare?: (via: string) => void;
+  onStartSyllabusItem?: (item: BadgeSyllabusItemData) => void;
+};
 
 /**
  * BadgePage
@@ -91,11 +100,19 @@ export function BadgePage(props: BadgePageProps) {
         </Tabs.List>
 
         <Tabs.Panel value="overview" pt="xs">
-          <PostOverview {...props} />
+          <PostOverview
+            overviewDescription={props.description}
+            overviewEstimate={props.estimate}
+            overviewTags={props.tags}
+          />
         </Tabs.Panel>
 
         <Tabs.Panel value="syllabus" pt="xs">
-          <BadgeSyllabus {...props} />
+          <BadgeSyllabus
+            title={props.syllabus?.title}
+            items={props.syllabus?.items || []}
+            onStartSyllabusItem={props.onStartSyllabusItem}
+          />
         </Tabs.Panel>
 
         <Tabs.Panel value="faq" pt="xs">

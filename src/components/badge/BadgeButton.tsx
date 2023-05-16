@@ -1,7 +1,7 @@
 import * as React from "react";
 import "external-svg-loader";
 import { useDisclosure } from "@mantine/hooks";
-import { UnstyledButton, Text, Popover, Container, Divider, createStyles, Stack, Title } from "@mantine/core";
+import { UnstyledButton, Text, Popover, Container, createStyles, Stack, Title } from "@mantine/core";
 import { Link } from "react-router-dom";
 import { BadgeData } from "./data";
 import { useBadgeStyles } from "./styles";
@@ -41,7 +41,7 @@ export function BadgeButton(props: BadgeButtonProps) {
       <Popover.Dropdown onMouseEnter={open} onMouseLeave={close}>
         <Container className={classes.root} fluid size="lg" py="xl">
           <Stack spacing={10}>
-            <Title size={18}>{props.displayName}</Title>
+            <Title size={18}>{props.title}</Title>
             <Text>{props.description}</Text>
           </Stack>
         </Container>

@@ -18,8 +18,8 @@ export type BadgeSyllabusProps = BadgeSyllabusData & {
  */
 export function BadgeSyllabus(props: BadgeSyllabusProps) {
   const { classes, cx } = useBadgeStyles();
-  const title = props.syllabusTitle || "What You'll Learn";
-  const sessions = props.syllabusItems.map((v, i) => {
+  const title = props.title || "What You'll Learn";
+  const sessions = props.items.map((v, i) => {
     return (
       <>
         <Grid.Col span={3} pr="9rem">
@@ -30,7 +30,7 @@ export function BadgeSyllabus(props: BadgeSyllabusProps) {
             {i + 1}
           </Text>
         </Grid.Col>
-        <Grid.Col span={9} pb={40} className={cx({ [classes.badgeSyllabusSessionItem]: i < props.syllabusItems.length - 1 })}>
+        <Grid.Col span={9} pb={40} className={cx({ [classes.badgeSyllabusSessionItem]: i < props.items.length - 1 })}>
           <Stack spacing={20}>
             <Group spacing={5}>
               <IconClockFilled size={18} />

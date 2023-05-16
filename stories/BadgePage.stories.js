@@ -63,10 +63,10 @@ const Template = {
             title={args.title || "30 Second Elevator Pitch"}
             numberOfLikes={args.likes || 30000}
             href="https://www.localcivics.io/L_1uo12y431982"
-            overviewDescription={args.overviewDescription || MOCK_DESCRIPTION}
-            overviewEstimate={args.overviewEstimate || "30m"}
-            overviewTags={args.overviewTags || MOCK_TAGS}
-            syllabusItems={args.syllabusItems || MOCK_SYLLABUS_ITEMS}
+            description={args.description || MOCK_DESCRIPTION}
+            estimate={args.estimate || "30m"}
+            tags={args.tags || MOCK_TAGS}
+            syllabus={args.syllabus || {items: MOCK_SYLLABUS_ITEMS}}
           />
       />
     </MemoryRouter>
