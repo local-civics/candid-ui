@@ -30,7 +30,7 @@ export type UserAvatarButtonProps = UserData & {
  */
 export function UserAvatarButton(props: UserAvatarButtonProps) {
   const { classes } = useUserStyles();
-  if (!props.userFullName || !props.userEmail) {
+  if (!props.fullName || !props.email) {
     return (
       <Button onClick={props.onSignIn} leftIcon={<IconUserCircle size={16} />} variant="outline">
         Sign in
@@ -38,7 +38,7 @@ export function UserAvatarButton(props: UserAvatarButtonProps) {
     );
   }
 
-  const avatarURL = buildUserAvatarURL(props.userAvatarURL, props.userFullName);
+  const avatarURL = buildUserAvatarURL(props.avatarURL, props.fullName);
   return (
     <Menu transitionProps={{ transition: "pop" }} withArrow position="bottom-end" withinPortal>
       <Menu.Target>
@@ -47,11 +47,11 @@ export function UserAvatarButton(props: UserAvatarButtonProps) {
       <Menu.Dropdown>
         <div style={{ minWidth: "12rem", padding: "0.5rem", flex: 1 }}>
           <Text size="sm" weight={500}>
-            {props.userFullName}
+            {props.fullName}
           </Text>
 
           <Text color="dimmed" size="xs">
-            {props.userEmail}
+            {props.email}
           </Text>
         </div>
         <Menu.Divider />

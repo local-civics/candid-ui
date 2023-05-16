@@ -25,12 +25,12 @@ export type UserProfilePageProps = UserData & {
 export function UserProfilePage(props: UserProfilePageProps) {
   const theme = useMantineTheme()
   const { classes } = useUserStyles();
-  const avatarURL = buildUserAvatarURL(props.userAvatarURL, props.userFullName, {
+  const avatarURL = buildUserAvatarURL(props.avatarURL, props.fullName, {
     size: 200,
     fontSize: 50,
   });
 
-  const badgeAchievements = props.userBadgeAchievements?.map(b => {
+  const badgeAchievements = props.badges?.map(b => {
     return <BadgeButton
       {...b}
       onClick={() => props.onBadgeClick && props.onBadgeClick(b)}
@@ -43,15 +43,15 @@ export function UserProfilePage(props: UserProfilePageProps) {
         <Grid.Col md={4}>
           <Stack>
             <Avatar size={200} className={classes.userAvatar} src={avatarURL} radius={200} />
-            <Title color="dark.4">{props.userFullName}</Title>
-            <Text>{props.userEmail}</Text>
+            <Title color="dark.4">{props.fullName}</Title>
+            <Text>{props.email}</Text>
             <Button onClick={props.onCtaClick} type="button">{props.ctaLabel}</Button>
             <Divider/>
             <Flex gap={10} align="center">
               <IconBlockquote color={theme.colors.dark[4]} size={16}/>
               <Text color="dark.4" size={16} weight={800}>My impact statement</Text>
             </Flex>
-            <Text>{props.userImpactStatement || "I haven't set my impact statement yet."}</Text>
+            <Text>{props.impactStatement || "I haven't set my impact statement yet."}</Text>
           </Stack>
         </Grid.Col>
         <Grid.Col md={8}>

@@ -28,11 +28,11 @@ const Template = {
 export const MyProfile = {
   ...Template,
   args: {
-    userFullName: 'Jane Doe',
-    userEmail: 'jane.doe@site.com',
-    userProfilePictureURL: '',
-    userImpactStatement: 'I would like to encourage my community to become more educated on issues that directly affect us, as well as make sure my community is a place where everyone is welcome.',
-    userBadgeAchievements: [
+    fullName: 'Jane Doe',
+    email: 'jane.doe@site.com',
+    avatarURL: '',
+    impactStatement: 'I would like to encourage my community to become more educated on issues that directly affect us, as well as make sure my community is a place where everyone is welcome.',
+    badges: [
       {
         displayName: "Onboarding Badge",
         iconURL: "https://cdn.localcivics.io/v1/store/images/XkYCJEdZJXEmsEQYLWiTA7?version=RcpvwzVT7sp9z3mJetAj2m",
@@ -68,10 +68,10 @@ export const MyProfile = {
 export const StudentProfile = {
   ...Template,
   args: {
-    userFullName: 'Jane Doe',
-    userEmail: 'jane.doe@site.com',
-    userProfilePictureURL: '',
-    userImpactStatement: 'I would like to encourage my community to become more educated on issues that directly affect us, as well as make sure my community is a place where everyone is welcome.',
+    fullName: 'Jane Doe',
+    email: 'jane.doe@site.com',
+    avatarURL: '',
+    impactStatement: 'I would like to encourage my community to become more educated on issues that directly affect us, as well as make sure my community is a place where everyone is welcome.',
     ctaLabel: 'Add to class',
   }
 };
