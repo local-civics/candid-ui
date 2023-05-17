@@ -10,7 +10,9 @@ export type BadgeData = {
   iconURL?: string
   estimate?: string
   tags?: string[]
+  rating?: number
   syllabus?: BadgeSyllabusData
+  uploadedOn?: string
 }
 
 /**

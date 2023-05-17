@@ -10,6 +10,8 @@ export type LessonData = {
   description?: string
   estimate?: string
   tags?: string[]
+  rating?: number
   preview?: {title: string}[]
   numberOfQuestions?: number
+  uploadedOn?: string
 }

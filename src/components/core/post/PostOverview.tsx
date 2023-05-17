@@ -79,10 +79,13 @@ const FEATURES_DATA = [
  * PostOverviewProps
  */
 export type PostOverviewProps = {
-  overviewTitle?: string;
-  overviewDescription?: string;
-  overviewEstimate?: string;
-  overviewTags?: string[];
+  title?: string;
+  description?: string;
+  estimate?: string;
+  tags?: string[];
+  topics?: string[];
+  rating?: number
+  uploadedOn?: string
 };
 
 /**
@@ -93,8 +96,8 @@ export type PostOverviewProps = {
 export function PostOverview(props: PostOverviewProps) {
   const { classes } = useStyles();
   const theme = useMantineTheme();
-  const title = props.overviewTitle || "Overview";
-  const tags = props.overviewTags?.map((t) => {
+  const title = props.title || "Overview";
+  const tags = props.tags?.map((t) => {
     return (
       <Badge size="md" color="dark" radius="xl" variant="dot">
         {t}
@@ -119,14 +122,14 @@ export function PostOverview(props: PostOverviewProps) {
     <Container fluid p={25} mx={0} className={classes.wrapper}>
       <Title className={classes.title}>{title}</Title>
       <Container size="sm" px={0} mx={0}>
-        {!!props.overviewDescription && <Text size="md"> {props.overviewDescription} </Text>}
+        {!!props.description && <Text size="md"> {props.description} </Text>}
 
-        {!!props.overviewEstimate && (
+        {!!props.estimate && (
           <Group mt={20} spacing={5} color="dark.4">
             <IconClock size={18} />
             <Text size="md">You'll need about</Text>
             <Text weight={700} size="md">
-              {props.overviewEstimate}
+              {props.estimate}
             </Text>
           </Group>
         )}
@@ -134,14 +137,14 @@ export function PostOverview(props: PostOverviewProps) {
           <IconBookUpload size={18} />
           <Text size="md">Uploaded on</Text>
           <Text weight={700} size="md">
-            12th of May 2023
+            {props.uploadedOn}
           </Text>
         </Group>
         <Group mt={10} spacing={5} color="dark.4">
           <IconStarFilled size={18} />
           <Text size="md">Rated</Text>
           <Text weight={700} size="md">
-            4.5
+            {props.rating}
           </Text>
           <Text size="md">out of 5</Text>
         </Group>
@@ -151,11 +154,11 @@ export function PostOverview(props: PostOverviewProps) {
             Topics you'll cover
           </Title>
           <List pl={15}>
-            <List.Item>Clone or download repository from GitHub</List.Item>
-            <List.Item>Install dependencies with yarn</List.Item>
-            <List.Item>To start development server run npm start command</List.Item>
-            <List.Item>Run tests to make sure your changes do not break the build</List.Item>
-            <List.Item>Submit a pull request once you are done</List.Item>
+            {
+              props.topics?.map(t => {
+                return <List.Item key={t}>{t}</List.Item>
+              })
+            }
           </List>
         </Stack>
 

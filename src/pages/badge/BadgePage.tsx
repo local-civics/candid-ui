@@ -100,11 +100,7 @@ export function BadgePage(props: BadgePageProps) {
         </Tabs.List>
 
         <Tabs.Panel value="overview" pt="xs">
-          <PostOverview
-            overviewDescription={props.description}
-            overviewEstimate={props.estimate}
-            overviewTags={props.tags}
-          />
+          <PostOverview {...props} title="Overview" />
         </Tabs.Panel>
 
         <Tabs.Panel value="syllabus" pt="xs">

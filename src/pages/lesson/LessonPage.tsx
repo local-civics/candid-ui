@@ -99,11 +99,7 @@ export function LessonPage(props: LessonPageProps) {
         </Tabs.List>
 
         <Tabs.Panel value="overview" pt="xs">
-          <PostOverview
-            overviewDescription={props.description}
-            overviewEstimate={props.estimate}
-            overviewTags={props.tags}
-          />
+          <PostOverview {...props} title="Overview" />
         </Tabs.Panel>
 
         <Tabs.Panel value="preview" pt="xs">

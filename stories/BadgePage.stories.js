@@ -43,6 +43,14 @@ const MOCK_TAGS = [
   "tag #13",
 ]
 
+const MOCK_TOPICS = [
+  "Clone or download repository from GitHub",
+  "Install dependencies with yarn",
+  "To start development server run npm start command",
+  "Run tests to make sure your changes do not break the build",
+  "Submit a pull request once you are done",
+]
+
 export default {
   title: 'Page/BadgePage',
   component: BadgePage,
@@ -67,6 +75,9 @@ const Template = {
             estimate={args.estimate || "30m"}
             tags={args.tags || MOCK_TAGS}
             syllabus={args.syllabus || {items: MOCK_SYLLABUS_ITEMS}}
+            topics={args.topics || MOCK_TOPICS}
+            rating={args.rating || 4.5}
+            uploadedOn={args.uploadedOn || "12th of May 2023"}
           />
       />
     </MemoryRouter>
