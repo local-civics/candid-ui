@@ -30,8 +30,8 @@ const DEFAULT_FILTERS_SUFFIX = [
  * HomePageProps
  */
 export type HomePageProps = {
-  posts: PostCardData[];
-  loading: boolean;
+  data?: PostCardData[];
+  loading?: boolean;
   defaultActiveFilter?: string;
   filters?: string[];
   onFilterClick?: (name: string) => void;
@@ -57,7 +57,7 @@ export function HomePage(props: HomePageProps) {
   const filterNames = [...new Set([...DEFAULT_FILTERS_PREFIX, ...(props.filters || []), ...DEFAULT_FILTERS_SUFFIX])];
   const filters = filterNames.map((f) => {
     return (
-      <Carousel.Slide py={6} size={f.length}>
+      <Carousel.Slide key={f} py={6} size={f.length}>
         <Center>
           <Button
             onClick={() => onFilterClick(f)}
@@ -72,9 +72,10 @@ export function HomePage(props: HomePageProps) {
       </Carousel.Slide>
     );
   });
-  const posts = props.posts.map((p) => {
+  const posts = props.data?.map((p) => {
     return (
       <PostCard
+        key={p.href}
         data={p}
         onLikeClick={() => props.onLikePost && props.onLikePost(p)}
         onSave={() => props.onSavePost && props.onSavePost(p)}
@@ -120,7 +121,7 @@ export function HomePage(props: HomePageProps) {
 
         {/* Content posts */}
         <Box pos="relative">
-          <LoadingOverlay visible={props.loading} overlayBlur={2} />
+          <LoadingOverlay visible={!!props.loading} overlayBlur={2} />
           <SimpleGrid
             cols={3}
             spacing="lg"

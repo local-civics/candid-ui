@@ -53,7 +53,7 @@ export function PostPreview(props: PostPreviewProps) {
   ];
 
   const items = itemProvider.map((item, i) => (
-    <Accordion.Item value={i.toString()}>
+    <Accordion.Item key={i} value={i.toString()}>
       <Accordion.Control icon={accordianIcon(theme, i)} disabled={i >= maxPreview}>
         {itemLabelPrefix} #{i + 1}
       </Accordion.Control>

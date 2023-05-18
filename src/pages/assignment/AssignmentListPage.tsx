@@ -85,7 +85,7 @@ export function AssignmentListPage(props: AssignmentListPageProps) {
     .filter((v) => v.status === "open")
     .map((v) => {
       return (
-        <Card withBorder radius="md" p="md" className={classes.card}>
+        <Card key={v.title} withBorder radius="md" p="md" className={classes.card}>
           <Card.Section
             sx={(theme) => ({
               backgroundSize: "cover",
@@ -178,7 +178,7 @@ export function AssignmentListPage(props: AssignmentListPageProps) {
     .filter((v) => v.status === "assigned to me")
     .map((v) => {
       return (
-        <Card withBorder radius="md" p="md" className={classes.card}>
+        <Card key={v.title} withBorder radius="md" p="md" className={classes.card}>
           <Card.Section
             sx={(theme) => ({
               backgroundSize: "cover",
@@ -214,7 +214,7 @@ export function AssignmentListPage(props: AssignmentListPageProps) {
     .filter((v) => v.status === "archived")
     .map((v) => {
       return (
-        <Card withBorder radius="md" p="md" className={classes.card}>
+        <Card key={v.title} withBorder radius="md" p="md" className={classes.card}>
           <Card.Section
             sx={(theme) => ({
               backgroundSize: "cover",

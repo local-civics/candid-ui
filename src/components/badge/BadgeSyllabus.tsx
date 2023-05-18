@@ -21,7 +21,7 @@ export function BadgeSyllabus(props: BadgeSyllabusProps) {
   const title = props.title || "What You'll Learn";
   const sessions = props.items.map((v, i) => {
     return (
-      <>
+      <React.Fragment key={v.title}>
         <Grid.Col span={3} pr="9rem">
           <Text size="sm" w="max-content" mx="auto">
             SESSION
@@ -69,7 +69,7 @@ export function BadgeSyllabus(props: BadgeSyllabusProps) {
             </div>
           </Stack>
         </Grid.Col>
-      </>
+      </React.Fragment>
     );
   });
 

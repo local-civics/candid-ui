@@ -32,6 +32,7 @@ export function UserProfilePage(props: UserProfilePageProps) {
 
   const badgeAchievements = props.badges?.map(b => {
     return <BadgeButton
+      key={b.href}
       {...b}
       onClick={() => props.onBadgeClick && props.onBadgeClick(b)}
     />

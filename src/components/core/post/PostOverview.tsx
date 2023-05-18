@@ -99,7 +99,7 @@ export function PostOverview(props: PostOverviewProps) {
   const title = props.title || "Overview";
   const tags = props.tags?.map((t) => {
     return (
-      <Badge size="md" color="dark" radius="xl" variant="dot">
+      <Badge key={t} size="md" color="dark" radius="xl" variant="dot">
         {t}
       </Badge>
     );

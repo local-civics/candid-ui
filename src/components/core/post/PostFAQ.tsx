@@ -35,7 +35,7 @@ export function PostFAQ(props: PostFAQProps) {
   const { classes } = useStyles();
   const questions = props.questions.map((q) => {
     return (
-      <Accordion.Item className={classes.item} value={q.control}>
+      <Accordion.Item key={q.control} className={classes.item} value={q.control}>
         <Accordion.Control>{q.control}</Accordion.Control>
         <Accordion.Panel>{q.panel}</Accordion.Panel>
       </Accordion.Item>

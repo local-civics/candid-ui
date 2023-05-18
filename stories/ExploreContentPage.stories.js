@@ -1,11 +1,11 @@
 import * as React from "react";
 import {MemoryRouter} from "react-router-dom";
-import { HomePage } from '../src/pages/home/HomePage';
+import { ExploreContentPage } from '../src/pages/content/ExploreContentPage';
 import {AppLayout} from "../src/layouts/app/AppLayout";
 
 export default {
-  title: 'Page/HomePage',
-  component: HomePage,
+  title: 'Page/ExploreContentPage',
+  component: ExploreContentPage,
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/react/writing-docs/autodocs
   tags: ['autodocs'],
   parameters: {
@@ -14,7 +14,7 @@ export default {
   },
 };
 
-const MOCK_POSTS = [{
+const MOCK_DATA = [{
   "image": "https://cdn.localcivics.io/hub/landing.jpg",
   "title": "Verudela Beach w. A Side of Fries",
   "category": "Badge Opportunity",
@@ -47,7 +47,7 @@ const Template = {
       <AppLayout
           {...args}
           defaultActiveLinkName="Home"
-          page=<HomePage {...args} data={args.data || MOCK_POSTS}/>
+          page=<ExploreContentPage {...args} data={args.data || MOCK_DATA} title={args.title || "Trending"}/>
       />
     </MemoryRouter>
   </div>,

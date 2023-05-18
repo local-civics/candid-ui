@@ -163,7 +163,7 @@ export function PostHero(props: PostHeroProps){
   const likes = props.numberOfLikes || 0;
   const shareLinks = SHARE_LINKS.map((l) => {
     return (
-      <Carousel.Slide py={6} size={20}>
+      <Carousel.Slide key={l.title} py={6} size={20}>
         <Stack w="3.5rem" align="center" spacing={10}>
           {!!l.href && (
             <ActionIcon<typeof Link>
