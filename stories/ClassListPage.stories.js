@@ -1,7 +1,7 @@
 import * as React from "react";
 import {MemoryRouter} from "react-router-dom";
 import {AppLayout} from "../src/layouts/app/AppLayout";
-import { ClassListPage } from '../src/pages/enrollment/ClassListPage';
+import { ClassListPage } from '../src/pages/class/ClassListPage';
 
 const MOCK_DATA = {
   members: [
@@ -78,7 +78,7 @@ const Template = {
   </div>,
 }
 
-export const NoClasses = {
+export const Empty = {
   ...Template,
 };
 

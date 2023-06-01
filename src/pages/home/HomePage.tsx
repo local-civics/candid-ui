@@ -2,7 +2,8 @@ import * as React from "react";
 import { Container, Stack, Button, Center, SimpleGrid, Box, LoadingOverlay, rem, useMantineTheme } from "@mantine/core";
 import { Carousel } from "@mantine/carousel";
 import { useMediaQuery } from "@mantine/hooks";
-import { PostCard, PostCardData } from "../../components/core/post/PostCard";
+import { ActivityCard } from "../../components/core/activity/ActivityCard";
+import {ActivityData } from "../../components/core/activity/data";
 
 const DEFAULT_FILTERS_PREFIX = ["All"];
 
@@ -30,15 +31,15 @@ const DEFAULT_FILTERS_SUFFIX = [
  * HomePageProps
  */
 export type HomePageProps = {
-  data?: PostCardData[];
+  data?: ActivityData[];
   loading?: boolean;
   defaultActiveFilter?: string;
   filters?: string[];
   onFilterClick?: (name: string) => void;
-  onLikePost?: (post: PostCardData) => void;
-  onSavePost?: (post: PostCardData) => void;
-  onAssignPost?: (post: PostCardData) => void;
-  onOpenPost?: (post: PostCardData) => void;
+  onLikeActivity?: (data: ActivityData) => void;
+  onSaveActivity?: (data: ActivityData) => void;
+  onAssignActivity?: (data: ActivityData) => void;
+  onOpenActivity?: (data: ActivityData) => void;
 };
 
 /**
@@ -72,15 +73,15 @@ export function HomePage(props: HomePageProps) {
       </Carousel.Slide>
     );
   });
-  const posts = props.data?.map((p) => {
+  const activities = props.data?.map((p) => {
     return (
-      <PostCard
+      <ActivityCard
         key={p.href}
         data={p}
-        onLikeClick={() => props.onLikePost && props.onLikePost(p)}
-        onSave={() => props.onSavePost && props.onSavePost(p)}
-        onAssign={() => props.onAssignPost && props.onAssignPost(p)}
-        onOpen={() => props.onOpenPost && props.onOpenPost(p)}
+        onLikeClick={() => props.onLikeActivity && props.onLikeActivity(p)}
+        onSave={() => props.onSaveActivity && props.onSaveActivity(p)}
+        onAssign={() => props.onAssignActivity && props.onAssignActivity(p)}
+        onOpen={() => props.onOpenActivity && props.onOpenActivity(p)}
       />
     );
   });
@@ -119,7 +120,7 @@ export function HomePage(props: HomePageProps) {
           {filters}
         </Carousel>
 
-        {/* Content posts */}
+        {/* Content activities */}
         <Box pos="relative">
           <LoadingOverlay visible={!!props.loading} overlayBlur={2} />
           <SimpleGrid
@@ -130,7 +131,7 @@ export function HomePage(props: HomePageProps) {
               { maxWidth: "36rem", cols: 1, spacing: "sm" },
             ]}
           >
-            {posts}
+            {activities}
           </SimpleGrid>
         </Box>
       </Stack>

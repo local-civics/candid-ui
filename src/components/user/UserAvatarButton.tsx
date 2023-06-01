@@ -11,7 +11,7 @@ import {
   IconBuildingCommunity,
 } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
-import { buildUserAvatarURL } from "./helpers";
+import { buildAvatarURL } from "../core/avatar/helpers";
 import { UserData } from "./data";
 import { useUserStyles } from "./styles";
 
@@ -38,7 +38,7 @@ export function UserAvatarButton(props: UserAvatarButtonProps) {
     );
   }
 
-  const avatarURL = buildUserAvatarURL(props.avatarURL, props.fullName);
+  const avatarURL = buildAvatarURL(props.avatarURL, props.fullName);
   return (
     <Menu transitionProps={{ transition: "pop" }} withArrow position="bottom-end" withinPortal>
       <Menu.Target>

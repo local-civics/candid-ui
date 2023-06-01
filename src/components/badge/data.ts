@@ -2,17 +2,17 @@
  * BadgeData
  */
 export type BadgeData = {
-  href?: string
-  title?: string
-  description?: string
-  status?: "available" | "in progress" | "locked" | "completed"
-  level?: number
-  iconURL?: string
-  estimate?: string
-  tags?: string[]
-  rating?: number
-  syllabus?: BadgeSyllabusData
-  uploadedOn?: string
+  href: string
+  title: string
+  description: string
+  status: "available" | "in progress" | "locked" | "completed"
+  level: number
+  iconURL: string
+  estimate: string
+  tags: string[]
+  rating: number
+  syllabus: BadgeSyllabusData
+  uploadedOn: string
 }
 
 /**
@@ -31,6 +31,6 @@ export type BadgeSyllabusItemData = {
   description: string;
   estimate: string;
   questionCount: number;
-  videoCount?: number;
-  imageCount?: number;
+  videoCount: number;
+  imageCount: number;
 };

@@ -1,4 +1,4 @@
-import { useForm as useMantineForm } from "@mantine/form";
+import { useForm as useMantineForm, UseFormReturnType } from "@mantine/form";
 import { modals } from "@mantine/modals";
 import * as React from "react";
 import {
@@ -17,59 +17,40 @@ import {
   Menu,
   TextInput,
   useMantineTheme,
-  createStyles,
-  rem,
-  TransferListData,
+  TransferListData, Autocomplete, AutocompleteItem, Stepper
 } from "@mantine/core";
 import {
   IconPlus,
-  IconLayoutKanban,
+  IconClipboardList,
   IconDotsVertical,
   IconAbc,
   IconArchive,
-  IconPresentationAnalytics,
+  IconPlayerPlay,
   IconUserEdit,
-  IconFocusCentered,
-  IconWorldShare,
+  IconMaximize,
+  IconLink
 } from "@tabler/icons-react";
 import { PlaceholderBanner } from "../../components/core/placeholder/PlaceholderBanner";
-import { AssignmentTransferList } from "./AssignmentTransferList";
-
-const useStyles = createStyles((theme) => {
-  return {
-    card: {
-      backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
-      height: "max-content",
-      width: "20rem",
-    },
-
-    section: {
-      borderBottom: `${rem(1)} solid ${theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[3]}`,
-      paddingLeft: theme.spacing.md,
-      paddingRight: theme.spacing.md,
-      paddingBottom: theme.spacing.md,
-    },
-  };
-});
-
-/**
- * AssignmentData
- */
-export type AssignmentData = { title: string; status: "open" | "assigned to me" | "archived" };
+import { DataTransferList } from "../../components/core/data/DataTransferList";
+import { AssignmentData } from "../../components/assignment/data";
+import { useAssignmentStyles } from "../../components/assignment/styles";
 
 /**
  * AssignmentListPageProps
  */
 export type AssignmentListPageProps = {
+  activities: AutocompleteItem[];
   assignees: TransferListData;
   assignments: AssignmentData[];
-  onCreate?: (name: string, assignees: TransferListData) => void;
+  isCreateOpen?: boolean
+  createAssignmentStep?: number
+  onCreate?: (name: string, activity: AutocompleteItem, assignees: TransferListData) => void;
   onRename?: (data: AssignmentData, newName: string) => void;
   onArchive?: (data: AssignmentData) => void;
   onOpen?: (data: AssignmentData) => void;
-  onViewProgress?: (data: AssignmentData) => void;
+  onStart?: (data: AssignmentData) => void;
   onUpdateAssignees?: (newAssignees: TransferListData) => void;
-  onGeneratePublicLink?: (data: AssignmentData) => void;
+  onCopyInviteLink: (data: AssignmentData) => void;
 };
 
 /**
@@ -79,13 +60,13 @@ export type AssignmentListPageProps = {
  */
 export function AssignmentListPage(props: AssignmentListPageProps) {
   const theme = useMantineTheme();
-  const { classes } = useStyles();
+  const { classes } = useAssignmentStyles();
   const form = useForm(props);
   const openAssignments = props.assignments
     .filter((v) => v.status === "open")
     .map((v) => {
       return (
-        <Card key={v.title} withBorder radius="md" p="md" className={classes.card}>
+        <Card key={v.name} withBorder radius="md" p="md" className={classes.card}>
           <Card.Section
             sx={(theme) => ({
               backgroundSize: "cover",
@@ -99,7 +80,7 @@ export function AssignmentListPage(props: AssignmentListPageProps) {
           >
             <Group grow align="start" position="apart" spacing={0}>
               <Text fz="lg" maw="initial" fw={500}>
-                {v.title}
+                {v.name}
               </Text>
               <Menu transitionProps={{ transition: "pop" }} withArrow position="bottom-end" withinPortal>
                 <Menu.Target>
@@ -150,12 +131,12 @@ export function AssignmentListPage(props: AssignmentListPageProps) {
             <Group spacing={20}>
               <Tooltip label="Open assignment">
                 <ActionIcon onClick={() => props.onOpen && props.onOpen(v)} color="blue">
-                  <IconFocusCentered />
+                  <IconMaximize />
                 </ActionIcon>
               </Tooltip>
-              <Tooltip label="View progress">
-                <ActionIcon onClick={() => props.onViewProgress && props.onViewProgress(v)} color="blue">
-                  <IconPresentationAnalytics />
+              <Tooltip label="Start assignment">
+                <ActionIcon onClick={() => props.onStart && props.onStart(v)} color="blue">
+                  <IconPlayerPlay />
                 </ActionIcon>
               </Tooltip>
               <Tooltip label="Edit assignees">
@@ -163,9 +144,9 @@ export function AssignmentListPage(props: AssignmentListPageProps) {
                   <IconUserEdit />
                 </ActionIcon>
               </Tooltip>
-              <Tooltip label="Generate public link">
-                <ActionIcon onClick={() => props.onGeneratePublicLink && props.onGeneratePublicLink(v)} color="blue">
-                  <IconWorldShare />
+              <Tooltip label="Copy invite link">
+                <ActionIcon onClick={() => props.onCopyInviteLink && props.onCopyInviteLink(v)} color="blue">
+                  <IconLink />
                 </ActionIcon>
               </Tooltip>
             </Group>
@@ -178,7 +159,7 @@ export function AssignmentListPage(props: AssignmentListPageProps) {
     .filter((v) => v.status === "assigned to me")
     .map((v) => {
       return (
-        <Card key={v.title} withBorder radius="md" p="md" className={classes.card}>
+        <Card key={v.name} withBorder radius="md" p="md" className={classes.card}>
           <Card.Section
             sx={(theme) => ({
               backgroundSize: "cover",
@@ -192,16 +173,16 @@ export function AssignmentListPage(props: AssignmentListPageProps) {
           >
             <Group grow align="start" position="apart" spacing={0}>
               <Text fz="lg" maw="initial" fw={500}>
-                {v.title}
+                {v.name}
               </Text>
             </Group>
           </Card.Section>
 
           <Card.Section className={classes.section} mt="md">
             <Group spacing={20}>
-              <Tooltip label="Open assignment">
-                <ActionIcon onClick={() => props.onOpen && props.onOpen(v)} color="blue">
-                  <IconFocusCentered />
+              <Tooltip label="Start assignment">
+                <ActionIcon onClick={() => props.onStart && props.onStart(v)} color="blue">
+                  <IconPlayerPlay />
                 </ActionIcon>
               </Tooltip>
             </Group>
@@ -214,7 +195,7 @@ export function AssignmentListPage(props: AssignmentListPageProps) {
     .filter((v) => v.status === "archived")
     .map((v) => {
       return (
-        <Card key={v.title} withBorder radius="md" p="md" className={classes.card}>
+        <Card key={v.name} withBorder radius="md" p="md" className={classes.card}>
           <Card.Section
             sx={(theme) => ({
               backgroundSize: "cover",
@@ -228,7 +209,7 @@ export function AssignmentListPage(props: AssignmentListPageProps) {
           >
             <Group grow align="start" position="apart" spacing={0}>
               <Text fz="lg" maw="initial" fw={500}>
-                {v.title}
+                {v.name}
               </Text>
             </Group>
           </Card.Section>
@@ -237,7 +218,7 @@ export function AssignmentListPage(props: AssignmentListPageProps) {
             <Group spacing={20}>
               <Tooltip label="Open assignment">
                 <ActionIcon onClick={() => props.onOpen && props.onOpen(v)} color="blue">
-                  <IconFocusCentered />
+                  <IconMaximize />
                 </ActionIcon>
               </Tooltip>
             </Group>
@@ -254,7 +235,7 @@ export function AssignmentListPage(props: AssignmentListPageProps) {
       <Container size="lg" pb="xl">
         <Stack spacing={10}>
           <Group>
-            <IconLayoutKanban color={theme.colors.dark[4]} />
+            <IconClipboardList color={theme.colors.dark[4]} />
             <Title color="dark.4">Assignments</Title>
           </Group>
           <Divider />
@@ -295,7 +276,7 @@ function RenameAssignment(props: AssignmentListPageProps & { data: AssignmentDat
     <>
       <TextInput
         label="New name"
-        defaultValue={props.data.title}
+        defaultValue={props.data.name}
         placeholder="Assignment name"
         data-autofocus
         onChange={(e) => setNewName(e.target.value)}
@@ -310,11 +291,12 @@ function RenameAssignment(props: AssignmentListPageProps & { data: AssignmentDat
 function useForm(props: AssignmentListPageProps) {
   const form = useMantineForm({
     initialValues: {
-      opened: false,
-      stage: 0,
+      opened: props.isCreateOpen || false,
+      stage: props.createAssignmentStep || 0,
       node: undefined as React.ReactNode,
       name: "",
       assignees: props.assignees,
+      activity: '',
     },
     transformValues: (values) => {
       return {
@@ -327,14 +309,7 @@ function useForm(props: AssignmentListPageProps) {
   const close = () => form.setValues({ ...form.values, opened: false });
   const openStage = (stage: number, node?: React.ReactNode) =>
     form.setValues({ ...form.values, opened: true, stage, node });
-  const previous = () => openStage(form.values.stage - 1);
-  const next = () => openStage(form.values.stage + 1);
   const setAssignees = (assignees: TransferListData) => form.setValues({ ...form.values, assignees });
-  const submit = () => {
-    close();
-    form.reset();
-    props.onCreate && props.onCreate(form.values.name, form.values.assignees);
-  };
 
   const cancel = () => {
     close();
@@ -348,7 +323,7 @@ function useForm(props: AssignmentListPageProps) {
       openStage(
         1,
         <>
-          <AssignmentTransferList data={form.values.assignees} onChange={(assignees) => setAssignees(assignees)} />
+          <DataTransferList value={form.values.assignees} onChange={(assignees) => setAssignees(assignees)} />
           <Group ml="auto" w="max-content" mt="md" spacing={10}>
             <Button variant="outline" type="button" onClick={cancel}>
               Cancel
@@ -371,41 +346,100 @@ function useForm(props: AssignmentListPageProps) {
         return form.values.node;
       }
 
-      switch (form.getInputProps("stage").value) {
-        case 0:
-          return (
-            <>
-              <TextInput
-                miw="25rem"
-                label="Assignment Name"
-                placeholder="Assignment Name"
-                {...form.getInputProps("name")}
-              />
-              <Group ml="auto" w="max-content" mt="md" spacing={10}>
-                <Button variant="default" type="button" onClick={cancel}>
-                  Cancel
-                </Button>
-                <Button disabled={!form.getInputProps("name").value} type="button" onClick={next}>
-                  Next
-                </Button>
-              </Group>
-            </>
-          );
-        default:
-          return (
-            <>
-              <AssignmentTransferList data={form.values.assignees} onChange={(assignees) => setAssignees(assignees)} />
-              <Group ml="auto" w="max-content" mt="md" spacing={10}>
-                <Button variant="outline" type="button" onClick={previous}>
-                  Back
-                </Button>
-                <Button type="submit" onClick={submit}>
-                  Submit
-                </Button>
-              </Group>
-            </>
-          );
-      }
+      return <AssignmentStepper {...props} form={form} />
     },
   };
+}
+
+function AssignmentStepper(props: AssignmentListPageProps & {form: UseFormReturnType<any>}){
+  const [active, setActive] = React.useState(props.createAssignmentStep || 0);
+  const [highestStepVisited, setHighestStepVisited] = React.useState(active);
+
+  const handleStepChange = (nextStep: number) => {
+    const isOutOfBounds = nextStep > 3 || nextStep < 0;
+
+    if(nextStep === -1){
+      modals.closeAll()
+      props.form.reset();
+      return;
+    }
+
+    if(nextStep === 3){
+      modals.closeAll()
+      props.form.reset();
+      props.onCreate && props.onCreate(props.form.values.name, props.form.values.activity, props.form.values.assignees);
+      return;
+    }
+
+    if (isOutOfBounds) {
+      return;
+    }
+
+    setActive(nextStep);
+    setHighestStepVisited((hSC) => Math.max(hSC, nextStep));
+  };
+
+  // Allow the user to freely go back and forth between visited steps.
+  const shouldAllowSelectStep = (step: number) => {
+    const hasActivity = !!props.form.getInputProps("activity").value
+    const hasName = !!props.form.getInputProps("name").value
+
+    if(step >= 0 && !hasActivity){
+      return false
+    }
+
+    if(step >= 2 && !hasName){
+      return false
+    }
+
+    return highestStepVisited >= step && active !== step
+  };
+
+  // Allow the user to freely go back and forth between visited steps.
+  const shouldAllowStep = (step: number) => {
+    const hasActivity = !!props.form.getInputProps("activity").value
+    const hasName = !!props.form.getInputProps("name").value
+
+    if(step > 0 && !hasActivity){
+      return false
+    }
+
+    if(step > 2 && !hasName){
+      return false
+    }
+
+    return true
+  };
+
+  return <>
+    <Stepper h={400} w={600} size="sm" active={active} onStepClick={setActive} breakpoint="sm">
+      <Stepper.Step label="First step" description="Select an activity" allowStepSelect={shouldAllowSelectStep(0)}>
+        <Autocomplete
+          withAsterisk
+          label="Select an activity"
+          placeholder="Search activities"
+          data={props.activities}
+          {...props.form.getInputProps("activity")}
+        />
+      </Stepper.Step>
+      <Stepper.Step label="Second step" description="Set assignees" allowStepSelect={shouldAllowSelectStep(1)}>
+        <DataTransferList {...props.form.getInputProps("assignees")} />
+      </Stepper.Step>
+      <Stepper.Step label="Final step" description="Set assignment name" allowStepSelect={shouldAllowSelectStep(2)}>
+        <TextInput
+          withAsterisk
+          label="Assignment Name"
+          placeholder="Assignment Name"
+          {...props.form.getInputProps("name")}
+        />
+      </Stepper.Step>
+    </Stepper>
+
+    <Group position="center" mt="xl">
+      <Button variant="default" onClick={() => handleStepChange(active - 1)}>
+        Back
+      </Button>
+      <Button disabled={!shouldAllowStep(active+1)} onClick={() => handleStepChange(active + 1)}>{active < 2 ? "Next step": "Submit"}</Button>
+    </Group>
+  </>
 }

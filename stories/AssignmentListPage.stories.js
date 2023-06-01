@@ -5,27 +5,27 @@ import { AssignmentListPage } from '../src/pages/assignment/AssignmentListPage';
 
 const MOCK_ASSIGMENT_DATA = [
   {
-    title: 'Assignment #1',
+    name: 'Assignment #1',
     status: 'open',
   },
   {
-    title: 'Assignment #2',
+    name: 'Assignment #2',
     status: 'open',
   },
   {
-    title: 'Assignment #3',
+    name: 'Assignment #3',
     status: 'assigned to me',
   },
   {
-    title: 'Assignment #4',
+    name: 'Assignment #4',
     status: 'assigned to me',
   },
   {
-    title: 'Assignment #5',
+    name: 'Assignment #5',
     status: 'archived',
   },
   {
-    title: 'Assignment #6',
+    name: 'Assignment #6',
     status: 'archived',
   },
 ]
@@ -35,9 +35,9 @@ const MOCK_ASSIGNEE_DATA = [
     { value: 'react', label: 'React', group: 'Classes'},
     { value: 'ng', label: 'Angular', group: 'Classes' },
     { value: 'next', label: 'Next.js', group: 'Classes' },
-    { value: 'blitz', label: 'Blitz.js' , group: 'Students'},
-    { value: 'gatsby', label: 'Gatsby.js', group: 'Students' },
-    { value: 'vue', label: 'Vue', group: 'Students' },
+    { value: 'blitz', label: 'Blitz.js' , description: 'blitz@js.io', group: 'Students'},
+    { value: 'gatsby', label: 'Gatsby.js', description: 'gatsby@js.io', group: 'Students' },
+    { value: 'vue', label: 'Vue', description: 'vue@js.io', group: 'Students' },
     { value: 'jq', label: 'jQuery', group: 'Classes' },
   ],
   [
@@ -49,8 +49,18 @@ const MOCK_ASSIGNEE_DATA = [
   ],
 ];
 
+const MOCK_ACTIVITY_DATA = [
+  { value: 'react', label: 'React', group: 'Lessons'},
+  { value: 'ng', label: 'Angular', group: 'Lessons' },
+  { value: 'next', label: 'Next.js', group: 'Lessons' },
+  { value: 'blitz', label: 'Blitz.js' , description: 'blitz@js.io', group: 'Badges'},
+  { value: 'gatsby', label: 'Gatsby.js', description: 'gatsby@js.io', group: 'Badges' },
+  { value: 'vue', label: 'Vue', description: 'vue@js.io', group: 'Badges' },
+  { value: 'jq', label: 'jQuery', group: 'Lessons' },
+];
+
 export default {
-  title: 'Page/AssignmentListPage',
+  name: 'Page/AssignmentListPage',
   component: AssignmentListPage,
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/react/writing-docs/autodocs
   tags: ['autodocs'],
@@ -63,6 +73,7 @@ export default {
 const Template = {
   args: {
     assignees: MOCK_ASSIGNEE_DATA,
+    activities: MOCK_ACTIVITY_DATA,
     assignments: [],
   },
   render: (args) => <div className="h-full w-full overscroll-none font-proxima">
@@ -75,7 +86,7 @@ const Template = {
   </div>,
 }
 
-export const NoAssignments = {
+export const Empty = {
   ...Template,
 };
 

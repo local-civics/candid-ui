@@ -1,7 +1,7 @@
 import * as React from "react";
 import {MemoryRouter} from "react-router-dom";
 import {AppLayout} from "../src/layouts/app/AppLayout";
-import { BadgePage } from '../src/pages/content/BadgePage.tsx';
+import { BadgePage } from '../src/pages/activity/BadgePage.tsx';
 
 const MOCK_DESCRIPTION = 'Every once in a while, you’ll see a Golbat that’s missing some fangs. This happens when hunger drives it to try biting a Steel-type Pokémon.'
 const MOCK_SYLLABUS_ITEMS = [
