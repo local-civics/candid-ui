@@ -46,7 +46,7 @@ export function SearchPage(props: SearchPageProps) {
           <Title size={30} color="dark.4">Search</Title>
         </Flex>
         { !!props.title && <Title size={20} color="dark.4">{props.title}</Title> }
-        <Stack spacing={5}>
+        <Stack spacing={10}>
           {activities}
         </Stack>
       </Stack>

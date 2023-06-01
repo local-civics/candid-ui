@@ -20,6 +20,7 @@ import {
   Menu,
   createStyles,
   rem,
+  Box,
 } from "@mantine/core";
 import { Link } from "react-router-dom";
 import { ActivityData } from "./data";
@@ -41,6 +42,14 @@ const useStyles = createStyles((theme) => ({
     paddingLeft: theme.spacing.md,
     paddingRight: theme.spacing.md,
     paddingBottom: theme.spacing.md,
+  },
+
+  sectionRight: {
+    borderBottom: `${rem(1)} solid ${theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[3]}`,
+    paddingLeft: theme.spacing.md,
+    paddingRight: theme.spacing.md,
+    paddingBottom: theme.spacing.md,
+    flexBasis: '90%',
   },
 
   like: {
@@ -155,27 +164,18 @@ export function ActivityCard(props: ActivityCardProps) {
 
   if(props.size === "lg"){
     return <Card withBorder radius="md" p="md" className={classes.cardLg}>
-      <Card.Section maw={500}>
+      <Card.Section w={300} p={0}>
         <UnstyledButton<typeof Link> component={Link} to={props.data.href} onClick={props.onOpen}>
-          <Image className={classes.image} src={props.data.image} alt={props.data.title} mih={180} />
+          <Image h="100%" className={classes.image} src={props.data.image} alt={props.data.title} />
         </UnstyledButton>
       </Card.Section>
 
-      <Card.Section className={classes.section} mt="md" ml={10}>
-        <Spoiler
-          maxHeight={120}
-          hideLabel="Show less"
-          showLabel="Show more"
-          styles={{
-            control: {
-              fontSize: "0.9rem",
-            },
-          }}
-        >
-          <Flex align="start" wrap="nowrap">
-            <Text fz="lg" w="100%" fw={500}>
-              {props.data.title}
-            </Text>
+      <Card.Section className={classes.sectionRight} mt="md" ml={20}>
+        <Flex align="start" wrap="nowrap">
+          <Text fz="lg" fw={500} lineClamp={1}>
+            {props.data.title}
+          </Text>
+          <Box ml="auto">
             <Menu transitionProps={{ transition: "pop" }} withArrow position="bottom-end" withinPortal>
               <Menu.Target>
                 <ActionIcon maw="max-content">
@@ -191,13 +191,13 @@ export function ActivityCard(props: ActivityCardProps) {
                 </Menu.Item>
               </Menu.Dropdown>
             </Menu>
-          </Flex>
-          <Text fz="0.8rem" mt="xs">
-            {props.data.description}
-          </Text>
-        </Spoiler>
+          </Box>
+        </Flex>
+        <Text fz="0.8rem" mt="xs" lineClamp={1} pr={10}>
+          {props.data.description}
+        </Text>
 
-        <Group mt="xs">
+        <Group mt="md">
           <ActionIcon onClick={props.onLikeClick} variant="default" radius="md" size={36}>
             <LikeIcon size="1.1rem" className={classes.like} stroke={1.5} />
           </ActionIcon>
