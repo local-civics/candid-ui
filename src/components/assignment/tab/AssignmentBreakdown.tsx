@@ -67,6 +67,7 @@ export function AssignmentBreakdown(props: AssignmentBreakdownProps){
     showLabels: true,
     useBom: true,
     useKeysAsHeaders: true,
+    filename: 'localcivics-export'
   };
 
   const csvExporter = new ExportToCsv(csvOptions);
