@@ -47,7 +47,7 @@ const useStyles = createStyles((theme) => ({
   sectionRight: {
     borderBottom: `${rem(1)} solid ${theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[3]}`,
     paddingLeft: theme.spacing.md,
-    paddingRight: theme.spacing.md,
+    paddingRight: theme.spacing.lg,
     paddingBottom: theme.spacing.md,
     flexBasis: '90%',
   },
@@ -197,7 +197,7 @@ export function ActivityCard(props: ActivityCardProps) {
           {props.data.description}
         </Text>
 
-        <Group mt="md">
+        <Group mt="lg">
           <ActionIcon onClick={props.onLikeClick} variant="default" radius="md" size={36}>
             <LikeIcon size="1.1rem" className={classes.like} stroke={1.5} />
           </ActionIcon>
