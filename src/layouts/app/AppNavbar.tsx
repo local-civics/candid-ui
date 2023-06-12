@@ -6,7 +6,7 @@ import {
   IconBook,
   IconTimelineEvent,
   IconThumbUp,
-  IconLayoutKanban,
+  IconClipboardList,
   IconFlame,
   IconCookie,
   IconHourglassLow,
@@ -91,7 +91,7 @@ export function AppNavbar(props: AppNavbarProps) {
           />
           <AppLink
             isActive={active === "Assignments"}
-            icon={IconLayoutKanban}
+            icon={IconClipboardList}
             href="/library/assignments"
             label="Assignments"
             onNavigate={onNavigate}

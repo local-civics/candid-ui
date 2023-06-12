@@ -1,7 +1,7 @@
 import * as React from "react";
 import { MemoryRouter } from "react-router-dom";
 import { AppLayout } from "../src/layouts/app/AppLayout";
-import { OrganizationListPage } from "../src/pages/enrollment/OrganizationListPage";
+import { OrganizationListPage } from "../src/pages/organization/OrganizationListPage";
 
 const MOCK_DATA = {
   organizations: [
@@ -58,7 +58,7 @@ const Template = {
   ),
 };
 
-export const NoOrganizations = {
+export const Empty = {
   ...Template,
 };
 

@@ -2,7 +2,7 @@ import * as React from "react";
 import { useForm } from "@mantine/form";
 import { Avatar, Box, Button, Container, Divider, Grid, Textarea, TextInput, Title, Text } from "@mantine/core";
 import { useUserStyles } from "../../components/user/styles";
-import { buildUserAvatarURL } from "../../components/user/helpers";
+import { buildAvatarURL } from "../../components/core/avatar/helpers";
 import { UserData } from "../../components/user/data";
 import { IconPhotoEdit } from "@tabler/icons-react";
 
@@ -21,18 +21,13 @@ export type UserSettingsPageProps = UserData & {
  */
 export function UserSettingsPage(props: UserSettingsPageProps) {
   const {classes} = useUserStyles()
-  const avatarURL = buildUserAvatarURL(props.avatarURL, props.fullName, {
+  const avatarURL = buildAvatarURL(props.avatarURL, props.fullName, {
     size: 200,
     fontSize: 50,
   });
 
   const form = useForm({
-    initialValues: {
-      firstName: props.firstName,
-      lastName: props.lastName,
-      impactStatement: props.impactStatement,
-    },
-
+    initialValues: props,
     transformValues: (values) => ({
       ...values,
     }),

@@ -26,7 +26,7 @@ import {
   IconAt,
 } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
-import { AppHeader } from "./AppHeader";
+import { AppHeader, AppHeaderProps } from "./AppHeader";
 import { AppNavbar, AppNavbarProps } from "./AppNavbar";
 import { useMediaQuery } from "@mantine/hooks";
 
@@ -137,7 +137,7 @@ const useStyles = createStyles((theme) => ({
 /**
  * AppLayoutProps
  */
-export type AppLayoutProps = AppNavbarProps & {
+export type AppLayoutProps = AppHeaderProps & AppNavbarProps & {
   page: React.ReactNode;
   isLoading?: boolean;
   isSignInRequired?: boolean;
