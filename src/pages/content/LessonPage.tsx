@@ -1,16 +1,11 @@
 import * as React from "react";
-import {
-  Container,
-  Tabs,
-  Text,
-  createStyles,
-} from "@mantine/core";
+import { Container, Tabs, Text, createStyles } from "@mantine/core";
 import { PostFAQ } from "../../components/core/post/PostFAQ";
 import { PostOverview } from "../../components/core/post/PostOverview";
 import { PostPreview } from "../../components/core/post/PostPreview";
 import { PostHero } from "../../components/core/post/PostHero";
 import { LessonData } from "../../components/lesson/data";
-
+import { LessonLearningForm } from "../../components/lesson/LessonLearningForm";
 const useStyles = createStyles((theme) => {
   return {
     root: {
@@ -33,7 +28,8 @@ const useStyles = createStyles((theme) => {
 const FAQ_QUESTIONS = [
   {
     control: "When can I start this lesson?",
-    panel: "Whenever you are ready to begin the lesson you may do so. You can also stop at any time and continue later.",
+    panel:
+      "Whenever you are ready to begin the lesson you may do so. You can also stop at any time and continue later.",
   },
   {
     control: "Can I earn class credit for this lesson?",
@@ -41,11 +37,13 @@ const FAQ_QUESTIONS = [
   },
   {
     control: "How do I assign a lesson?",
-    panel: "Assigning a lesson is as simple as clicking share, then assign. From there follow the prompts to fill out the details of your assignment.",
+    panel:
+      "Assigning a lesson is as simple as clicking share, then assign. From there follow the prompts to fill out the details of your assignment.",
   },
   {
     control: "Will my responses be auto-saved?",
-    panel: "A draft of your responses will be auto-saved every 30 seconds, and if you need to save your responses more frequently you may manually save at any time.",
+    panel:
+      "A draft of your responses will be auto-saved every 30 seconds, and if you need to save your responses more frequently you may manually save at any time.",
   },
   {
     control: "Can I try a lesson for free?",
@@ -103,16 +101,13 @@ export function LessonPage(props: LessonPageProps) {
         </Tabs.Panel>
 
         <Tabs.Panel value="preview" pt="xs">
-          <PostPreview
-            previewItems={props.preview || []}
-            previewItemCount={props.numberOfQuestions || 0}
-          />
+          <PostPreview previewItems={props.preview || []} previewItemCount={props.numberOfQuestions || 0} />
         </Tabs.Panel>
 
         <Tabs.Panel value="faq" pt="xs">
           <PostFAQ questions={FAQ_QUESTIONS} />
         </Tabs.Panel>
       </Tabs>
-    </Container>
+    </Container >
   );
 }
