@@ -72,9 +72,16 @@ export default {
 
 const Template = {
   args: {
-    assignees: MOCK_ASSIGNEE_DATA,
-    activities: MOCK_ACTIVITY_DATA,
-    assignments: [],
+    data: {
+      assignees: MOCK_ASSIGNEE_DATA,
+      activities: MOCK_ACTIVITY_DATA,
+      assignments: [],
+      summary: [{
+        title: "Assignments",
+        value: 10,
+        description: "Total # of assignments"
+      }]
+    },
   },
   render: (args) => <div className="h-full w-full overscroll-none font-proxima">
     <MemoryRouter>
@@ -94,7 +101,10 @@ export const WithAssignments = {
   ...Template,
   args: {
     ...Template.args,
-    assignments: MOCK_ASSIGMENT_DATA,
+    data: {
+      ...Template.args.data,
+      assignments: MOCK_ASSIGMENT_DATA,
+    },
   }
 };
 
@@ -102,7 +112,10 @@ export const AssignedToMe = {
   ...Template,
   args: {
     ...Template.args,
-    assignments: MOCK_ASSIGMENT_DATA.filter(a => a.status === 'assigned to me'),
+    data: {
+      ...Template.args.data,
+      assignments: MOCK_ASSIGMENT_DATA.filter(a => a.status === 'assigned to me'),
+    },
   }
 };
 
@@ -110,6 +123,9 @@ export const Archived = {
   ...Template,
   args: {
     ...Template.args,
-    assignments: MOCK_ASSIGMENT_DATA.filter(a => a.status === 'archived'),
+    data: {
+      ...Template.args.data,
+      assignments: MOCK_ASSIGMENT_DATA.filter(a => a.status === 'archived'),
+    },
   }
 };

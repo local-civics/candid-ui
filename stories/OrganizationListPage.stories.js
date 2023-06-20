@@ -47,6 +47,11 @@ const Template = {
   args: {
     data: {
       organizations: [],
+      summary: [{
+        title: "Organizations",
+        value: MOCK_DATA.organizations.length,
+        description: "Total # of organizations"
+      }]
     },
   },
   render: (args) => <div className="h-full w-full overscroll-none font-proxima">

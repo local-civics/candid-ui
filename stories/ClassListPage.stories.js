@@ -66,6 +66,15 @@ const Template = {
     data: {
       members: MOCK_DATA.members,
       classes: [],
+      summary: [{
+        title: "Classes",
+        value: MOCK_DATA.classes.length,
+        description: "Total # of classes"
+      },{
+        title: "Students",
+        value: 10,
+        description: "Total # of students"
+      }]
     },
   },
   render: (args) => <div className="h-full w-full overscroll-none font-proxima">
