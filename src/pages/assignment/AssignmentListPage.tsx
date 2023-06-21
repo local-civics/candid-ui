@@ -34,16 +34,21 @@ import { PlaceholderBanner } from "../../components/core/placeholder/Placeholder
 import { DataTransferList } from "../../components/core/data/DataTransferList";
 import { AssignmentData } from "../../components/assignment/data";
 import { useAssignmentStyles } from "../../components/assignment/styles";
+import { SummaryGrid } from "../../components/core/summary/SummaryGrid";
+import { SummaryData } from "../../components/core/summary/data";
 
 /**
  * AssignmentListPageProps
  */
 export type AssignmentListPageProps = {
-  activities: AutocompleteItem[];
-  assignees: TransferListData;
-  assignments: AssignmentData[];
-  isCreateOpen?: boolean
-  createAssignmentStep?: number
+  data: {
+    isCreateOpen?: boolean
+    createAssignmentStep?: number
+    summary: SummaryData;
+    activities: AutocompleteItem[]
+    assignees: TransferListData
+    assignments: AssignmentData[];
+  }
   onCreate?: (name: string, activity: AutocompleteItem, assignees: TransferListData) => void;
   onRename?: (data: AssignmentData, newName: string) => void;
   onArchive?: (data: AssignmentData) => void;
@@ -62,7 +67,7 @@ export function AssignmentListPage(props: AssignmentListPageProps) {
   const theme = useMantineTheme();
   const { classes } = useAssignmentStyles();
   const form = useForm(props);
-  const openAssignments = props.assignments
+  const openAssignments = props.data.assignments
     .filter((v) => v.status === "open")
     .map((v) => {
       return (
@@ -155,7 +160,7 @@ export function AssignmentListPage(props: AssignmentListPageProps) {
       );
     });
 
-  const assignedToMe = props.assignments
+  const assignedToMe = props.data.assignments
     .filter((v) => v.status === "assigned to me")
     .map((v) => {
       return (
@@ -191,7 +196,7 @@ export function AssignmentListPage(props: AssignmentListPageProps) {
       );
     });
 
-  const archivedAssignments = props.assignments
+  const archivedAssignments = props.data.assignments
     .filter((v) => v.status === "archived")
     .map((v) => {
       return (
@@ -238,6 +243,7 @@ export function AssignmentListPage(props: AssignmentListPageProps) {
             <IconClipboardList color={theme.colors.dark[4]} />
             <Title color="dark.4">Assignments</Title>
           </Group>
+          <SummaryGrid data={props.data.summary}/>
           <Divider />
           <Button onClick={form.open} maw="max-content" variant="subtle" leftIcon={<IconPlus />}>
             New assignment
@@ -265,7 +271,12 @@ export function AssignmentListPage(props: AssignmentListPageProps) {
   );
 }
 
-function RenameAssignment(props: AssignmentListPageProps & { data: AssignmentData }) {
+type RenameAssignmentProps = {
+  data: AssignmentData
+  onRename?: (data: AssignmentData, newName: string) => void
+}
+
+function RenameAssignment(props: RenameAssignmentProps) {
   const [newName, setNewName] = React.useState("");
   const rename = (data: AssignmentData, newName: string) => {
     props.onRename && props.onRename(data, newName);
@@ -291,11 +302,11 @@ function RenameAssignment(props: AssignmentListPageProps & { data: AssignmentDat
 function useForm(props: AssignmentListPageProps) {
   const form = useMantineForm({
     initialValues: {
-      opened: props.isCreateOpen || false,
-      stage: props.createAssignmentStep || 0,
+      opened: props.data.isCreateOpen || false,
+      stage: props.data.createAssignmentStep || 0,
       node: undefined as React.ReactNode,
       name: "",
-      assignees: props.assignees,
+      assignees: props.data.assignees,
       activity: '',
     },
     transformValues: (values) => {
@@ -352,7 +363,7 @@ function useForm(props: AssignmentListPageProps) {
 }
 
 function AssignmentStepper(props: AssignmentListPageProps & {form: UseFormReturnType<any>}){
-  const [active, setActive] = React.useState(props.createAssignmentStep || 0);
+  const [active, setActive] = React.useState(props.data.createAssignmentStep || 0);
   const [highestStepVisited, setHighestStepVisited] = React.useState(active);
 
   const handleStepChange = (nextStep: number) => {
@@ -418,7 +429,7 @@ function AssignmentStepper(props: AssignmentListPageProps & {form: UseFormReturn
           withAsterisk
           label="Select an activity"
           placeholder="Search activities"
-          data={props.activities}
+          data={props.data.activities}
           {...props.form.getInputProps("activity")}
         />
       </Stepper.Step>

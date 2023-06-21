@@ -24,6 +24,8 @@ import { PlaceholderBanner } from "../../components/core/placeholder/Placeholder
 import { useForm as useMantineForm } from "@mantine/form";
 import { DataTransferList } from "../../components/core/data/DataTransferList";
 import { ClassData } from "../../components/class/data";
+import { SummaryGrid } from "../../components/core/summary/SummaryGrid";
+import { SummaryData } from "../../components/core/summary/data";
 
 const useStyles = createStyles((theme) => {
   return {
@@ -46,7 +48,7 @@ const useStyles = createStyles((theme) => {
  * ClassListPageProps
  */
 export type ClassListPageProps = {
-  data: {members: TransferListData, classes: ClassData[]};
+  data: {members: TransferListData, classes: ClassData[], summary: SummaryData};
   onCreate?: (name: string, members: TransferListData) => void;
   onJoin?: (code: string) => void;
   onRename?: (data: ClassData, newName: string) => void;
@@ -277,6 +279,7 @@ export function ClassListPage(props: ClassListPageProps) {
               Join
             </Button>
           </Flex>
+          <SummaryGrid data={props.data.summary}/>
           <Divider />
           <Button onClick={() => form.open(0)} maw="max-content" variant="subtle" leftIcon={<IconPlus />}>
             New class
