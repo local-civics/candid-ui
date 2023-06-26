@@ -1,7 +1,7 @@
 
 export type FormItemData = {
-  itemId?: string;
   displayName?: string | React.ReactNode;
+  itemId?: string;
   description?: string;
   format?: "question" | "image" | "embed" | "text";
   questionType?: "radio" | "checkbox" | "drop down" | "file upload" | "text" | "date" | "time";
@@ -17,7 +17,7 @@ export type FormItemData = {
   questionId?: string;
   responses?: string[];
   minText?: number;
-  children?: React.ReactNode;
+
 
 };
 
@@ -45,6 +45,5 @@ export type LessonData = {
   timeSpent?: number;
   elapsedTime?: number;
   stopWatchStarted?: boolean;
-  stopWatch?: React.ReactNode;
 }
 

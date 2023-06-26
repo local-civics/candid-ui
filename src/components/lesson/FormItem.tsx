@@ -1,11 +1,14 @@
 
 import React from "react"
 import { FormItemData } from "./data"
-import { Text, Title, Paper, Button, Flex, createStyles, Grid, TextInput, Input, Group } from "@mantine/core";
+import { FileInput, Checkbox, Radio, Select, Text, Title, Paper, Button, Flex, createStyles, Grid, TextInput, Input, Group, Textarea } from "@mantine/core";
 import { TimeInput } from '@mantine/dates';
 import { IconCircleCheck, IconCircle } from '@tabler/icons-react';
 
 export type FormItemProps = FormItemData & {
+    children?: React.ReactNode;
+    stopWatch?: React.ReactNode;
+
     onResponseChange?: (responses?: string[], file?: Blob) => void;
     onTextBlur?: () => void;
 };
@@ -14,7 +17,6 @@ const useStyles = createStyles((theme) => {
     return {
         paperContainer: {
             width: "75%",
-            // padding: "14rem 14rem",
             marginBottom: "6rem",
             marginLeft: "14rem",
             fontFamily: "ProximaNova, Helvetica, Arial, sans-serif",
@@ -44,7 +46,6 @@ const useStyles = createStyles((theme) => {
         },
         image__container: {
             position: 'relative',
-            // maxWidth: '25rem',
             [theme.breakpoints.md]: {
                 maxWidth: '40rem',
                 width: '40rem',
@@ -98,7 +99,6 @@ const useStyles = createStyles((theme) => {
             width: '98%',
             padding: "0.75rem 1rem",
             backgroundColor: " #ffffff",
-            border: "1px solid #6b7280",
             borderRadius: "0.25rem",
             boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
             placeholderColor: " #6b7280",
@@ -137,9 +137,8 @@ export const FormItem = (props: FormItemProps) => {
         strokeWidth={2}
         color={'black'}
     />
-    const contentMaxWidth = props.format === "question" ? "max-w-lg" : "";
+
     const [showError, setShowError] = React.useState(false);
-    const itemContainerError = showError && isTextError ? "border-2 border-rose-300" : "";
 
     const onTextBlur = () => {
         if (isTextError) {
@@ -258,11 +257,10 @@ const RadioQuestion = (props: FormItemProps) => {
                                     align="center"
                                     direction="row"
                                     wrap="wrap">
-                                    <input
+                                    <Radio
                                         checked={values[option]}
                                         onChange={onChange}
                                         required={props.required}
-                                        type="radio"
                                         value={option}
                                         disabled={props.disabled}
                                         name={displayNameString(props.displayName)}
@@ -335,27 +333,26 @@ const CheckboxQuestion = (props: FormItemProps) => {
                         <div key={option} className={classes.fieldset__label}>
                             <label >
                                 <Flex gap="md" justify="flex-start" align="center" direction="row" wrap="wrap">
-                                    <input
+                                    <Checkbox
                                         id="checkbox"
                                         disabled={props.disabled}
                                         required={option ? props.required && !isOneChecked && !!isOtherResponse : props.required && !isOneChecked}
                                         checked={values[option] || (!option && values[`Other: ${response}`])}
                                         onChange={option ? onChange : onOtherChange}
-                                        type="checkbox"
                                         value={option || response}
-                                        name={displayNameString(props.displayName)}
+                                        label={displayNameString(props.displayName)}
                                     />
                                     {option && <div>{option}</div>}
                                     {!option && (
                                         <>
                                             Other:{" "}
-                                            <input
+                                            <Checkbox
 
                                                 value={isOtherResponse ? response : ""}
                                                 required={props.required && !isOneChecked}
                                                 disabled={props.disabled}
                                                 onChange={onOtherChange}
-                                                placeholder="Input another option"
+                                                label="Input another option"
 
                                             />
                                         </>
@@ -373,36 +370,26 @@ const CheckboxQuestion = (props: FormItemProps) => {
 };
 
 const DropDownQuestion = (props: FormItemProps) => {
+    console.log(props.options, "props.options")
     const options = props.options || [];
     const responses = props.responses || [];
     const values: { [key: string]: boolean } = {};
     responses.forEach((key) => (values[key] = true));
 
-    const onChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const onChange = (value: string) => {
         if (props.onResponseChange) {
-            props.onResponseChange([e.target.value]);
+            props.onResponseChange([value]);
         }
     };
 
     return (
-        <select
+        <Select
             disabled={props.disabled}
             required={props.required}
             name={displayNameString(props.displayName)}
             onChange={onChange}
-        >
-            <option value="">
-                Select one
-            </option>
-
-            {options.map((option) => {
-                return (
-                    <option key={option} selected={values[option]} value={option}>
-                        {option}
-                    </option>
-                );
-            })}
-        </select>
+            data={options}
+        />
     );
 };
 
@@ -415,10 +402,8 @@ const FileUploadQuestion = (props: FormItemProps) => {
             props.onResponseChange([e.target.value]);
         }
     };
-    const onImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const onImageUpload = (file: File) => {
         let reader = new FileReader();
-        const target = e.target as HTMLInputElement;
-        const file: File = (target.files as FileList)[0];
         reader.onloadend = () => {
             if (typeof reader.result === "string") {
                 setImageURL(reader.result);
@@ -443,13 +428,10 @@ const FileUploadQuestion = (props: FormItemProps) => {
                 <Group align="center" spacing="xs">
                     <label >
                         <span>Choose image photo</span>
-                        <input
+                        <FileInput
                             disabled={props.disabled}
                             onChange={onImageUpload}
-                            name="image"
-                            type="file"
-                            className=""
-                        />
+                            label="image" />
                     </label>
                 </Group >
 
@@ -489,27 +471,25 @@ const TextQuestion = (props: FormItemProps) => {
                 <Input
                     className={classes.test__question}
                     required={props.required}
-                    minLength={minimum}
                     onChange={onChange}
                     onBlur={props.onTextBlur}
                     name={displayNameString(props.displayName)}
                     disabled={props.disabled}
-                    type="text"
                     placeholder="Your answer"
                     value={response}
 
                 />
             )}
             {props.paragraph && (
-                <textarea
+                <Textarea
                     className={classes.text__area}
                     required={props.required}
-                    minLength={minimum}
                     onChange={onChange}
                     onBlur={props.onTextBlur}
-                    name={displayNameString(props.displayName)}
+                    label={displayNameString(props.displayName)}
                     disabled={props.disabled}
                     value={response}
+                    withAsterisk
                     placeholder="Your answer"
                 />
             )}
@@ -584,7 +564,7 @@ const Image = (props: FormItemProps) => {
         scale: `${scale}`
     }
 
-    console.log(`${scale}`)
+
     return (
         <div className={classes.image__container}>
             <img

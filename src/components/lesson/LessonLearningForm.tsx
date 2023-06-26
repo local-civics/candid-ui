@@ -1,7 +1,7 @@
 import * as React from "react";
 import { LessonData, FormItemData } from "./data";
 import { FormItem } from "./FormItem";
-import { Text, Paper, Button, Flex, createStyles, ScrollArea, Box, List } from "@mantine/core";
+import { Rating, Group, Stack, Text, Paper, Button, Flex, createStyles, ScrollArea, Box, List } from "@mantine/core";
 import { IconCircle, IconCircleFilled } from "@tabler/icons-react";
 
 const AUTOSAVE_TIMEOUT = 30 * 1000;
@@ -11,7 +11,6 @@ const useStyles = createStyles((theme) => {
   return {
     paperContainer: {
       width: "75%",
-      // padding: "14rem 14rem",
       marginBottom: "6rem",
       marginLeft: "14rem",
       fontFamily: "ProximaNova, Helvetica, Arial, sans-serif",
@@ -138,7 +137,7 @@ export function LessonLearningForm(props: LessonLearningFormProps) {
         />
 
         <FormItem>
-          <Rating disabled={!canReflect || !!props.preview} rating={rating} setRating={setRating} />
+          <Ratings disabled={!canReflect || !!props.preview} rating={rating} setRating={setRating} />
         </FormItem>
 
         {!props.preview && (
@@ -170,7 +169,7 @@ export function LessonLearningForm(props: LessonLearningFormProps) {
   );
 }
 
-const Rating = (props: { disabled?: boolean; rating?: number; setRating?: (rating: number) => void }) => {
+const Ratings = (props: { disabled?: boolean; rating?: number; setRating?: (rating: number) => void }) => {
   /**
    * Max points for reflection.
    */
@@ -181,27 +180,14 @@ const Rating = (props: { disabled?: boolean; rating?: number; setRating?: (ratin
   const maxPoints = 5;
   const circlePointer = props.disabled ? "" : "pointer";
 
-  const buttons = Array.from({ length: maxPoints }, (_, i) => {
-    // const style={color:color}
-    const color = i < confidence ? "lightblue" : "gray";
-    return (
-      <div
-        key={i}
-        onMouseEnter={() => onMouseEnter(i + 1)}
-        onMouseLeave={onMouseLeave}
-        style={{ color: color, cursor: "pointer" }}
-      >
-        <div onClick={() => onClick(i + 1)}>
-          {/* <Icon name="circle" /> */}
-          {i < confidence ? (
-            <IconCircleFilled color={"lightblue"}></IconCircleFilled>
-          ) : (
-            <IconCircle color={i < confidence ? "lightblue" : "gray"}></IconCircle>
-          )}
-        </div>
-      </div>
-    );
-  });
+  const buttons =
+    <Stack>
+      <Group>
+        <Rating fractions={2} defaultValue={1.5} />
+      </Group>
+
+    </Stack>
+
   const labels = Array.from({ length: maxPoints }, (_, i) => {
     if (i === 0) {
       return <p key={i}>Poor</p>;
@@ -225,7 +211,7 @@ const Rating = (props: { disabled?: boolean; rating?: number; setRating?: (ratin
       <h6>{"Almost there, rate this activity before submitting."}</h6>
       <div>
         <div style={{ display: "flex", flexDirection: "row" }}>{buttons}</div>
-        <div>{labels}</div>
+        <div style={{ display: "flex", flexDirection: "row", alignContent: "space-between" }}>{labels}</div>
       </div>
     </div>
   );
