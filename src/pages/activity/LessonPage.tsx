@@ -10,7 +10,7 @@ import { ActivityOverview } from "../../components/core/activity/ActivityOvervie
 import { ActivityPreview } from "../../components/core/activity/ActivityPreview";
 import { ActivityHero } from "../../components/core/activity/ActivityHero";
 import { LessonData } from "../../components/lesson/data";
-
+import { LessonLearningForm } from "../../components/lesson/LessonLearningForm";
 const useStyles = createStyles((theme) => {
   return {
     root: {
@@ -33,7 +33,8 @@ const useStyles = createStyles((theme) => {
 const FAQ_QUESTIONS = [
   {
     control: "When can I start this lesson?",
-    panel: "Whenever you are ready to begin the lesson you may do so. You can also stop at any time and continue later.",
+    panel:
+      "Whenever you are ready to begin the lesson you may do so. You can also stop at any time and continue later.",
   },
   {
     control: "Can I earn class credit for this lesson?",
@@ -41,11 +42,13 @@ const FAQ_QUESTIONS = [
   },
   {
     control: "How do I assign a lesson?",
-    panel: "Assigning a lesson is as simple as clicking share, then assign. From there follow the prompts to fill out the details of your assignment.",
+    panel:
+      "Assigning a lesson is as simple as clicking share, then assign. From there follow the prompts to fill out the details of your assignment.",
   },
   {
     control: "Will my responses be auto-saved?",
-    panel: "A draft of your responses will be auto-saved every 30 seconds, and if you need to save your responses more frequently you may manually save at any time.",
+    panel:
+      "A draft of your responses will be auto-saved every 30 seconds, and if you need to save your responses more frequently you may manually save at any time.",
   },
   {
     control: "Can I try a lesson for free?",
@@ -113,6 +116,6 @@ export function LessonPage(props: LessonPageProps) {
           <ActivityFAQ questions={FAQ_QUESTIONS} />
         </Tabs.Panel>
       </Tabs>
-    </Container>
+    </Container >
   );
 }
