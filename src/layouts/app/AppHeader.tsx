@@ -29,7 +29,7 @@ const useStyles = createStyles((theme) => {
  * AppHeaderProps
  */
 export type AppHeaderProps = UserAvatarButtonProps & {
-  onMenuClick: () => void;
+  onMenuClick?: () => void;
   onSearch?: (q: string) => void;
 };
 
