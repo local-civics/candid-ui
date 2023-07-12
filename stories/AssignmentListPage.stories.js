@@ -60,7 +60,7 @@ const MOCK_ACTIVITY_DATA = [
 ];
 
 export default {
-  name: 'Page/AssignmentListPage',
+  title: 'Page/Assignment/AssignmentListPage',
   component: AssignmentListPage,
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/react/writing-docs/autodocs
   tags: ['autodocs'],
@@ -74,7 +74,7 @@ const Template = {
   args: {
     data: {
       assignees: MOCK_ASSIGNEE_DATA,
-      activities: MOCK_ACTIVITY_DATA,
+      tasks: MOCK_ACTIVITY_DATA,
       assignments: [],
       summary: [{
         title: "Assignments",

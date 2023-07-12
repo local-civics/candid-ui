@@ -1,10 +1,8 @@
 import * as React from "react";
-import { LessonData, FormItemData } from "./data";
+import { TaskData, FormItemData } from "../task/data";
 import { FormItem } from "./FormItem";
 import { Rating, Group, Stack, Text, Paper, Button, Flex, createStyles, ScrollArea, Box, List } from "@mantine/core";
-import { IconCircle, IconCircleFilled } from "@tabler/icons-react";
 
-const AUTOSAVE_TIMEOUT = 30 * 1000;
 const MIN_REFLECTION_LENGTH = 100;
 
 const useStyles = createStyles((theme) => {
@@ -27,7 +25,7 @@ const useStyles = createStyles((theme) => {
 /**
  * LessonLearningFormProps
  */
-export type LessonLearningFormProps = LessonData & {
+export type LessonLearningFormProps = TaskData & {
   onHome?: () => void;
   onGoBack?: () => void;
   onSubmit?: (reflection: string, rating?: number) => Promise<any>;
@@ -46,8 +44,8 @@ export function LessonLearningForm(props: LessonLearningFormProps) {
   const [isDraft, setIsDraft] = React.useState(false);
   const items = props.items || [];
 
-  const [reflection, setReflection] = React.useState(props.reflection || "");
-  const [rating, setRating] = React.useState(props.rating);
+  const [reflection, setReflection] = React.useState(props.userReflection || "");
+  const [rating, setRating] = React.useState(props.userRating);
   let answeredAllRequired = true;
   const canReflect = !!reflection || answeredAllRequired;
   const saveVisibility = isDraft ? 100 : 0;
@@ -104,7 +102,7 @@ export function LessonLearningForm(props: LessonLearningFormProps) {
                 <p>{props.description}</p>
               </ScrollArea>
             )}
-            {!!props.estimate && <p>Estimated Completion Time: {props.estimate}</p>}
+            {!!props.etc && <p>Estimated Completion Time: {props.etc}</p>}
           </Text>
           <>
             <img alt={props.title} src={props.imageURL} className={classes.formDescriptionImage} />
@@ -118,7 +116,7 @@ export function LessonLearningForm(props: LessonLearningFormProps) {
         <FormItem
           displayName={
             <>
-              <p>To earn your impact points for this activity, answer either of the following:</p>
+              <p>To earn your impact points for this task, answer either of the following:</p>
               <List style={{ listStyleType: "disc" }}>
                 <Text size="sm">How would you explain what you learned here to a friend? OR</Text>
                 <Text size="sm">How does what you learned here connect to other school topics or everyday life?</Text>
@@ -208,7 +206,7 @@ const Ratings = (props: { disabled?: boolean; rating?: number; setRating?: (rati
 
   return (
     <div>
-      <h6>{"Almost there, rate this activity before submitting."}</h6>
+      <h6>{"Almost there, rate this task before submitting."}</h6>
       <div>
         <div style={{ display: "flex", flexDirection: "row" }}>{buttons}</div>
         <div style={{ display: "flex", flexDirection: "row", alignContent: "space-between" }}>{labels}</div>

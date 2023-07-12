@@ -76,9 +76,9 @@ const FEATURES_DATA = [
 ];
 
 /**
- * ActivityOverviewProps
+ * TaskOverviewProps
  */
-export type ActivityOverviewProps = {
+export type TaskOverviewProps = {
   title?: string;
   description?: string;
   estimate?: string;
@@ -89,11 +89,11 @@ export type ActivityOverviewProps = {
 };
 
 /**
- * ActivityOverview
+ * TaskOverview
  * @param props
  * @constructor
  */
-export function ActivityOverview(props: ActivityOverviewProps) {
+export function TaskOverview(props: TaskOverviewProps) {
   const { classes } = useStyles();
   const theme = useMantineTheme();
   const title = props.title || "Overview";

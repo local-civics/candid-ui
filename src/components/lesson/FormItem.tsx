@@ -211,7 +211,7 @@ const Switch = (props: FormItemProps) => {
     switch (true) {
         case props.format === "embed":
             return <Embed {...props} />;
-        case props.format === "image":
+        case props.format === "imageURL":
             return <Image {...props} />;
         case props.questionType === "radio":
             return <RadioQuestion {...props} />;

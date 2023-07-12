@@ -4,7 +4,7 @@ import { HomePage } from "../src/pages/home/HomePage";
 import { AppLayout } from "../src/layouts/app/AppLayout";
 
 export default {
-  title: "Page/HomePage",
+  title: "Page/Explore/HomePage",
   component: HomePage,
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/react/writing-docs/autodocs
   tags: ["autodocs"],
@@ -16,38 +16,43 @@ export default {
 
 const MOCK_POSTS = [
   {
-    image: "https://cdn.localcivics.io/hub/landing.jpg",
+    imageURL: "https://cdn.localcivics.io/hub/landing.jpg",
     title: "Verudela Beach w. A Side of Fries",
     category: "Badge Opportunity",
-    rating: 4.567,
+    avgRating: 4.567,
     liked: true,
     description:
       "Completely renovated for the season 2020, Arena Verudela Bech Apartments are fully equipped and modernly furnished 4-star self-service apartments located on the Adriatic coastline by one of the most beautiful beaches in Pula.",
   },
   {
-    image: "https://cdn.localcivics.io/hub/landing.jpg",
+    imageURL: "https://cdn.localcivics.io/hub/landing.jpg",
     title: "Verudela Beach",
     category: "Lesson Opportunity",
-    rating: 4.167,
+    avgRating: 4.167,
     description:
       "Completely renovated for the season 2020, Arena Verudela Bech Apartments are fully equipped and modernly furnished 4-star self-service apartments located on the Adriatic coastline by one of the most beautiful beaches in Pula.",
   },
   {
-    image: "https://cdn.localcivics.io/hub/landing.jpg",
+    imageURL: "https://cdn.localcivics.io/hub/landing.jpg",
     title: "Verudela Beach",
     category: "Lesson Opportunity",
-    rating: 4,
+    avgRating: 4,
     description:
       "Completely renovated for the season 2020, Arena Verudela Bech Apartments are fully equipped and modernly furnished 4-star self-service apartments located on the Adriatic coastline by one of the most beautiful beaches in Pula.",
   },
   {
-    image: "https://cdn.localcivics.io/hub/landing.jpg",
+    imageURL: "https://cdn.localcivics.io/hub/landing.jpg",
     title: "Verudela Beach w. A Side of Fries",
     category: "Badge Opportunity",
-    rating: 2.567,
+    avgRating: 2.567,
     description:
       "Completely renovated for the season 2020, Arena Verudela Bech Apartments are fully equipped and modernly furnished 4-star self-service apartments located on the Adriatic coastline by one of the most beautiful beaches in Pula.",
   },
+  {
+    title: "Onboarding Badge",
+    iconURL: "https://cdn.localcivics.io/v1/store/images/XkYCJEdZJXEmsEQYLWiTA7?version=RcpvwzVT7sp9z3mJetAj2m",
+    description: "Introduces students to concepts and practices that concern community relationships and civic life. These introductory tasks provide students with a foundation from which they can begin to explore civic life and develop there civic identity.",
+  }
 ];
 
 const Template = {

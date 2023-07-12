@@ -20,18 +20,18 @@ const useStyles = createStyles((theme) => ({
 }));
 
 /**
- * ActivityFAQProps
+ * TaskFAQProps
  */
-export type ActivityFAQProps = {
+export type TaskFAQProps = {
   questions: { control: string; panel: string }[];
 };
 
 /**
- * ActivityFAQ
+ * TaskFAQ
  * @param props
  * @constructor
  */
-export function ActivityFAQ(props: ActivityFAQProps) {
+export function TaskFAQ(props: TaskFAQProps) {
   const { classes } = useStyles();
   const questions = props.questions.map((q) => {
     return (

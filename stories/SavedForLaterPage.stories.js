@@ -1,10 +1,10 @@
 import * as React from "react";
 import {MemoryRouter} from "react-router-dom";
-import { SavedForLaterPage } from '../src/pages/activity/SavedForLaterPage';
+import { SavedForLaterPage } from '../src/pages/task/SavedForLaterPage';
 import {AppLayout} from "../src/layouts/app/AppLayout";
 
 export default {
-  title: 'Page/SavedForLaterPage',
+  title: 'Page/Library/SavedForLaterPage',
   component: SavedForLaterPage,
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/react/writing-docs/autodocs
   tags: ['autodocs'],
@@ -15,26 +15,26 @@ export default {
 };
 
 const MOCK_DATA = [{
-  "image": "https://cdn.localcivics.io/hub/landing.jpg",
+  "imageURL": "https://cdn.localcivics.io/hub/landing.jpg",
   "title": "Verudela Beach w. A Side of Fries",
   "category": "Badge Opportunity",
   "rating": 4.567,
   "liked": true,
   "description": "Completely renovated for the season 2020, Arena Verudela Bech Apartments are fully equipped and modernly furnished 4-star self-service apartments located on the Adriatic coastline by one of the most beautiful beaches in Pula.",
 },{
-  "image": "https://cdn.localcivics.io/hub/landing.jpg",
+  "imageURL": "https://cdn.localcivics.io/hub/landing.jpg",
   "title": "Verudela Beach",
   "category": "Lesson Opportunity",
   "rating": 4.167,
   "description": "Completely renovated for the season 2020, Arena Verudela Bech Apartments are fully equipped and modernly furnished 4-star self-service apartments located on the Adriatic coastline by one of the most beautiful beaches in Pula.",
 },{
-  "image": "https://cdn.localcivics.io/hub/landing.jpg",
+  "imageURL": "https://cdn.localcivics.io/hub/landing.jpg",
   "title": "Verudela Beach",
   "category": "Lesson Opportunity",
   "rating": 4,
   "description": "Completely renovated for the season 2020, Arena Verudela Bech Apartments are fully equipped and modernly furnished 4-star self-service apartments located on the Adriatic coastline by one of the most beautiful beaches in Pula.",
 },{
-  "image": "https://cdn.localcivics.io/hub/landing.jpg",
+  "imageURL": "https://cdn.localcivics.io/hub/landing.jpg",
   "title": "Verudela Beach w. A Side of Fries",
   "category": "Badge Opportunity",
   "rating": 2.567,

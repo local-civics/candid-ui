@@ -5,10 +5,10 @@ import {
   Text,
   createStyles,
 } from "@mantine/core";
-import { ActivityFAQ } from "../../components/core/activity/ActivityFAQ";
-import { ActivityOverview } from "../../components/core/activity/ActivityOverview";
-import { ActivityPreview } from "../../components/core/activity/ActivityPreview";
-import { ActivityHero } from "../../components/core/activity/ActivityHero";
+import { TaskFAQ } from "../../components/task/TaskFAQ";
+import { TaskOverview } from "../../components/task/TaskOverview";
+import { TaskPreview } from "../../components/task/TaskPreview";
+import { TaskHero } from "../../components/task/TaskHero";
 import { LessonData } from "../../components/lesson/data";
 import { LessonLearningForm } from "../../components/lesson/LessonLearningForm";
 const useStyles = createStyles((theme) => {
@@ -81,7 +81,7 @@ export function LessonPage(props: LessonPageProps) {
   const { classes } = useStyles();
   return (
     <Container className={classes.root} fluid size="lg" px={0} pb="xl">
-      <ActivityHero {...props} />
+      <TaskHero {...props} />
       <Tabs defaultValue="overview">
         <Tabs.List>
           <Tabs.Tab value="overview">
@@ -102,18 +102,18 @@ export function LessonPage(props: LessonPageProps) {
         </Tabs.List>
 
         <Tabs.Panel value="overview" pt="xs">
-          <ActivityOverview {...props} title="Overview" />
+          <TaskOverview {...props} title="Overview" />
         </Tabs.Panel>
 
         <Tabs.Panel value="preview" pt="xs">
-          <ActivityPreview
+          <TaskPreview
             previewItems={props.preview || []}
             previewItemCount={props.numberOfQuestions || 0}
           />
         </Tabs.Panel>
 
         <Tabs.Panel value="faq" pt="xs">
-          <ActivityFAQ questions={FAQ_QUESTIONS} />
+          <TaskFAQ questions={FAQ_QUESTIONS} />
         </Tabs.Panel>
       </Tabs>
     </Container >

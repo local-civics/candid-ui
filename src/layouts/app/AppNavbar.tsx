@@ -93,7 +93,7 @@ export function AppNavbar(props: AppNavbarProps) {
           <AppLink
             isActive={active === "Assignments"}
             icon={IconClipboardList}
-            href="/library/assignments"
+            href="/assignments"
             label="Assignments"
             onNavigate={onNavigate}
           />

@@ -2,7 +2,7 @@ import * as React from "react";
 import { Container, Grid, Text, Title, Stack, Group, Button } from "@mantine/core";
 import { IconClockFilled, IconPencil, IconPhoto, IconVideo } from "@tabler/icons-react";
 import { useBadgeStyles } from "./styles";
-import { BadgeSyllabusData, BadgeSyllabusItemData } from "./data";
+import { BadgeSyllabusData, BadgeSyllabusItemData } from "../task/data";
 
 /**
  * BadgeSyllabusProps
@@ -19,7 +19,7 @@ export type BadgeSyllabusProps = BadgeSyllabusData & {
 export function BadgeSyllabus(props: BadgeSyllabusProps) {
   const { classes, cx } = useBadgeStyles();
   const title = props.title || "What You'll Learn";
-  const sessions = props.items.map((v, i) => {
+  const sessions = props.items?.map((v, i) => {
     return (
       <React.Fragment key={v.title}>
         <Grid.Col span={3} pr="9rem">
@@ -30,7 +30,7 @@ export function BadgeSyllabus(props: BadgeSyllabusProps) {
             {i + 1}
           </Text>
         </Grid.Col>
-        <Grid.Col span={9} pb={40} className={cx({ [classes.badgeSyllabusSessionItem]: i < props.items.length - 1 })}>
+        <Grid.Col span={9} pb={40} className={cx({ [classes.badgeSyllabusSessionItem]: i < (props.items?.length || 0) - 1 })}>
           <Stack spacing={20}>
             <Group spacing={5}>
               <IconClockFilled size={18} />

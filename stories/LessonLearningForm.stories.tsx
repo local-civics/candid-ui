@@ -49,7 +49,7 @@ const parksAndGreenForm: LessonData = {
   formId: "b4a4dfd7-83e7-4bda-b24d-55648f3e703a",
   title: "Apply the Parks & Green Spaces Civic Lens ",
   description:
-    "Civic Lenses are filters we can use to closely examine our community by focusing deeply on one particular area. Applying different Civic Lenses can help shift our perspective around community issues and reveal assets/resources and connections to other aspects of community that maybe we didn't notice before!\n\nIn this activity, you will apply the parks & green spaces civic lens to your local neighborhood and community. This means you will consider strengths and areas of improvement for access to recreation and nature for all people.\n",
+    "Civic Lenses are filters we can use to closely examine our community by focusing deeply on one particular area. Applying different Civic Lenses can help shift our perspective around community issues and reveal assets/resources and connections to other aspects of community that maybe we didn't notice before!\n\nIn this task, you will apply the parks & green spaces civic lens to your local neighborhood and community. This means you will consider strengths and areas of improvement for access to recreation and nature for all people.\n",
   imageURL:
     "https://uploads-ssl.webflow.com/5ead22f7b41a94042ab113cd/623b30c8692b05e095358eae_civicMilestone_parks.png",
   estimate: "15m",
@@ -98,7 +98,7 @@ const publicSpeakingForm: LessonData = {
   formId: "5b0c2c0f-5f23-48ee-a0af-ed4f08ab23fc",
   title: "Public Speaking",
   description:
-    "Public speaking is a huge part of getting the job done when it comes to enacting change in the world. We need to be able to effectively communicate our views while keeping in mind the audience and their unique knowledge, point of view, and wants/needs.\n\nIn this activity, you will analyze the effectiveness of content and delivery with regard to a particular purpose and the speaker's intended audience.\n\nEstimated Completion Time: 15-20 min.",
+    "Public speaking is a huge part of getting the job done when it comes to enacting change in the world. We need to be able to effectively communicate our views while keeping in mind the audience and their unique knowledge, point of view, and wants/needs.\n\nIn this task, you will analyze the effectiveness of content and delivery with regard to a particular purpose and the speaker's intended audience.\n\nEstimated Completion Time: 15-20 min.",
   imageURL: "https://uploads-ssl.webflow.com/5ead22f7b41a94042ab113cd/623a0f01f2c0f77af763932c_publicSpeaking.png",
   estimate: "30m",
   items: [
@@ -212,9 +212,9 @@ const publicSpeakingForm: LessonData = {
     },
     {
       itemId: "e14dab06-d5e9-4da3-b5c2-a6029d02d0f5",
-      displayName: 'After you press "Submit," be sure to submit a reflection and rating for this activity.',
+      displayName: 'After you press "Submit," be sure to submit a reflection and rating for this task.',
       description:
-        "Tell us a bit about what you learned, how this activity helped you on your civic leadership journey, or share any feedback/questions in your reflection!",
+        "Tell us a bit about what you learned, how this task helped you on your civic leadership journey, or share any feedback/questions in your reflection!",
       format: "text",
     },
   ],

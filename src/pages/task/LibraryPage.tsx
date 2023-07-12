@@ -1,20 +1,20 @@
 import * as React from "react";
-import { ActivityCard } from "../../components/core/activity/ActivityCard";
+import { TaskCard } from "../../components/task/TaskCard";
 import { Anchor, Box, Container, Flex, LoadingOverlay, SimpleGrid, Stack, Title, useMantineTheme } from "@mantine/core";
 import { IconBook } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
-import { ActivityData } from "../../components/core/activity/data";
+import { TaskData } from "../../components/task/data";
 
 /**
  * LibraryPageProps
  */
 export type LibraryPageProps = {
   loading?: boolean
-  data?: {title: string, href: string, content: ActivityData[]}[]
-  onLikeActivity?: (data: ActivityData) => void;
-  onSaveActivity?: (data: ActivityData) => void;
-  onAssignActivity?: (data: ActivityData) => void;
-  onOpenActivity?: (data: ActivityData) => void;
+  data?: {title: string, href: string, content: TaskData[]}[]
+  onLikeTask?: (data: TaskData) => void;
+  onSaveTask?: (data: TaskData) => void;
+  onAssignTask?: (data: TaskData) => void;
+  onOpenTask?: (data: TaskData) => void;
 };
 
 /**
@@ -41,14 +41,14 @@ export function LibraryPage(props: LibraryPageProps) {
         >
           {
             d.content.map(p => {
-              return <ActivityCard
+              return <TaskCard
                 key={`${d.title}${p.href}`}
                 size="sm"
                 data={p}
-                onLikeClick={() => props.onLikeActivity && props.onLikeActivity(p)}
-                onSave={() => props.onSaveActivity && props.onSaveActivity(p)}
-                onAssign={() => props.onAssignActivity && props.onAssignActivity(p)}
-                onOpen={() => props.onOpenActivity && props.onOpenActivity(p)}
+                onLikeClick={() => props.onLikeTask && props.onLikeTask(p)}
+                onSave={() => props.onSaveTask && props.onSaveTask(p)}
+                onAssign={() => props.onAssignTask && props.onAssignTask(p)}
+                onOpen={() => props.onOpenTask && props.onOpenTask(p)}
               />
             })
           }
@@ -58,7 +58,7 @@ export function LibraryPage(props: LibraryPageProps) {
   });
 
   return <Container size="lg" pb="xl">
-    {/* Content activities */}
+    {/* Content tasks */}
     <Box pos="relative">
       <LoadingOverlay visible={!!props.loading} overlayBlur={2} />
       <Stack spacing="lg">

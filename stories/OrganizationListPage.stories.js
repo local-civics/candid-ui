@@ -33,7 +33,7 @@ const MOCK_DATA = {
 };
 
 export default {
-  title: "Page/OrganizationListPage",
+  title: "Page/Organization/OrganizationListPage",
   component: OrganizationListPage,
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/react/writing-docs/autodocs
   tags: ["autodocs"],
@@ -74,6 +74,11 @@ export const Joined = {
     data: {
       ...MOCK_DATA,
       organizations: MOCK_DATA.organizations.filter((a) => a.status === "member"),
+      summary: [{
+        title: "Organizations",
+        value: MOCK_DATA.organizations.length,
+        description: "Total # of organizations"
+      }]
     },
   },
 };

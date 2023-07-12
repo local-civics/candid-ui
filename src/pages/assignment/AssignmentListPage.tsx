@@ -45,11 +45,11 @@ export type AssignmentListPageProps = {
     isCreateOpen?: boolean
     createAssignmentStep?: number
     summary: SummaryData;
-    activities: AutocompleteItem[]
+    tasks: AutocompleteItem[]
     assignees: TransferListData
     assignments: AssignmentData[];
   }
-  onCreate?: (name: string, activity: AutocompleteItem, assignees: TransferListData) => void;
+  onCreate?: (name: string, task: AutocompleteItem, assignees: TransferListData) => void;
   onRename?: (data: AssignmentData, newName: string) => void;
   onArchive?: (data: AssignmentData) => void;
   onOpen?: (data: AssignmentData) => void;
@@ -307,7 +307,7 @@ function useForm(props: AssignmentListPageProps) {
       node: undefined as React.ReactNode,
       name: "",
       assignees: props.data.assignees,
-      activity: '',
+      task: '',
     },
     transformValues: (values) => {
       return {
@@ -378,7 +378,7 @@ function AssignmentStepper(props: AssignmentListPageProps & {form: UseFormReturn
     if(nextStep === 3){
       modals.closeAll()
       props.form.reset();
-      props.onCreate && props.onCreate(props.form.values.name, props.form.values.activity, props.form.values.assignees);
+      props.onCreate && props.onCreate(props.form.values.name, props.form.values.task, props.form.values.assignees);
       return;
     }
 
@@ -392,10 +392,10 @@ function AssignmentStepper(props: AssignmentListPageProps & {form: UseFormReturn
 
   // Allow the user to freely go back and forth between visited steps.
   const shouldAllowSelectStep = (step: number) => {
-    const hasActivity = !!props.form.getInputProps("activity").value
+    const hasTask = !!props.form.getInputProps("task").value
     const hasName = !!props.form.getInputProps("name").value
 
-    if(step >= 0 && !hasActivity){
+    if(step >= 0 && !hasTask){
       return false
     }
 
@@ -408,10 +408,10 @@ function AssignmentStepper(props: AssignmentListPageProps & {form: UseFormReturn
 
   // Allow the user to freely go back and forth between visited steps.
   const shouldAllowStep = (step: number) => {
-    const hasActivity = !!props.form.getInputProps("activity").value
+    const hasTask = !!props.form.getInputProps("task").value
     const hasName = !!props.form.getInputProps("name").value
 
-    if(step > 0 && !hasActivity){
+    if(step > 0 && !hasTask){
       return false
     }
 
@@ -424,13 +424,13 @@ function AssignmentStepper(props: AssignmentListPageProps & {form: UseFormReturn
 
   return <>
     <Stepper h={400} w={600} size="sm" active={active} onStepClick={setActive} breakpoint="sm">
-      <Stepper.Step label="First step" description="Select an activity" allowStepSelect={shouldAllowSelectStep(0)}>
+      <Stepper.Step label="First step" description="Select an task" allowStepSelect={shouldAllowSelectStep(0)}>
         <Autocomplete
           withAsterisk
-          label="Select an activity"
-          placeholder="Search activities"
-          data={props.data.activities}
-          {...props.form.getInputProps("activity")}
+          label="Select an task"
+          placeholder="Search tasks"
+          data={props.data.tasks}
+          {...props.form.getInputProps("task")}
         />
       </Stepper.Step>
       <Stepper.Step label="Second step" description="Set assignees" allowStepSelect={shouldAllowSelectStep(1)}>

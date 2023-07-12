@@ -4,7 +4,7 @@ import { ClassPage } from '../src/pages/class/ClassPage';
 import {AppLayout} from "../src/layouts/app/AppLayout";
 
 export default {
-  title: 'Page/ClassPage',
+  title: 'Page/Class/ClassPage',
   component: ClassPage,
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/react/writing-docs/autodocs
   tags: ['autodocs'],

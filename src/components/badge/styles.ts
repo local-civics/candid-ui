@@ -14,7 +14,14 @@ export const useBadgeStyles = createStyles((theme) => ({
     width: '100px',
     height: '100px',
     position: "relative",
-    overflow: "hidden"
+    overflow: "hidden",
+    marginLeft: "auto",
+    marginRight: "auto",
+  },
+
+  badgeIconLg: {
+    width: '150px',
+    height: '150px',
   },
 
   badgeIconImageContainer: {
