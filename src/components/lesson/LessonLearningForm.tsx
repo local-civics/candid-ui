@@ -114,7 +114,7 @@ export function LessonLearningForm(props: LessonLearningFormProps) {
           return <FormItem key={item.itemId} {...item} minText={0} disabled={!!props.preview} />;
         })}
         <FormItem
-          displayName={
+          displayNameNode={
             <>
               <p>To earn your impact points for this task, answer either of the following:</p>
               <List style={{ listStyleType: "disc" }}>

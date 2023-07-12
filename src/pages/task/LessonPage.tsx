@@ -9,8 +9,7 @@ import { TaskFAQ } from "../../components/task/TaskFAQ";
 import { TaskOverview } from "../../components/task/TaskOverview";
 import { TaskPreview } from "../../components/task/TaskPreview";
 import { TaskHero } from "../../components/task/TaskHero";
-import { LessonData } from "../../components/lesson/data";
-import { LessonLearningForm } from "../../components/lesson/LessonLearningForm";
+import { TaskData } from "../../components/task/data";
 const useStyles = createStyles((theme) => {
   return {
     root: {
@@ -63,7 +62,7 @@ const FAQ_QUESTIONS = [
 /**
  * LessonPageProps
  */
-export type LessonPageProps = LessonData & {
+export type LessonPageProps = TaskData & {
   onStart?: () => void;
   onLike?: () => void;
   onSave?: () => void;

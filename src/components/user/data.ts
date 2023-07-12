@@ -1,4 +1,4 @@
-import { BadgeData } from "../badge/data";
+import { TaskData } from "../task/data";
 
 /**
  * UserData
@@ -10,5 +10,5 @@ export type UserData = {
   email: string
   avatarURL: string
   impactStatement: string
-  badges: BadgeData[]
+  badges: TaskData[]
 }
