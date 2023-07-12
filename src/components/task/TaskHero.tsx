@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ActivityDots } from "./ActivityDots";
+import { TaskDots } from "./TaskDots";
 import {
   ActionIcon,
   Button,
@@ -31,7 +31,7 @@ import {
   IconThumbUpFilled,
   IconTransitionRight
 } from "@tabler/icons-react";
-import { compactNumber } from "../../../utils/numbers";
+import { compactNumber } from "../../utils/numbers";
 import { Carousel } from "@mantine/carousel";
 import { useMediaQuery } from "@mantine/hooks";
 import { Link } from "react-router-dom";
@@ -86,7 +86,7 @@ const SHARE_LINKS = [
   {
     title: "Assign",
     icon: IconTransitionRight,
-    onClick: (props: ActivityHeroProps) => props.onAssign && props.onAssign(),
+    onClick: (props: TaskHeroProps) => props.onAssign && props.onAssign(),
   },
   {
     title: "Google",
@@ -101,7 +101,7 @@ const SHARE_LINKS = [
   {
     title: "WhatsApp",
     icon: IconBrandWhatsapp,
-    href: (props: ActivityHeroProps) => `https://api.whatsapp.com/send/?text=${encodeURIComponent(props.href||"#")}`,
+    href: (props: TaskHeroProps) => `https://api.whatsapp.com/send/?text=${encodeURIComponent(props.href||"#")}`,
   },
   {
     title: "Facebook",
@@ -116,12 +116,12 @@ const SHARE_LINKS = [
   {
     title: "Email",
     icon: IconAt,
-    href: (props: ActivityHeroProps) => `mailto:?body=${encodeURIComponent(props.href||"#")}`,
+    href: (props: TaskHeroProps) => `mailto:?body=${encodeURIComponent(props.href||"#")}`,
   },
   {
     title: "Reddit",
     icon: IconBrandReddit,
-    href: (props: ActivityHeroProps) => `https://www.reddit.com/submit?url=${encodeURIComponent(props.href||"#")}`,
+    href: (props: TaskHeroProps) => `https://www.reddit.com/submit?url=${encodeURIComponent(props.href||"#")}`,
   },
   {
     title: "LinkedIn",
@@ -131,9 +131,9 @@ const SHARE_LINKS = [
 ];
 
 /**
- * ActivityHeroProps
+ * TaskHeroProps
  */
-export type ActivityHeroProps = {
+export type TaskHeroProps = {
   title?: string
   href?: string;
   isLiked?: boolean;
@@ -148,11 +148,11 @@ export type ActivityHeroProps = {
 }
 
 /**
- * ActivityHero
+ * TaskHero
  * @param props
  * @constructor
  */
-export function ActivityHero(props: ActivityHeroProps){
+export function TaskHero(props: TaskHeroProps){
   const { classes } = useStyles();
   const theme = useMantineTheme();
   const mobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
@@ -209,10 +209,10 @@ export function ActivityHero(props: ActivityHeroProps){
       color: theme.white,
     })}
   >
-    <ActivityDots className={classes.dots} style={{ left: 0, top: 0 }} />
-    <ActivityDots className={classes.dots} style={{ left: 60, top: 0 }} />
-    <ActivityDots className={classes.dots} style={{ left: 0, top: 140 }} />
-    <ActivityDots className={classes.dots} style={{ right: 25, top: 60 }} />
+    <TaskDots className={classes.dots} style={{ left: 0, top: 0 }} />
+    <TaskDots className={classes.dots} style={{ left: 60, top: 0 }} />
+    <TaskDots className={classes.dots} style={{ left: 0, top: 140 }} />
+    <TaskDots className={classes.dots} style={{ right: 25, top: 60 }} />
     <Stack spacing={25} px={0} className={classes.content} align="center">
       <IconTargetArrow size={24} />
 

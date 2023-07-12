@@ -1,21 +1,21 @@
 import * as React from "react";
 
 /**
- * ActivityDotsProps
+ * TaskDotsProps
  */
-export interface ActivityDotsProps extends React.ComponentPropsWithoutRef<"svg"> {
+export interface TaskDotsProps extends React.ComponentPropsWithoutRef<"svg"> {
   size?: number;
   radius?: number;
 }
 
 /**
- * ActivityDots
+ * TaskDots
  * @param size
  * @param radius
  * @param others
  * @constructor
  */
-export function ActivityDots({ size = 185, radius = 2.5, ...others }: ActivityDotsProps) {
+export function TaskDots({ size = 185, radius = 2.5, ...others }: TaskDotsProps) {
   return (
     <svg
       aria-hidden

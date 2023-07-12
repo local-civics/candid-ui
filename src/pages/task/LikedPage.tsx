@@ -1,6 +1,6 @@
 import * as React from "react";
-import { ActivityCard } from "../../components/core/activity/ActivityCard";
-import {ActivityData } from "../../components/core/activity/data";
+import { TaskCard } from "../../components/task/TaskCard";
+import {TaskData } from "../../components/task/data";
 import { Box, Container, Flex, LoadingOverlay, SimpleGrid, Stack, Title, useMantineTheme } from "@mantine/core";
 import { IconThumbUp } from "@tabler/icons-react";
 
@@ -9,11 +9,11 @@ import { IconThumbUp } from "@tabler/icons-react";
  */
 export type LikedPageProps = {
   loading?: boolean
-  data?: ActivityData[]
-  onLikeActivity?: (data: ActivityData) => void;
-  onSaveActivity?: (data: ActivityData) => void;
-  onAssignActivity?: (data: ActivityData) => void;
-  onOpenActivity?: (data: ActivityData) => void;
+  data?: TaskData[]
+  onLikeTask?: (data: TaskData) => void;
+  onSaveTask?: (data: TaskData) => void;
+  onAssignTask?: (data: TaskData) => void;
+  onOpenTask?: (data: TaskData) => void;
 };
 
 /**
@@ -23,20 +23,20 @@ export type LikedPageProps = {
  */
 export function LikedPage(props: LikedPageProps) {
   const theme = useMantineTheme()
-  const activities = props.data?.map((p) => {
-    return <ActivityCard
+  const tasks = props.data?.map((p) => {
+    return <TaskCard
       key={p.href}
       size="sm"
       data={p}
-      onLikeClick={() => props.onLikeActivity && props.onLikeActivity(p)}
-      onSave={() => props.onSaveActivity && props.onSaveActivity(p)}
-      onAssign={() => props.onAssignActivity && props.onAssignActivity(p)}
-      onOpen={() => props.onOpenActivity && props.onOpenActivity(p)}
+      onLikeClick={() => props.onLikeTask && props.onLikeTask(p)}
+      onSave={() => props.onSaveTask && props.onSaveTask(p)}
+      onAssign={() => props.onAssignTask && props.onAssignTask(p)}
+      onOpen={() => props.onOpenTask && props.onOpenTask(p)}
     />
   });
 
   return <Container size="lg" pb="xl">
-    {/* Content activities */}
+    {/* Content tasks */}
     <Box pos="relative">
       <LoadingOverlay visible={!!props.loading} overlayBlur={2} />
       <Stack spacing="lg">
@@ -52,7 +52,7 @@ export function LikedPage(props: LikedPageProps) {
             { maxWidth: "36rem", cols: 1, spacing: "sm" },
           ]}
         >
-        {activities}
+        {tasks}
         </SimpleGrid>
       </Stack>
     </Box>

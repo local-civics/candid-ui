@@ -22,9 +22,9 @@ const useStyles = createStyles((theme) => ({
 }));
 
 /**
- * ActivityPreviewProps
+ * TaskPreviewProps
  */
-export type ActivityPreviewProps = {
+export type TaskPreviewProps = {
   previewTitle?: string;
   previewItems: { title: string }[];
   previewItemCount: number;
@@ -33,11 +33,11 @@ export type ActivityPreviewProps = {
 };
 
 /**
- * ActivityPreview
+ * TaskPreview
  * @param props
  * @constructor
  */
-export function ActivityPreview(props: ActivityPreviewProps) {
+export function TaskPreview(props: TaskPreviewProps) {
   const { classes } = useStyles();
   const theme = useMantineTheme();
   const title = props.previewTitle || "Preview";

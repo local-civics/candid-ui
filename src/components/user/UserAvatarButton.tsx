@@ -55,20 +55,20 @@ export function UserAvatarButton(props: UserAvatarButtonProps) {
           </Text>
         </div>
         <Menu.Divider />
-        <Menu.Item<typeof Link> component={Link} to="/my/profile" icon={<IconCertificate2 size="1rem" stroke={1.5} />}>
+        <Menu.Item<typeof Link> component={Link} to="/profile" icon={<IconCertificate2 size="1rem" stroke={1.5} />}>
           My profile
         </Menu.Item>
-        <Menu.Item<typeof Link> component={Link} to="/my/classes" icon={<IconChalkboard size="1rem" stroke={1.5} />}>
+        <Menu.Item<typeof Link> component={Link} to="/classes" icon={<IconChalkboard size="1rem" stroke={1.5} />}>
           My classes
         </Menu.Item>
         <Menu.Item<typeof Link>
           component={Link}
-          to="/my/organizations"
+          to="/organizations"
           icon={<IconBuildingCommunity size="1rem" stroke={1.5} />}
         >
           My organizations
         </Menu.Item>
-        <Menu.Item<typeof Link> component={Link} to="/my/settings" icon={<IconSettings size="1rem" stroke={1.5} />}>
+        <Menu.Item<typeof Link> component={Link} to="/settings" icon={<IconSettings size="1rem" stroke={1.5} />}>
           My settings
         </Menu.Item>
         <Menu.Divider />

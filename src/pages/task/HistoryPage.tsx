@@ -1,20 +1,20 @@
 import * as React from "react";
-import { ActivityCard } from "../../components/core/activity/ActivityCard";
+import { TaskCard } from "../../components/task/TaskCard";
 import { Box, Container, LoadingOverlay, Title, Stack, SimpleGrid, Flex, useMantineTheme } from "@mantine/core";
 import { IconTimelineEvent } from "@tabler/icons-react";
 import { formatDate } from "../../utils/dates";
-import { ActivityData } from "../../components/core/activity/data";
+import { TaskData } from "../../components/task/data";
 
 /**
  * HistoryPageProps
  */
 export type HistoryPageProps = {
   loading?: boolean
-  data?: {date: string, content: ActivityData[]}[]
-  onLikeActivity?: (data: ActivityData) => void;
-  onSaveActivity?: (data: ActivityData) => void;
-  onAssignActivity?: (data: ActivityData) => void;
-  onOpenActivity?: (data: ActivityData) => void;
+  data?: {date: string, content: TaskData[]}[]
+  onLikeTask?: (data: TaskData) => void;
+  onSaveTask?: (data: TaskData) => void;
+  onAssignTask?: (data: TaskData) => void;
+  onOpenTask?: (data: TaskData) => void;
 };
 
 /**
@@ -38,14 +38,14 @@ export function HistoryPage(props: HistoryPageProps) {
         >
         {
           d.content.map(p => {
-            return <ActivityCard
+            return <TaskCard
               key={`${d.date}${p.href}`}
               size="sm"
               data={p}
-              onLikeClick={() => props.onLikeActivity && props.onLikeActivity(p)}
-              onSave={() => props.onSaveActivity && props.onSaveActivity(p)}
-              onAssign={() => props.onAssignActivity && props.onAssignActivity(p)}
-              onOpen={() => props.onOpenActivity && props.onOpenActivity(p)}
+              onLikeClick={() => props.onLikeTask && props.onLikeTask(p)}
+              onSave={() => props.onSaveTask && props.onSaveTask(p)}
+              onAssign={() => props.onAssignTask && props.onAssignTask(p)}
+              onOpen={() => props.onOpenTask && props.onOpenTask(p)}
             />
           })
         }
@@ -55,7 +55,7 @@ export function HistoryPage(props: HistoryPageProps) {
   });
 
   return <Container size="lg" pb="xl">
-    {/* Content activities */}
+    {/* Content tasks */}
     <Box pos="relative">
       <LoadingOverlay visible={!!props.loading} overlayBlur={2} />
       <Stack spacing="lg">
