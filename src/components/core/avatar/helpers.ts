@@ -6,6 +6,7 @@ export function buildAvatarURL(url?: string, name?: string, settings?: {size: nu
   }
 
   let initials = name
+    .toUpperCase()
     .split(/[ -]/)
     .map((n) => n.charAt(0))
     .join("");

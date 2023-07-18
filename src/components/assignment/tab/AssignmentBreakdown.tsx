@@ -1,5 +1,5 @@
 import * as React from "react";
-import { AssignmentData } from "../data";
+import { AssignmentData } from "../../../models/assignment";
 import { Avatar, Box, Button} from "@mantine/core";
 import { IconDownload } from "@tabler/icons-react";
 import { MantineReactTable, MRT_ColumnDef, MRT_Row } from "mantine-react-table";

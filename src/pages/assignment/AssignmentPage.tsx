@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Container, Stack, Tabs, Text, Title } from "@mantine/core";
-import { AssignmentData } from "../../components/assignment/data";
+import { AssignmentData } from "../../models/assignment";
 import { AssignmentSummary } from "../../components/assignment/tab/AssignmentSummary";
 import { AssignmentBreakdown } from "../../components/assignment/tab/AssignmentBreakdown";
 import { IconChartArrows, IconListNumbers } from "@tabler/icons-react";

@@ -2,10 +2,10 @@ import * as React from "react";
 import { Container, Grid, Title, Text, Avatar, Stack, Button, Flex, useMantineTheme, Divider } from "@mantine/core";
 import { IconAward } from "@tabler/icons-react";
 import { buildAvatarURL } from "../../components/core/avatar/helpers";
-import { UserData } from "../../components/user/data";
+import { UserData } from "../../models/user";
 import { useUserStyles } from "../../components/user/styles";
 import {BadgeButton} from "../../components/badge/BadgeButton";
-import { TaskData } from "../../components/task/data";
+import { TaskData } from "../../models/task";
 import { IconBlockquote } from "@tabler/icons-react";
 
 /**
@@ -25,12 +25,12 @@ export type UserProfilePageProps = UserData & {
 export function UserProfilePage(props: UserProfilePageProps) {
   const theme = useMantineTheme()
   const { classes } = useUserStyles();
-  const avatarURL = buildAvatarURL(props.avatarURL, props.fullName, {
+  const avatarURL = buildAvatarURL(props.avatarURL, props.fullName || props.email, {
     size: 200,
     fontSize: 50,
   });
 
-  const badgeAchievements = props.badges.map(b => {
+  const badgeAchievements = (props.badges || []).map(b => {
     return <BadgeButton
       key={b.href}
       {...b}
@@ -61,7 +61,7 @@ export function UserProfilePage(props: UserProfilePageProps) {
             <Title size={30} color="dark.4">Achievements</Title>
           </Flex>
           {!badgeAchievements.length && <Text size={18} mt={25}>I don't have any achievements yet.</Text>}
-          {badgeAchievements.length && <Flex gap={5} py={15} wrap="wrap">
+          {!!badgeAchievements.length && <Flex gap={5} py={15} wrap="wrap">
             {badgeAchievements}
           </Flex>}
         </Grid.Col>

@@ -1,6 +1,6 @@
 import * as React from "react";
 import {MemoryRouter} from "react-router-dom";
-import {AppLayout} from "../src/layouts/app/AppLayout";
+import {AuthLayout} from "../src/layouts/AuthLayout.tsx";
 import { ClassListPage } from '../src/pages/class/ClassListPage';
 
 const MOCK_DATA = {
@@ -79,7 +79,7 @@ const Template = {
   },
   render: (args) => <div className="h-full w-full overscroll-none font-proxima">
     <MemoryRouter>
-      <AppLayout
+      <AuthLayout
           {...args}
           page=<ClassListPage {...args}/>
       />

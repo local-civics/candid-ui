@@ -1,6 +1,6 @@
 import * as React from "react";
 import {MemoryRouter} from "react-router-dom";
-import {AppLayout} from "../src/layouts/app/AppLayout";
+import {AuthLayout} from "../src/layouts/AuthLayout.tsx";
 import { AssignmentPage } from '../src/pages/assignment/AssignmentPage';
 
 const MOCK_ASSIGMENT_DATA = {
@@ -46,7 +46,7 @@ const Template = {
   args: MOCK_ASSIGMENT_DATA,
   render: (args) => <div className="h-full w-full overscroll-none font-proxima">
     <MemoryRouter>
-      <AppLayout
+      <AuthLayout
           {...args}
           page=<AssignmentPage {...args}/>
       />

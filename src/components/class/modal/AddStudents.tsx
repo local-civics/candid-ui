@@ -2,7 +2,7 @@ import * as React from "react";
 import { Box, Button, Center, Flex, TextInput, Stack } from "@mantine/core";
 import { IconRowInsertBottom, IconGripVertical } from "@tabler/icons-react";
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { ClassMemberData } from "../data";
+import { ClassMemberData } from "../../../models/class";
 import { useForm } from "@mantine/form";
 import { modals } from "@mantine/modals";
 

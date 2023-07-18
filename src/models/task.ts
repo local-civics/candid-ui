@@ -5,7 +5,7 @@ export type TaskData = {
   title?: string
   href?: string;
   imageURL?:string;
-  totalNumberOfLikes?: number;
+  numberOfLikes?: number;
   description?: string
   etc?: string
   tags?: string[]
@@ -17,14 +17,14 @@ export type TaskData = {
   timeSpent?: number;
   elapsedTime?: number;
   stopWatchStarted?: boolean;
-  status?: "available" | "in progress" | "locked" | "completed"
-  syllabus?: BadgeSyllabusData
+  syllabus?: SyllabusData
   level?: number
   iconURL?: string
   userLiked?: boolean;
   userSaved?: boolean;
   userReflection?: string;
   userRating?: number
+  userStatus?: "unlocked" | "in progress" | "locked" | "completed"
 };
 
 export type FormItemData = {
@@ -36,29 +36,26 @@ export type FormItemData = {
   options?: string[];
   paragraph?: boolean;
   required?: boolean;
-  reflection?: string;
-  rating?: number;
   disabled?: boolean;
-  url?: string;
-  answerId?: string;
-  journalId?: string;
-  questionId?: string;
-  responses?: string[];
   minText?: number;
+  url?: string;
+  userAnswer?: {
+    responses?: string[];
+  },
 };
 
 /**
- * BadgeSyllabusData
+ * SyllabusData
  */
-export type BadgeSyllabusData = {
+export type SyllabusData = {
   title?: string;
-  items?: BadgeSyllabusItemData[];
+  items?: SyllabusItemData[];
 }
 
 /**
- * BadgeSyllabusItemData
+ * SyllabusItemData
  */
-export type BadgeSyllabusItemData = {
+export type SyllabusItemData = {
   title: string;
   description: string;
   estimate: string;

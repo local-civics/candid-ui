@@ -1,6 +1,6 @@
 import * as React from "react";
 import { LessonLearningForm } from "../src/components/lesson/LessonLearningForm";
-import { TaskData } from "../src/components/task/data";
+import { TaskData } from "../src/models/task";
 
 export default {
   title: "Components/LessonLearningForm",

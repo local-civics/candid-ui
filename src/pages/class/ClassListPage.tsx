@@ -23,7 +23,7 @@ import { modals } from "@mantine/modals";
 import { PlaceholderBanner } from "../../components/core/placeholder/PlaceholderBanner";
 import { useForm as useMantineForm } from "@mantine/form";
 import { DataTransferList } from "../../components/core/data/DataTransferList";
-import { ClassData } from "../../components/class/data";
+import { ClassData } from "../../models/class";
 import { SummaryGrid } from "../../components/core/summary/SummaryGrid";
 import { SummaryData } from "../../components/core/summary/data";
 

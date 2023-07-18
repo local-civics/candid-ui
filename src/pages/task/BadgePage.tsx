@@ -9,7 +9,7 @@ import { TaskFAQ } from "../../components/task/TaskFAQ";
 import { TaskOverview } from "../../components/task/TaskOverview";
 import { TaskHero } from "../../components/task/TaskHero";
 import { BadgeSyllabus } from "../../components/badge/BadgeSyllabus";
-import { TaskData, BadgeSyllabusItemData } from "../../components/task/data";
+import { TaskData, SyllabusItemData } from "../../models/task";
 
 const useStyles = createStyles((theme) => {
   return {
@@ -67,7 +67,7 @@ export type BadgePageProps = TaskData & {
   onAssign?: () => void;
   onCopy?: () => void;
   onShare?: (via: string) => void;
-  onStartSyllabusItem?: (item: BadgeSyllabusItemData) => void;
+  onStartSyllabusItem?: (item: SyllabusItemData) => void;
 };
 
 /**

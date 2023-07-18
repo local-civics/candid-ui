@@ -1,7 +1,7 @@
 import * as React from "react";
 import {MemoryRouter} from "react-router-dom";
 import { LibraryPage } from '../src/pages/task/LibraryPage';
-import {AppLayout} from "../src/layouts/app/AppLayout";
+import {AuthLayout} from "../src/layouts/AuthLayout.tsx";
 
 export default {
   title: 'Page/Library/LibraryPage',
@@ -85,7 +85,7 @@ const MOCK_DATA = [{
 const Template = {
   render: (args) => <div className="h-full w-full overscroll-none font-proxima">
     <MemoryRouter>
-      <AppLayout
+      <AuthLayout
           {...args}
           defaultActiveLinkName="Home"
           page=<LibraryPage {...args} data={args.data || MOCK_DATA}/>

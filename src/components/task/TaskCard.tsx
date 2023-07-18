@@ -23,7 +23,7 @@ import {
   Box,
 } from "@mantine/core";
 import { Link } from "react-router-dom";
-import { TaskData } from "./data";
+import { TaskData } from "../../models/task";
 import { BadgeIcon } from "../badge/BadgeIcon";
 
 const useStyles = createStyles((theme) => ({
@@ -110,29 +110,31 @@ export function TaskCard(props: TaskCardProps) {
               },
             }}
           >
-            <Flex align="start" wrap="nowrap">
-              <Text fz="lg" w="100%" fw={500}>
-                {props.data.title}
+            <Box mih={136}>
+              <Flex align="start" wrap="nowrap">
+                <Text fz="lg" w="100%" fw={500}>
+                  {props.data.title}
+                </Text>
+                <Menu transitionProps={{ transition: "pop" }} withArrow position="bottom-end" withinPortal>
+                  <Menu.Target>
+                    <ActionIcon maw="max-content">
+                      <IconDotsVertical size="1rem" stroke={1.5} />
+                    </ActionIcon>
+                  </Menu.Target>
+                  <Menu.Dropdown>
+                    <Menu.Item color={props.data.userSaved ? "blue" : undefined} onClick={props.onSave} icon={<IconBookmark size="1rem" stroke={1.5} />}>
+                      { props.data.userSaved ? "Saved for later" : "Save for later"}
+                    </Menu.Item>
+                    <Menu.Item onClick={props.onAssign} icon={<IconTransitionRight size="1rem" stroke={1.5} />}>
+                      Assign
+                    </Menu.Item>
+                  </Menu.Dropdown>
+                </Menu>
+              </Flex>
+              <Text fz="0.8rem" mt="xs">
+                {props.data.description}
               </Text>
-              <Menu transitionProps={{ transition: "pop" }} withArrow position="bottom-end" withinPortal>
-                <Menu.Target>
-                  <ActionIcon maw="max-content">
-                    <IconDotsVertical size="1rem" stroke={1.5} />
-                  </ActionIcon>
-                </Menu.Target>
-                <Menu.Dropdown>
-                  <Menu.Item onClick={props.onSave} icon={<IconBookmark size="1rem" stroke={1.5} />}>
-                    Save for later
-                  </Menu.Item>
-                  <Menu.Item onClick={props.onAssign} icon={<IconTransitionRight size="1rem" stroke={1.5} />}>
-                    Assign
-                  </Menu.Item>
-                </Menu.Dropdown>
-              </Menu>
-            </Flex>
-            <Text fz="0.8rem" mt="xs">
-              {props.data.description}
-            </Text>
+            </Box>
           </Spoiler>
         </Card.Section>
 
@@ -164,20 +166,20 @@ export function TaskCard(props: TaskCardProps) {
   }
 
   if(props.size === "lg"){
-    return <Card withBorder radius="md" p="md" className={classes.cardLg}>
+    return <Card withBorder radius="md" className={classes.cardLg} p={0}>
       <Card.Section w={300} p={0}>
         {!!props.data.iconURL && <UnstyledButton<typeof Link> component={Link} to={props.data.href||""} onClick={props.onOpen}>
-          <Box py={30} px={20} h="100%">
+          <Flex sx={{overflow: "hidden"}} py={30} pl={25} h={225} w={300}>
             <BadgeIcon {...props.data}/>
-          </Box>
+          </Flex>
         </UnstyledButton>}
 
         {!props.data.iconURL && <UnstyledButton<typeof Link> component={Link} to={props.data.href||""} onClick={props.onOpen}>
-          <Image h="100%" className={classes.image} src={props.data.imageURL} alt={props.data.title} />
+          <Image fit="cover" sx={{overflow: "hidden"}} height={225} width={300} className={classes.image} src={props.data.imageURL} alt={props.data.title} />
         </UnstyledButton>}
       </Card.Section>
 
-      <Card.Section className={classes.sectionRight} mt="md" ml={20}>
+      <Card.Section className={classes.sectionRight} px={30} pt={20} pb={30} ml={15}>
         <Flex align="start" wrap="nowrap">
           <Text fz="lg" fw={500} lineClamp={1}>
             {props.data.title}
@@ -190,8 +192,8 @@ export function TaskCard(props: TaskCardProps) {
                 </ActionIcon>
               </Menu.Target>
               <Menu.Dropdown>
-                <Menu.Item onClick={props.onSave} icon={<IconBookmark size="1rem" stroke={1.5} />}>
-                  Save for later
+                <Menu.Item color={props.data.userSaved ? "blue" : undefined} onClick={props.onSave} icon={<IconBookmark size="1rem" stroke={1.5} />}>
+                  { props.data.userSaved ? "Saved for later" : "Save for later"}
                 </Menu.Item>
                 <Menu.Item onClick={props.onAssign} icon={<IconTransitionRight size="1rem" stroke={1.5} />}>
                   Assign
@@ -200,11 +202,11 @@ export function TaskCard(props: TaskCardProps) {
             </Menu>
           </Box>
         </Flex>
-        <Text fz="0.8rem" mt="xs" lineClamp={1} pr={10}>
+        <Text fz="0.8rem" mt="xs" lineClamp={3} pr={25} mih={60}>
           {props.data.description}
         </Text>
 
-        <Group mt="lg">
+        <Group mt="2rem">
           <ActionIcon onClick={props.onLikeClick} variant="default" radius="md" size={36}>
             <LikeIcon size="1.1rem" className={classes.like} stroke={1.5} />
           </ActionIcon>
@@ -225,9 +227,9 @@ export function TaskCard(props: TaskCardProps) {
     <Card withBorder radius="md" p="md" className={classes.card}>
       <Card.Section>
         {!!props.data.iconURL && <UnstyledButton<typeof Link> component={Link} to={props.data.href||""} onClick={props.onOpen}>
-          <Box py={20} px={10} h={180}>
+          <Flex py={20} px={10} h={180}>
             <BadgeIcon {...props.data} size="lg" />
-          </Box>
+          </Flex>
         </UnstyledButton>}
 
         {!props.data.iconURL && <UnstyledButton<typeof Link> component={Link} to={props.data.href||""} onClick={props.onOpen}>
@@ -246,29 +248,31 @@ export function TaskCard(props: TaskCardProps) {
             },
           }}
         >
-          <Flex align="start" wrap="nowrap">
-            <Text fz="lg" w="100%" fw={500}>
-              {props.data.title}
+          <Box mih={136}>
+            <Flex align="start" wrap="nowrap">
+              <Text fz="lg" w="100%" fw={500}>
+                {props.data.title}
+              </Text>
+              <Menu transitionProps={{ transition: "pop" }} withArrow position="bottom-end" withinPortal>
+                <Menu.Target>
+                  <ActionIcon maw="max-content">
+                    <IconDotsVertical size="1rem" stroke={1.5} />
+                  </ActionIcon>
+                </Menu.Target>
+                <Menu.Dropdown>
+                  <Menu.Item color={props.data.userSaved ? "blue" : undefined} onClick={props.onSave} icon={<IconBookmark size="1rem" stroke={1.5} />}>
+                    { props.data.userSaved ? "Saved for later" : "Save for later"}
+                  </Menu.Item>
+                  <Menu.Item onClick={props.onAssign} icon={<IconTransitionRight size="1rem" stroke={1.5} />}>
+                    Assign
+                  </Menu.Item>
+                </Menu.Dropdown>
+              </Menu>
+            </Flex>
+            <Text fz="0.8rem" mt="xs">
+              {props.data.description}
             </Text>
-            <Menu transitionProps={{ transition: "pop" }} withArrow position="bottom-end" withinPortal>
-              <Menu.Target>
-                <ActionIcon maw="max-content">
-                  <IconDotsVertical size="1rem" stroke={1.5} />
-                </ActionIcon>
-              </Menu.Target>
-              <Menu.Dropdown>
-                <Menu.Item onClick={props.onSave} icon={<IconBookmark size="1rem" stroke={1.5} />}>
-                  Save for later
-                </Menu.Item>
-                <Menu.Item onClick={props.onAssign} icon={<IconTransitionRight size="1rem" stroke={1.5} />}>
-                  Assign
-                </Menu.Item>
-              </Menu.Dropdown>
-            </Menu>
-          </Flex>
-          <Text fz="0.8rem" mt="xs">
-            {props.data.description}
-          </Text>
+          </Box>
         </Spoiler>
       </Card.Section>
 

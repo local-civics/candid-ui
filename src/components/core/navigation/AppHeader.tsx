@@ -13,7 +13,7 @@ import {
   createStyles,
 } from "@mantine/core";
 import { IconSearch, IconArrowRight } from "@tabler/icons-react";
-import { UserAvatarButton, UserAvatarButtonProps } from "../../components/user/UserAvatarButton";
+import { UserAvatarButton, UserAvatarButtonProps } from "../../user/UserAvatarButton";
 
 const useStyles = createStyles((theme) => {
   return {
@@ -29,7 +29,9 @@ const useStyles = createStyles((theme) => {
  * AppHeaderProps
  */
 export type AppHeaderProps = UserAvatarButtonProps & {
-  onMenuClick?: () => void;
+  initialQuery?: string
+  isMenuOpen?: boolean
+  onMenuClick?: (next: boolean) => void;
   onSearch?: (q: string) => void;
 };
 
@@ -41,12 +43,13 @@ export type AppHeaderProps = UserAvatarButtonProps & {
 export function AppHeader(props: AppHeaderProps) {
   const theme = useMantineTheme();
   const { classes } = useStyles();
-  const [query, setQuery] = React.useState("");
+  const [query, setQuery] = React.useState(props.initialQuery||"");
+
   return (
     <MantineHeader height={60} px="xl" py="xs">
       <Group position="apart">
         <Group position="apart" spacing="sm">
-          <Burger opened={false} onClick={props.onMenuClick} size="sm" />
+          <Burger opened={false} onClick={() => props.onMenuClick && props.onMenuClick(!props.isMenuOpen)} size="sm" />
           <Center>
             <Avatar color="blue" radius="sm">
               <div style={{ width: 15, marginLeft: "auto", marginRight: "auto" }}>
@@ -68,6 +71,8 @@ export function AppHeader(props: AppHeaderProps) {
             icon={<IconSearch size="1.1rem" stroke={1.5} />}
             radius="xl"
             size="md"
+            defaultValue={props.initialQuery}
+            onKeyUp={(e) => e.key === 'Enter' && props.onSearch && props.onSearch(query)}
             onChange={(e) => setQuery(e.target.value)}
             rightSection={
               <ActionIcon
@@ -82,7 +87,6 @@ export function AppHeader(props: AppHeaderProps) {
             }
             placeholder="Search"
             rightSectionWidth={42}
-            {...props}
           />
         </Flex>
         <UserAvatarButton {...props} />

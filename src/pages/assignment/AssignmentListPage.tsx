@@ -32,7 +32,7 @@ import {
 } from "@tabler/icons-react";
 import { PlaceholderBanner } from "../../components/core/placeholder/PlaceholderBanner";
 import { DataTransferList } from "../../components/core/data/DataTransferList";
-import { AssignmentData } from "../../components/assignment/data";
+import { AssignmentData } from "../../models/assignment";
 import { useAssignmentStyles } from "../../components/assignment/styles";
 import { SummaryGrid } from "../../components/core/summary/SummaryGrid";
 import { SummaryData } from "../../components/core/summary/data";

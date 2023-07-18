@@ -1,6 +1,6 @@
 import { useBadgeStyles } from "./styles";
 import * as React from "react";
-import { TaskData } from "../task/data";
+import { TaskData } from "../../models/task";
 
 /**
  * BadgeIconProps

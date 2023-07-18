@@ -3,7 +3,7 @@ import "external-svg-loader";
 import { useDisclosure } from "@mantine/hooks";
 import { UnstyledButton, Text, Popover, Container, createStyles, Stack, Title } from "@mantine/core";
 import { Link } from "react-router-dom";
-import { TaskData } from "../task/data";
+import { TaskData } from "../../models/task";
 import { BadgeIcon } from "./BadgeIcon";
 
 const useStyles = createStyles((theme) => {

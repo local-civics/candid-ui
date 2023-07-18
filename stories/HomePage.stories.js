@@ -1,7 +1,7 @@
 import * as React from "react";
 import { MemoryRouter } from "react-router-dom";
 import { HomePage } from "../src/pages/home/HomePage";
-import { AppLayout } from "../src/layouts/app/AppLayout";
+import { AuthLayout } from "../src/layouts/AuthLayout.tsx";
 
 export default {
   title: "Page/Explore/HomePage",
@@ -59,7 +59,7 @@ const Template = {
   render: (args) => (
     <div className="h-full w-full overscroll-none font-proxima">
       <MemoryRouter>
-        <AppLayout {...args} defaultActiveLinkName="Home" page=<HomePage {...args} data={args.data || MOCK_POSTS} /> />
+        <AuthLayout {...args} defaultActiveLinkName="Home" page=<HomePage {...args} data={args.data || MOCK_POSTS} /> />
       </MemoryRouter>
     </div>
   ),

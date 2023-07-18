@@ -1,4 +1,4 @@
-import { ClassMemberData } from "../data";
+import { ClassMemberData } from "../../../models/class";
 import * as React from "react";
 import { modals } from "@mantine/modals";
 import { Button, Select } from "@mantine/core";

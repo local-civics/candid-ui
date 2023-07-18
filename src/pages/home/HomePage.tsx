@@ -3,14 +3,14 @@ import { Container, Stack, Button, Center, SimpleGrid, Box, LoadingOverlay, rem,
 import { Carousel } from "@mantine/carousel";
 import { useMediaQuery } from "@mantine/hooks";
 import { TaskCard } from "../../components/task/TaskCard";
-import {TaskData } from "../../components/task/data";
+import {TaskData } from "../../models/task";
 
 const DEFAULT_FILTERS_PREFIX = ["All"];
 
 const DEFAULT_FILTERS_SUFFIX = [
   "Trending",
   "Top Rated",
-  "Under 5min.",
+  "Under 15min.",
   "Elementary (K-5)",
   "Middle (6-8)",
   "High School (9-12)",
@@ -24,7 +24,7 @@ const DEFAULT_FILTERS_SUFFIX = [
   "Arts & Culture",
   "Volunteer",
   "Live",
-  "New to you",
+  "New To You",
 ];
 
 /**

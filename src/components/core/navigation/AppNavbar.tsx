@@ -22,7 +22,8 @@ import {
   IconBackpack,
   IconBallpen,
   IconBookmark,
-  IconSunrise
+  IconSunrise,
+  IconBriefcase
 } from "@tabler/icons-react";
 import { AppLink } from "./AppLink";
 
@@ -133,10 +134,10 @@ export function AppNavbar(props: AppNavbarProps) {
             onNavigate={onNavigate}
           />
           <AppLink
-            isActive={active === "Under 5min."}
+            isActive={active === "Under 15min."}
             icon={IconHourglassLow}
-            href="/feeds/under-5min"
-            label="Under 5min."
+            href="/feeds/under-15min"
+            label="Under 15min."
             onNavigate={onNavigate}
           />
           <AppLink
@@ -154,10 +155,17 @@ export function AppNavbar(props: AppNavbarProps) {
             onNavigate={onNavigate}
           />
           <AppLink
-            isActive={active === "College & Career"}
+            isActive={active === "College"}
             icon={IconSchool}
-            href="/feeds/college-and-career"
-            label="College & Career"
+            href="/feeds/college"
+            label="College"
+            onNavigate={onNavigate}
+          />
+          <AppLink
+            isActive={active === "Career"}
+            icon={IconBriefcase}
+            href="/feeds/career"
+            label="Career"
             onNavigate={onNavigate}
           />
           <AppLink
@@ -189,10 +197,10 @@ export function AppNavbar(props: AppNavbarProps) {
             onNavigate={onNavigate}
           />
           <AppLink
-            isActive={active === "New to you"}
+            isActive={active === "New To You"}
             icon={IconLivePhoto}
             href="/feeds/new-to-you"
-            label="New to you"
+            label="New To You"
             onNavigate={onNavigate}
           />
           <AppLink

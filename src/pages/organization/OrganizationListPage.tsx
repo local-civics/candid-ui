@@ -18,7 +18,7 @@ import {
 } from "@tabler/icons-react";
 import { modals } from "@mantine/modals";
 import { PlaceholderBanner } from "../../components/core/placeholder/PlaceholderBanner";
-import { OrganizationData } from "../../components/organization/data";
+import { OrganizationData } from "../../models/organization";
 import { useForm as useMantineForm } from "@mantine/form";
 import { SummaryData } from "../../components/core/summary/data";
 import { SummaryGrid } from "../../components/core/summary/SummaryGrid";

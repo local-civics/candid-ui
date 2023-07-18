@@ -2,13 +2,13 @@ import * as React from "react";
 import { Container, Grid, Text, Title, Stack, Group, Button } from "@mantine/core";
 import { IconClockFilled, IconPencil, IconPhoto, IconVideo } from "@tabler/icons-react";
 import { useBadgeStyles } from "./styles";
-import { BadgeSyllabusData, BadgeSyllabusItemData } from "../task/data";
+import { SyllabusData, SyllabusItemData } from "../../models/task";
 
 /**
  * BadgeSyllabusProps
  */
-export type BadgeSyllabusProps = BadgeSyllabusData & {
-  onStartSyllabusItem?: (item: BadgeSyllabusItemData) => void;
+export type BadgeSyllabusProps = SyllabusData & {
+  onStartSyllabusItem?: (item: SyllabusItemData) => void;
 };
 
 /**

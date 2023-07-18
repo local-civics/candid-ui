@@ -15,8 +15,7 @@ export const useBadgeStyles = createStyles((theme) => ({
     height: '100px',
     position: "relative",
     overflow: "hidden",
-    marginLeft: "auto",
-    marginRight: "auto",
+    margin: "auto",
   },
 
   badgeIconLg: {

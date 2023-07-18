@@ -1,6 +1,6 @@
 import * as React from "react";
 import { TaskCard } from "../../components/task/TaskCard";
-import {TaskData } from "../../components/task/data";
+import {TaskData } from "../../models/task";
 import { Box, Container, Flex, LoadingOverlay, SimpleGrid, Stack, Title, useMantineTheme } from "@mantine/core";
 import { IconThumbUp } from "@tabler/icons-react";
 

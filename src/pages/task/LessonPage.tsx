@@ -9,7 +9,7 @@ import { TaskFAQ } from "../../components/task/TaskFAQ";
 import { TaskOverview } from "../../components/task/TaskOverview";
 import { TaskPreview } from "../../components/task/TaskPreview";
 import { TaskHero } from "../../components/task/TaskHero";
-import { TaskData } from "../../components/task/data";
+import { TaskData } from "../../models/task";
 const useStyles = createStyles((theme) => {
   return {
     root: {

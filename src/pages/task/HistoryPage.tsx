@@ -3,7 +3,7 @@ import { TaskCard } from "../../components/task/TaskCard";
 import { Box, Container, LoadingOverlay, Title, Stack, SimpleGrid, Flex, useMantineTheme } from "@mantine/core";
 import { IconTimelineEvent } from "@tabler/icons-react";
 import { formatDate } from "../../utils/dates";
-import { TaskData } from "../../components/task/data";
+import { TaskData } from "../../models/task";
 
 /**
  * HistoryPageProps

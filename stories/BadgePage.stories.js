@@ -1,6 +1,6 @@
 import * as React from "react";
 import {MemoryRouter} from "react-router-dom";
-import {AppLayout} from "../src/layouts/app/AppLayout";
+import {AuthLayout} from "../src/layouts/AuthLayout.tsx";
 import { BadgePage } from '../src/pages/task/BadgePage.tsx';
 
 const MOCK_DESCRIPTION = 'Every once in a while, you’ll see a Golbat that’s missing some fangs. This happens when hunger drives it to try biting a Steel-type Pokémon.'
@@ -65,7 +65,7 @@ export default {
 const Template = {
   render: (args) => <div className="h-full w-full overscroll-none font-proxima">
     <MemoryRouter>
-      <AppLayout
+      <AuthLayout
           {...args}
           page=<BadgePage {...args}
             title={args.title || "30 Second Elevator Pitch"}

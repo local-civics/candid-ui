@@ -2,7 +2,7 @@ import * as React from "react";
 import { TaskCard } from "../../components/task/TaskCard";
 import { Box, Container, Flex, LoadingOverlay, SimpleGrid, Stack, Title, useMantineTheme } from "@mantine/core";
 import { IconGlobe } from "@tabler/icons-react";
-import { TaskData } from "../../components/task/data";
+import { TaskData } from "../../models/task";
 
 /**
  * ExplorePageProps

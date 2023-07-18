@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ClassData, ClassMemberData } from "../../components/class/data";
+import { ClassData, ClassMemberData } from "../../models/class";
 import {
   Container, Title, Stack, Divider, Button, Box, Avatar, Menu, Flex, Text,
   useMantineTheme, ActionIcon, Card, Group,

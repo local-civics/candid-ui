@@ -4,7 +4,7 @@ import { Button, Group, Text } from "@mantine/core";
 import { Dropzone, MIME_TYPES } from '@mantine/dropzone';
 import { IconCloudUpload, IconDownload, IconX } from "@tabler/icons-react";
 import { ParseResult, parse, unparse } from "papaparse";
-import { ClassMemberData } from "../data";
+import { ClassMemberData } from "../../../models/class";
 import { useClassStyles } from "../styles";
 
 /**

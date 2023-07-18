@@ -3,7 +3,7 @@ import { TaskCard } from "../../components/task/TaskCard";
 import { Anchor, Box, Container, Flex, LoadingOverlay, SimpleGrid, Stack, Title, useMantineTheme } from "@mantine/core";
 import { IconBook } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
-import { TaskData } from "../../components/task/data";
+import { TaskData } from "../../models/task";
 
 /**
  * LibraryPageProps

@@ -1,7 +1,7 @@
 import * as React from "react";
 import {MemoryRouter} from "react-router-dom";
 import { ClassPage } from '../src/pages/class/ClassPage';
-import {AppLayout} from "../src/layouts/app/AppLayout";
+import {AuthLayout} from "../src/layouts/AuthLayout.tsx";
 
 export default {
   title: 'Page/Class/ClassPage',
@@ -60,7 +60,7 @@ const Template = {
   },
   render: (args) => <div className="h-full w-full overscroll-none font-proxima">
     <MemoryRouter>
-      <AppLayout
+      <AuthLayout
           {...args}
           defaultActiveLinkName="Home"
           page=<ClassPage

@@ -1,9 +1,9 @@
 
 import React from "react"
-import { FormItemData } from "../task/data"
+import { FormItemData } from "../../models/task"
 import { FileInput, Checkbox, Radio, Select, Text, Title, Paper, Button, Flex, createStyles, Grid, TextInput, Input, Group, Textarea } from "@mantine/core";
 import { TimeInput } from '@mantine/dates';
-import { IconCircleCheck, IconCircle } from '@tabler/icons-react';
+import { IconCircleCheck } from '@tabler/icons-react';
 
 export type FormItemProps = FormItemData & {
     displayNameNode?: React.ReactNode
@@ -124,7 +124,7 @@ const useStyles = createStyles((theme) => {
 export const FormItem = (props: FormItemProps) => {
     const { classes } = useStyles();
     const displayName = props.displayNameNode || props.displayName
-    const responses = props.responses || [];
+    const responses = props.userAnswer?.responses || [];
     const notEmpty = responses.length > 0 && responses[0].trim() !== "";
     const minimum = props.minText !== undefined ? props.minText : 100;
     const isTextError = notEmpty && props.questionType === "text" && responses[0].trim().length < minimum;
@@ -234,9 +234,8 @@ const Switch = (props: FormItemProps) => {
 };
 
 const RadioQuestion = (props: FormItemProps) => {
-    const { classes } = useStyles()
     const options = props.options || [];
-    const responses = props.responses || [];
+    const responses = props.userAnswer?.responses || [];
     const values: { [key: string]: boolean } = {};
     responses.forEach((key) => (values[key] = true));
 
@@ -284,7 +283,7 @@ const RadioQuestion = (props: FormItemProps) => {
 const CheckboxQuestion = (props: FormItemProps) => {
     const { classes } = useStyles()
     const options = props.options || [];
-    const responses = props.responses || [];
+    const responses = props.userAnswer?.responses || [];
     const values: { [key: string]: boolean } = {};
     let rawResponse: string = "";
     for (const val of responses) {
@@ -373,7 +372,7 @@ const CheckboxQuestion = (props: FormItemProps) => {
 const DropDownQuestion = (props: FormItemProps) => {
     console.log(props.options, "props.options")
     const options = props.options || [];
-    const responses = props.responses || [];
+    const responses = props.userAnswer?.responses || [];
     const values: { [key: string]: boolean } = {};
     responses.forEach((key) => (values[key] = true));
 
@@ -395,7 +394,7 @@ const DropDownQuestion = (props: FormItemProps) => {
 };
 
 const FileUploadQuestion = (props: FormItemProps) => {
-    const responses = props.responses || [];
+    const responses = props.userAnswer?.responses || [];
     const response = responses.length > 0 ? responses[0] : "";
     const [imageURL, setImageURL] = React.useState(response);
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -421,7 +420,7 @@ const FileUploadQuestion = (props: FormItemProps) => {
 
     React.useEffect(() => {
         setImageURL(response);
-    }, [props.questionId, response]);
+    }, [props.itemId, response]);
 
     return (
         <Grid gutter="md">
@@ -457,7 +456,7 @@ const FileUploadQuestion = (props: FormItemProps) => {
 const TextQuestion = (props: FormItemProps) => {
     const { classes } = useStyles()
     const minimum = props.minText !== undefined ? props.minText : 100;
-    const responses = props.responses || [];
+    const responses = props.userAnswer?.responses || [];
     const response = responses.length > 0 ? responses[0] : "";
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -499,7 +498,7 @@ const TextQuestion = (props: FormItemProps) => {
 };
 
 const DateQuestion = (props: FormItemProps) => {
-    const responses = props.responses || [];
+    const responses = props.userAnswer?.responses || [];
     const response = responses.length > 0 ? responses[0] : "";
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -525,7 +524,7 @@ const DateQuestion = (props: FormItemProps) => {
 };
 
 const TimeQuestion = (props: FormItemProps) => {
-    const responses = props.responses || [];
+    const responses = props.userAnswer?.responses || [];
     const response = responses.length > 0 ? responses[0] : "";
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {

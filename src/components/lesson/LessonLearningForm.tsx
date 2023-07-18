@@ -1,5 +1,5 @@
 import * as React from "react";
-import { TaskData, FormItemData } from "../task/data";
+import { TaskData, FormItemData } from "../../models/task";
 import { FormItem } from "./FormItem";
 import { Rating, Group, Stack, Text, Paper, Button, Flex, createStyles, ScrollArea, Box, List } from "@mantine/core";
 
@@ -131,7 +131,7 @@ export function LessonLearningForm(props: LessonLearningFormProps) {
           required
           paragraph
           minText={MIN_REFLECTION_LENGTH}
-          responses={reflection ? [reflection] : undefined}
+          userAnswer={reflection ? {responses: [reflection]} : undefined}
         />
 
         <FormItem>

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { AssignmentData } from "../data";
+import { AssignmentData } from "../../../models/assignment";
 import { Card, Stack, Title, Text, ScrollArea } from "@mantine/core";
 import { AxisOptions, Chart } from "react-charts";
 

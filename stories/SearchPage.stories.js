@@ -1,10 +1,10 @@
 import * as React from "react";
 import {MemoryRouter} from "react-router-dom";
 import { SearchPage } from '../src/pages/task/SearchPage';
-import {AppLayout} from "../src/layouts/app/AppLayout";
+import {AuthLayout} from "../src/layouts/AuthLayout.tsx";
 
 export default {
-  title: 'Page/SearchPage',
+  title: 'Page/Explore/SearchPage',
   component: SearchPage,
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/react/writing-docs/autodocs
   tags: ['autodocs'],
@@ -48,7 +48,7 @@ const MOCK_DATA = [{
 const Template = {
   render: (args) => <div className="h-full w-full overscroll-none font-proxima">
     <MemoryRouter>
-      <AppLayout
+      <AuthLayout
           {...args}
           defaultActiveLinkName="Home"
           page=<SearchPage {...args} data={args.data || MOCK_DATA} title={args.title || "Results"}/>
