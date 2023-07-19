@@ -11,7 +11,7 @@ import {
   TextInput,
   Title,
   Text,
-  FileInput
+  FileInput, Center, Loader
 } from "@mantine/core";
 import { useUserStyles } from "../../components/user/styles";
 import { buildAvatarURL } from "../../components/core/avatar/helpers";
@@ -22,6 +22,7 @@ import { IconPhotoEdit } from "@tabler/icons-react";
  * UserSettingsPageProps
  */
 export type UserSettingsPageProps = UserData & {
+  isLoading?: boolean
   onSubmit?: (user: UserData) => void;
   onEditAvatar?: (file: File | null) => void;
 };
@@ -46,6 +47,14 @@ export function UserSettingsPage(props: UserSettingsPageProps) {
       ...values,
     }),
   });
+
+  if (props.isLoading) {
+    return (
+      <Center style={{ height: 400 }}>
+        <Loader />
+      </Center>
+    );
+  }
 
   return (
     <Container size="lg" pb="xl" pt="lg">

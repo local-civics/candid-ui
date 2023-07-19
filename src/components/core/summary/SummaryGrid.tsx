@@ -13,7 +13,7 @@ const useStyles = createStyles((theme) => ({
  * SummaryGridProps
  */
 export type SummaryGridProps = {
-  data: SummaryData;
+  data?: SummaryData;
 }
 
 /**
@@ -23,7 +23,7 @@ export type SummaryGridProps = {
  */
 export function SummaryGrid(props: SummaryGridProps) {
   const { classes } = useStyles();
-  const stats = props.data.map((stat) => {
+  const stats = props.data?.map((stat) => {
     const DiffIcon = !stat.diff ? IconPointFilled : stat.diff > 0 ? IconArrowUpRight : IconArrowDownRight;
 
     return (

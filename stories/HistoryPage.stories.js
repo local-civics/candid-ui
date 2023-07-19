@@ -16,7 +16,7 @@ export default {
 
 const MOCK_DATES = [{
   date: new Date().toDateString(),
-  content: [{
+  tasks: [{
     "imageURL": "https://cdn.localcivics.io/hub/landing.jpg",
     "title": "Verudela Beach w. A Side of Fries",
     "category": "Badge Opportunity",
@@ -26,7 +26,7 @@ const MOCK_DATES = [{
   }],
 },{
   date: new Date(new Date().setDate(new Date().getDate()-1)).toDateString(),
-  content: [{
+  tasks: [{
     "imageURL": "https://cdn.localcivics.io/hub/landing.jpg",
     "title": "Verudela Beach w. A Side of Fries",
     "category": "Badge Opportunity",
@@ -54,7 +54,7 @@ const MOCK_DATES = [{
   }]
 },{
   date: "May 26, 2022",
-  content: [{
+  tasks: [{
     "imageURL": "https://cdn.localcivics.io/hub/landing.jpg",
     "title": "Verudela Beach w. A Side of Fries",
     "category": "Badge Opportunity",
@@ -85,11 +85,9 @@ const MOCK_DATES = [{
 const Template = {
   render: (args) => <div className="h-full w-full overscroll-none font-proxima">
     <MemoryRouter>
-      <AuthLayout
-          {...args}
-          defaultActiveLinkName="Home"
-          page=<HistoryPage {...args} data={args.data || MOCK_DATES}/>
-      />
+      <AuthLayout defaultActiveLinkName="Home">
+        <HistoryPage {...args} items={args.items || MOCK_DATES}/>
+      </AuthLayout>
     </MemoryRouter>
   </div>,
 }

@@ -72,23 +72,20 @@ export default {
 
 const Template = {
   args: {
-    data: {
-      assignees: MOCK_ASSIGNEE_DATA,
-      tasks: MOCK_ACTIVITY_DATA,
-      assignments: [],
-      summary: [{
-        title: "Assignments",
-        value: 10,
-        description: "Total # of assignments"
-      }]
-    },
+    assignees: MOCK_ASSIGNEE_DATA,
+    tasks: MOCK_ACTIVITY_DATA,
+    items: [],
+    summary: [{
+      title: "Assignments",
+      value: 10,
+      description: "Total # of assignments"
+    }]
   },
   render: (args) => <div className="h-full w-full overscroll-none font-proxima">
     <MemoryRouter>
-      <AuthLayout
-          {...args}
-          page=<AssignmentListPage {...args}/>
-      />
+      <AuthLayout>
+        <AssignmentListPage {...args}/>
+      </AuthLayout>
     </MemoryRouter>
   </div>,
 }
@@ -101,10 +98,7 @@ export const WithAssignments = {
   ...Template,
   args: {
     ...Template.args,
-    data: {
-      ...Template.args.data,
-      assignments: MOCK_ASSIGMENT_DATA,
-    },
+    items: MOCK_ASSIGMENT_DATA,
   }
 };
 
@@ -112,10 +106,7 @@ export const AssignedToMe = {
   ...Template,
   args: {
     ...Template.args,
-    data: {
-      ...Template.args.data,
-      assignments: MOCK_ASSIGMENT_DATA.filter(a => a.status === 'assigned to me'),
-    },
+    items: MOCK_ASSIGMENT_DATA.filter(a => a.status === 'assigned to me'),
   }
 };
 
@@ -123,9 +114,6 @@ export const Archived = {
   ...Template,
   args: {
     ...Template.args,
-    data: {
-      ...Template.args.data,
-      assignments: MOCK_ASSIGMENT_DATA.filter(a => a.status === 'archived'),
-    },
+    items: MOCK_ASSIGMENT_DATA.filter(a => a.status === 'archived'),
   }
 };

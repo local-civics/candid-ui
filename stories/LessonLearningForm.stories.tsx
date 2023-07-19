@@ -84,7 +84,7 @@ const parksAndGreenForm: TaskData = {
         "Benches",
         "",
       ],
-      responses: [],
+      userAnswer: {responses: []},
       required: true,
     },
   ],

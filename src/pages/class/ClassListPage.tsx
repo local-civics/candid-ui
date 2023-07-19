@@ -1,10 +1,10 @@
 import * as React from "react";
 import {
   ActionIcon, Button,
-  Card,
+  Card, Center,
   Container,
   createStyles, Divider, Flex,
-  Group,
+  Group, Loader,
   Menu,
   Modal, PinInput,
   rem, Stack,
@@ -48,7 +48,10 @@ const useStyles = createStyles((theme) => {
  * ClassListPageProps
  */
 export type ClassListPageProps = {
-  data: {members: TransferListData, classes: ClassData[], summary: SummaryData};
+  isLoading?: boolean
+  summary?: SummaryData
+  members?: TransferListData,
+  items?: ClassData[]
   onCreate?: (name: string, members: TransferListData) => void;
   onJoin?: (code: string) => void;
   onRename?: (data: ClassData, newName: string) => void;
@@ -69,8 +72,7 @@ export function ClassListPage(props: ClassListPageProps) {
   const theme = useMantineTheme();
   const { classes } = useStyles();
   const form = useForm(props);
-  const adminClasses = props.data.classes
-    .filter((v) => v.status === "admin")
+  const adminClasses = props.items?.filter((v) => v.status === "admin")
     .map((v) => {
       return (
         <Card key={v.name} withBorder radius="md" p="md" className={classes.card}>
@@ -162,8 +164,7 @@ export function ClassListPage(props: ClassListPageProps) {
       );
     });
 
-  const joined = props.data.classes
-    .filter((v) => v.status === "member")
+  const joined = props.items?.filter((v) => v.status === "member")
     .map((v) => {
       return (
         <Card key={v.name} withBorder radius="md" p="md" className={classes.card}>
@@ -227,8 +228,7 @@ export function ClassListPage(props: ClassListPageProps) {
       );
     });
 
-  const archivedClasses = props.data.classes
-    .filter((v) => v.status === "archived")
+  const archivedClasses = props.items?.filter((v) => v.status === "archived")
     .map((v) => {
       return (
         <Card key={v.name} withBorder radius="md" p="md" className={classes.card}>
@@ -263,6 +263,14 @@ export function ClassListPage(props: ClassListPageProps) {
       );
     });
 
+  if (props.isLoading) {
+    return (
+      <Center style={{ height: 400 }}>
+        <Loader />
+      </Center>
+    );
+  }
+
   return (
     <>
       <Modal opened={form.opened} onClose={close} size="auto" withCloseButton={false} centered>
@@ -279,7 +287,7 @@ export function ClassListPage(props: ClassListPageProps) {
               Join
             </Button>
           </Flex>
-          <SummaryGrid data={props.data.summary}/>
+          <SummaryGrid data={props.summary}/>
           <Divider />
           <Button onClick={() => form.open(0)} maw="max-content" variant="subtle" leftIcon={<IconPlus />}>
             New class
@@ -291,15 +299,15 @@ export function ClassListPage(props: ClassListPageProps) {
             Joined
           </Title>
           <Flex mt={10} gap={15}>
-            {!!joined.length && joined}
-            {!joined.length && <PlaceholderBanner title="No joined classes" />}
+            {!!joined?.length && joined}
+            {!joined?.length && <PlaceholderBanner title="No joined classes" />}
           </Flex>
           <Title mt={40} underline size="sm" color="dark.4">
             Archived
           </Title>
           <Flex mt={10} gap={15}>
-            {!!archivedClasses.length && archivedClasses}
-            {!archivedClasses.length && <PlaceholderBanner title="No archived classes" />}
+            {!!archivedClasses?.length && archivedClasses}
+            {!archivedClasses?.length && <PlaceholderBanner title="No archived classes" />}
           </Flex>
         </Stack>
       </Container>
@@ -342,7 +350,7 @@ function useForm(props: ClassListPageProps) {
       stage: -1,
       node: undefined as React.ReactNode,
       name: "",
-      members: props.data.members,
+      members: props.members,
       code: "",
     },
     transformValues: (values) => {
@@ -362,7 +370,7 @@ function useForm(props: ClassListPageProps) {
   const submit = () => {
     close();
     form.reset();
-    props.onCreate && props.onCreate(form.values.name, form.values.members);
+    props.onCreate && props.onCreate(form.values.name, form.values.members || [[], []]);
   };
 
   const join = () => {
@@ -383,7 +391,7 @@ function useForm(props: ClassListPageProps) {
       openStage(
         1,
         <>
-          <DataTransferList value={form.values.members} onChange={(members) => setMembers(members)} />
+          <DataTransferList value={form.values.members || [[], []]} onChange={(members) => setMembers(members)} />
           <Group ml="auto" w="max-content" mt="md" spacing={10}>
             <Button variant="outline" type="button" onClick={cancel}>
               Cancel
@@ -393,7 +401,7 @@ function useForm(props: ClassListPageProps) {
               onClick={() => {
                 close();
                 form.reset();
-                props.onUpdateMembers && props.onUpdateMembers(form.values.members);
+                props.onUpdateMembers && props.onUpdateMembers(form.values.members || [[], []]);
               }}
             >
               Submit
@@ -429,7 +437,7 @@ function useForm(props: ClassListPageProps) {
         case 1:
           return (
             <>
-              <DataTransferList value={form.values.members} onChange={(members) => setMembers(members)} />
+              <DataTransferList value={form.values.members || [[], []]} onChange={(members) => setMembers(members)} />
               <Group ml="auto" w="max-content" mt="md" spacing={10}>
                 <Button variant="outline" type="button" onClick={previous}>
                   Back

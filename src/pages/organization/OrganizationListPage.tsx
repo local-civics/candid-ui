@@ -1,10 +1,10 @@
 import * as React from "react";
 import {
   ActionIcon, Button,
-  Card,
+  Card, Center,
   Container, createStyles, Divider,
   Flex,
-  Group,
+  Group, Loader,
   Menu,
   Modal, PinInput, rem,
   Stack,
@@ -44,7 +44,9 @@ const useStyles = createStyles((theme) => {
  * OrganizationListPageProps
  */
 export type OrganizationListPageProps = {
-  data: {summary: SummaryData, organizations: OrganizationData[]};
+  isLoading?: boolean
+  summary?: SummaryData
+  items?: OrganizationData[];
   onJoin?: (code: string) => void;
   onLeave?: (data: OrganizationData) => void;
   onOpen?: (data: OrganizationData) => void;
@@ -60,8 +62,7 @@ export function OrganizationListPage(props: OrganizationListPageProps) {
   const { classes } = useStyles();
   const form = useForm(props);
 
-  const joined = props.data.organizations
-    .filter((v) => v.status === "member")
+  const joined = props.items?.filter((v) => v.status === "member")
     .map((v) => {
       return (
         <Card key={v.name} withBorder radius="md" p="md" className={classes.card}>
@@ -120,6 +121,14 @@ export function OrganizationListPage(props: OrganizationListPageProps) {
       );
     });
 
+  if (props.isLoading) {
+    return (
+      <Center style={{ height: 400 }}>
+        <Loader />
+      </Center>
+    );
+  }
+
   return (
     <>
       <Modal opened={form.opened} onClose={close} size="auto" withCloseButton={false} centered>
@@ -136,14 +145,14 @@ export function OrganizationListPage(props: OrganizationListPageProps) {
               Join
             </Button>
           </Flex>
-          <SummaryGrid data={props.data.summary}/>
+          <SummaryGrid data={props.summary}/>
           <Divider />
           <Title mt={10} underline size="sm" color="dark.4">
             Joined
           </Title>
           <Flex mt={10} gap={15}>
-            {!!joined.length && joined}
-            {!joined.length && <PlaceholderBanner title="No joined organizations" />}
+            {!!joined?.length && joined}
+            {!joined?.length && <PlaceholderBanner title="No joined organizations" />}
           </Flex>
         </Stack>
       </Container>

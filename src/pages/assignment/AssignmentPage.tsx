@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Container, Stack, Tabs, Text, Title } from "@mantine/core";
+import { Center, Container, Loader, Stack, Tabs, Text, Title } from "@mantine/core";
 import { AssignmentData } from "../../models/assignment";
 import { AssignmentSummary } from "../../components/assignment/tab/AssignmentSummary";
 import { AssignmentBreakdown } from "../../components/assignment/tab/AssignmentBreakdown";
@@ -8,7 +8,9 @@ import { IconChartArrows, IconListNumbers } from "@tabler/icons-react";
 /**
  * AssignmentPageProps
  */
-export type AssignmentPageProps = AssignmentData & {};
+export type AssignmentPageProps = AssignmentData & {
+  isLoading?: boolean
+};
 
 /**
  * AssignmentPage
@@ -16,6 +18,14 @@ export type AssignmentPageProps = AssignmentData & {};
  * @constructor
  */
 export function AssignmentPage(props: AssignmentPageProps) {
+  if (props.isLoading) {
+    return (
+      <Center style={{ height: 400 }}>
+        <Loader />
+      </Center>
+    );
+  }
+
   return <Container size="lg" pb="xl">
     <Stack spacing={10}>
       <Title color="dark.4">{props.name}</Title>

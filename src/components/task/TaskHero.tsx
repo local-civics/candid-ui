@@ -35,6 +35,7 @@ import { compactNumber } from "../../utils/numbers";
 import { Carousel } from "@mantine/carousel";
 import { useMediaQuery } from "@mantine/hooks";
 import { Link } from "react-router-dom";
+import { TaskData } from "../../models/task";
 
 const useStyles = createStyles((theme) => {
   return {
@@ -101,7 +102,7 @@ const SHARE_LINKS = [
   {
     title: "WhatsApp",
     icon: IconBrandWhatsapp,
-    href: (props: TaskHeroProps) => `https://api.whatsapp.com/send/?text=${encodeURIComponent(props.href||"#")}`,
+    href: (props: TaskHeroProps) => `https://api.whatsapp.com/send/?text=${encodeURIComponent(props.url||"#")}`,
   },
   {
     title: "Facebook",
@@ -116,12 +117,12 @@ const SHARE_LINKS = [
   {
     title: "Email",
     icon: IconAt,
-    href: (props: TaskHeroProps) => `mailto:?body=${encodeURIComponent(props.href||"#")}`,
+    href: (props: TaskHeroProps) => `mailto:?body=${encodeURIComponent(props.url||"#")}`,
   },
   {
     title: "Reddit",
     icon: IconBrandReddit,
-    href: (props: TaskHeroProps) => `https://www.reddit.com/submit?url=${encodeURIComponent(props.href||"#")}`,
+    href: (props: TaskHeroProps) => `https://www.reddit.com/submit?url=${encodeURIComponent(props.url||"#")}`,
   },
   {
     title: "LinkedIn",
@@ -133,12 +134,7 @@ const SHARE_LINKS = [
 /**
  * TaskHeroProps
  */
-export type TaskHeroProps = {
-  title?: string
-  href?: string;
-  isLiked?: boolean;
-  isSaved?: boolean;
-  numberOfLikes?: number;
+export type TaskHeroProps = TaskData & {
   onStart?: () => void;
   onLike?: () => void;
   onSave?: () => void;
@@ -156,10 +152,10 @@ export function TaskHero(props: TaskHeroProps){
   const { classes } = useStyles();
   const theme = useMantineTheme();
   const mobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
-  const LikeIcon = !props.isLiked ? IconThumbUp : IconThumbUpFilled;
-  const SaveIcon = !props.isSaved ? IconBookmark : IconBookmarkOff;
-  const likeLabel = !props.isLiked ? "Like" : "Liked by you";
-  const saveLabel = !props.isSaved ? "Save" : "Saved for later";
+  const LikeIcon = !props.userLiked ? IconThumbUp : IconThumbUpFilled;
+  const SaveIcon = !props.userSaved ? IconBookmark : IconBookmarkOff;
+  const likeLabel = !props.userLiked ? "Like" : "Liked by you";
+  const saveLabel = !props.userSaved ? "Save" : "Saved for later";
   const likes = props.numberOfLikes || 0;
   const shareLinks = SHARE_LINKS.map((l) => {
     return (
@@ -245,7 +241,7 @@ export function TaskHero(props: TaskHeroProps){
         <Button radius="lg" size="xs" leftIcon={<LikeIcon size="1rem" />} variant="filled" onClick={props.onLike}>
           {likeLabel}
         </Button>
-        <Popover position="bottom-end" width={(props.href?.length || 0) * 8} withArrow withinPortal shadow="md">
+        <Popover position="bottom-end" width={(props.url?.length || 0) * 8} withArrow withinPortal shadow="md">
           <Popover.Target>
             <Button size="xs" leftIcon={<IconShare3 size="1rem" />} variant="filled">
               Share
@@ -288,11 +284,11 @@ export function TaskHero(props: TaskHeroProps){
                 <Input
                   disabled
                   maw="initial"
-                  value={props.href}
+                  value={props.url}
                   icon={<IconCopy size="1rem" />}
                   placeholder="Uh, something is not right"
                 />
-                <CopyButton value={props.href||"#"}>
+                <CopyButton value={props.url||"#"}>
                   {({ copied, copy }) => (
                     <Button
                       color={copied ? "teal" : "blue"}

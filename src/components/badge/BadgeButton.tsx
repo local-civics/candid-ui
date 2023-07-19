@@ -34,7 +34,7 @@ export function BadgeButton(props: BadgeButtonProps) {
   return (
     <Popover width={400} position="bottom" withArrow shadow="md" opened={opened}>
       <Popover.Target>
-        <UnstyledButton<typeof Link> component={Link} to={props.href||"#"} onMouseEnter={open} onMouseLeave={close} onClick={props.onClick}>
+        <UnstyledButton<typeof Link> component={Link} to={props.url||"#"} onMouseEnter={open} onMouseLeave={close} onClick={props.onClick}>
           <BadgeIcon {...props}/>
         </UnstyledButton>
       </Popover.Target>

@@ -46,10 +46,9 @@ const Template = {
   args: MOCK_ASSIGMENT_DATA,
   render: (args) => <div className="h-full w-full overscroll-none font-proxima">
     <MemoryRouter>
-      <AuthLayout
-          {...args}
-          page=<AssignmentPage {...args}/>
-      />
+      <AuthLayout>
+        <AssignmentPage {...args}/>
+      </AuthLayout>
     </MemoryRouter>
   </div>,
 }

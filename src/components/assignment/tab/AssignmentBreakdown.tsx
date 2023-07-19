@@ -55,7 +55,7 @@ export function AssignmentBreakdown(props: AssignmentBreakdownProps){
         },
         size: 200,
       },
-      ...props.columns,
+      ...(props.columns || []),
     ],
     [],
   );
@@ -85,7 +85,7 @@ export function AssignmentBreakdown(props: AssignmentBreakdownProps){
     enableColumnFilterModes
     enableGrouping
     columns={columns}
-    data={props.breakdown}
+    data={props.breakdown || []}
     initialState={{
       showColumnFilters: true,
       grouping: props.grouping,

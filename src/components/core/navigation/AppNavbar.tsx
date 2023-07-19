@@ -134,6 +134,13 @@ export function AppNavbar(props: AppNavbarProps) {
             onNavigate={onNavigate}
           />
           <AppLink
+            isActive={active === "New To You"}
+            icon={IconLivePhoto}
+            href="/feeds/new-to-you"
+            label="New To You"
+            onNavigate={onNavigate}
+          />
+          <AppLink
             isActive={active === "Under 15min."}
             icon={IconHourglassLow}
             href="/feeds/under-15min"
@@ -194,13 +201,6 @@ export function AppNavbar(props: AppNavbarProps) {
             icon={IconRecycle}
             href="/feeds/volunteer"
             label="Volunteer"
-            onNavigate={onNavigate}
-          />
-          <AppLink
-            isActive={active === "New To You"}
-            icon={IconLivePhoto}
-            href="/feeds/new-to-you"
-            label="New To You"
             onNavigate={onNavigate}
           />
           <AppLink

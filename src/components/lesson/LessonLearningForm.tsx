@@ -26,6 +26,7 @@ const useStyles = createStyles((theme) => {
  * LessonLearningFormProps
  */
 export type LessonLearningFormProps = TaskData & {
+  elapsedTime?: number;
   onHome?: () => void;
   onGoBack?: () => void;
   onSubmit?: (reflection: string, rating?: number) => Promise<any>;
@@ -50,7 +51,7 @@ export function LessonLearningForm(props: LessonLearningFormProps) {
   const canReflect = !!reflection || answeredAllRequired;
   const saveVisibility = isDraft ? 100 : 0;
   const elapsedTime = props?.elapsedTime || 0;
-  const timeSpent = props?.timeSpent || 0;
+  const timeSpent = props?.userTimeSpent || 0;
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();

@@ -51,8 +51,9 @@ const Template = {
       <AuthLayout
           {...args}
           defaultActiveLinkName="Home"
-          page=<SearchPage {...args} data={args.data || MOCK_DATA} title={args.title || "Results"}/>
-      />
+      >
+        <SearchPage {...args} items={args.items || MOCK_DATA} title={args.title || "Results"}/>
+      </AuthLayout>
     </MemoryRouter>
   </div>,
 }

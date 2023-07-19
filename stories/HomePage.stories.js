@@ -59,7 +59,9 @@ const Template = {
   render: (args) => (
     <div className="h-full w-full overscroll-none font-proxima">
       <MemoryRouter>
-        <AuthLayout {...args} defaultActiveLinkName="Home" page=<HomePage {...args} data={args.data || MOCK_POSTS} /> />
+        <AuthLayout {...args} defaultActiveLinkName="Home">
+          <HomePage {...args} items={args.items || MOCK_POSTS} />
+        </AuthLayout>
       </MemoryRouter>
     </div>
   ),

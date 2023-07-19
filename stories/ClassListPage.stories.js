@@ -4,6 +4,15 @@ import {AuthLayout} from "../src/layouts/AuthLayout.tsx";
 import { ClassListPage } from '../src/pages/class/ClassListPage';
 
 const MOCK_DATA = {
+  summary: [{
+    title: "Classes",
+    value: 6,
+    description: "Total # of classes"
+  },{
+    title: "Students",
+    value: 10,
+    description: "Total # of students"
+  }],
   members: [
     [
       { value: 'react', label: 'React'},
@@ -22,7 +31,7 @@ const MOCK_DATA = {
       { value: 'fl', label: 'Flask' },
     ],
   ],
-  classes: [
+  items: [
     {
       name: 'Class #1',
       status: 'admin',
@@ -63,70 +72,34 @@ export default {
 
 const Template = {
   args: {
-    data: {
-      members: MOCK_DATA.members,
-      classes: [],
-      summary: [{
-        title: "Classes",
-        value: MOCK_DATA.classes.length,
-        description: "Total # of classes"
-      },{
-        title: "Students",
-        value: 10,
-        description: "Total # of students"
-      }]
-    },
+    ...MOCK_DATA,
   },
   render: (args) => <div className="h-full w-full overscroll-none font-proxima">
     <MemoryRouter>
-      <AuthLayout
-          {...args}
-          page=<ClassListPage {...args}/>
-      />
+      <AuthLayout>
+        <ClassListPage {...args}/>
+      </AuthLayout>
     </MemoryRouter>
   </div>,
 }
 
 export const Empty = {
   ...Template,
+  args: {
+    ...Template.args,
+    items: [],
+  }
 };
 
 export const WithClasses = {
   ...Template,
-  args: {
-    ...Template.args,
-    data: {
-      ...MOCK_DATA,
-      summary: [{
-        title: "Classes",
-        value: MOCK_DATA.classes.length,
-        description: "Total # of classes"
-      },{
-        title: "Students",
-        value: 10,
-        description: "Total # of students"
-      }]
-    },
-  }
 };
 
 export const Joined = {
   ...Template,
   args: {
     ...Template.args,
-    data: {
-      ...MOCK_DATA,
-      classes: MOCK_DATA.classes.filter(a => a.status === 'member'),
-      summary: [{
-        title: "Classes",
-        value: MOCK_DATA.classes.length,
-        description: "Total # of classes"
-      },{
-        title: "Students",
-        value: 10,
-        description: "Total # of students"
-      }]
-    },
+    items: MOCK_DATA.classes.filter(a => a.status === 'member'),
   }
 };
 
@@ -134,18 +107,6 @@ export const Archived = {
   ...Template,
   args: {
     ...Template.args,
-    data: {
-      ...MOCK_DATA,
-      classes: MOCK_DATA.classes.filter(a => a.status === 'archived'),
-      summary: [{
-        title: "Classes",
-        value: MOCK_DATA.classes.length,
-        description: "Total # of classes"
-      },{
-        title: "Students",
-        value: 10,
-        description: "Total # of students"
-      }]
-    }
+    items: MOCK_DATA.classes.filter(a => a.status === 'archived'),
   }
 };

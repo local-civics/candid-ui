@@ -83,7 +83,6 @@ export type TaskCardProps = {
   onLikeClick?: () => void;
   onSave?: () => void;
   onAssign?: () => void;
-  onOpen?: () => void;
 };
 
 /**
@@ -141,11 +140,10 @@ export function TaskCard(props: TaskCardProps) {
         <Group mt="xs">
           <Button<typeof Link>
             component={Link}
-            to={props.data.href||""}
+            to={props.data.url||""}
             px={5}
             radius="md"
             style={{ flex: 1 }}
-            onClick={props.onOpen}
           >
             Show details
           </Button>
@@ -168,13 +166,13 @@ export function TaskCard(props: TaskCardProps) {
   if(props.size === "lg"){
     return <Card withBorder radius="md" className={classes.cardLg} p={0}>
       <Card.Section w={300} p={0}>
-        {!!props.data.iconURL && <UnstyledButton<typeof Link> component={Link} to={props.data.href||""} onClick={props.onOpen}>
+        {!!props.data.iconURL && <UnstyledButton<typeof Link> component={Link} to={props.data.url||""}>
           <Flex sx={{overflow: "hidden"}} py={30} pl={25} h={225} w={300}>
             <BadgeIcon {...props.data}/>
           </Flex>
         </UnstyledButton>}
 
-        {!props.data.iconURL && <UnstyledButton<typeof Link> component={Link} to={props.data.href||""} onClick={props.onOpen}>
+        {!props.data.iconURL && <UnstyledButton<typeof Link> component={Link} to={props.data.url||""}>
           <Image fit="cover" sx={{overflow: "hidden"}} height={225} width={300} className={classes.image} src={props.data.imageURL} alt={props.data.title} />
         </UnstyledButton>}
       </Card.Section>
@@ -226,13 +224,13 @@ export function TaskCard(props: TaskCardProps) {
   return (
     <Card withBorder radius="md" p="md" className={classes.card}>
       <Card.Section>
-        {!!props.data.iconURL && <UnstyledButton<typeof Link> component={Link} to={props.data.href||""} onClick={props.onOpen}>
+        {!!props.data.iconURL && <UnstyledButton<typeof Link> component={Link} to={props.data.url||""}>
           <Flex py={20} px={10} h={180}>
             <BadgeIcon {...props.data} size="lg" />
           </Flex>
         </UnstyledButton>}
 
-        {!props.data.iconURL && <UnstyledButton<typeof Link> component={Link} to={props.data.href||""} onClick={props.onOpen}>
+        {!props.data.iconURL && <UnstyledButton<typeof Link> component={Link} to={props.data.url||""}>
           <Image className={classes.image} src={props.data.imageURL} alt={props.data.title} height={180} />
         </UnstyledButton>}
       </Card.Section>
@@ -279,11 +277,10 @@ export function TaskCard(props: TaskCardProps) {
       <Group mt="xs">
         <Button<typeof Link>
           component={Link}
-          to={props.data.href||""}
+          to={props.data.url||""}
           px={5}
           radius="md"
           style={{ flex: 1 }}
-          onClick={props.onOpen}
         >
           Show details
         </Button>

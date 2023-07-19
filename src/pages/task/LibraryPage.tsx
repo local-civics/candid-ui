@@ -1,6 +1,16 @@
 import * as React from "react";
 import { TaskCard } from "../../components/task/TaskCard";
-import { Anchor, Box, Container, Flex, LoadingOverlay, SimpleGrid, Stack, Title, useMantineTheme } from "@mantine/core";
+import {
+  Anchor,
+  Box,
+  Center,
+  Container,
+  Flex, Loader,
+  SimpleGrid,
+  Stack,
+  Title,
+  useMantineTheme
+} from "@mantine/core";
 import { IconBook } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 import { TaskData } from "../../models/task";
@@ -9,12 +19,11 @@ import { TaskData } from "../../models/task";
  * LibraryPageProps
  */
 export type LibraryPageProps = {
-  loading?: boolean
-  data?: {title: string, href: string, content: TaskData[]}[]
+  isLoading?: boolean
+  items?: {title: string, href: string, content: TaskData[]}[]
   onLikeTask?: (data: TaskData) => void;
   onSaveTask?: (data: TaskData) => void;
   onAssignTask?: (data: TaskData) => void;
-  onOpenTask?: (data: TaskData) => void;
 };
 
 /**
@@ -24,7 +33,7 @@ export type LibraryPageProps = {
  */
 export function LibraryPage(props: LibraryPageProps) {
   const theme = useMantineTheme()
-  const dates = props.data?.map((d) => {
+  const dates = props.items?.map((d) => {
     return (
       <React.Fragment key={d.title}>
         <Flex>
@@ -42,13 +51,12 @@ export function LibraryPage(props: LibraryPageProps) {
           {
             d.content.map(p => {
               return <TaskCard
-                key={`${d.title}${p.href}`}
+                key={`${d.title}${p.url}`}
                 size="sm"
                 data={p}
                 onLikeClick={() => props.onLikeTask && props.onLikeTask(p)}
                 onSave={() => props.onSaveTask && props.onSaveTask(p)}
                 onAssign={() => props.onAssignTask && props.onAssignTask(p)}
-                onOpen={() => props.onOpenTask && props.onOpenTask(p)}
               />
             })
           }
@@ -57,10 +65,17 @@ export function LibraryPage(props: LibraryPageProps) {
     );
   });
 
+  if (props.isLoading) {
+    return (
+      <Center style={{ height: 400 }}>
+        <Loader />
+      </Center>
+    );
+  }
+
   return <Container size="lg" pb="xl">
     {/* Content tasks */}
     <Box pos="relative">
-      <LoadingOverlay visible={!!props.loading} overlayBlur={2} />
       <Stack spacing="lg">
         <Flex align="center" gap={5}>
           <IconBook size={30} color={theme.colors.dark[4]}/>

@@ -1,7 +1,7 @@
 import * as React from "react";
 import {MemoryRouter} from "react-router-dom";
 import {AuthLayout} from "../src/layouts/AuthLayout.tsx";
-import { LessonPage } from '../src/pages/task/LessonPage.tsx';
+import { TaskPage as LessonPage } from '../src/pages/task/TaskPage.tsx';
 
 const MOCK_DESCRIPTION = 'Every once in a while, you’ll see a Golbat that’s missing some fangs. This happens when hunger drives it to try biting a Steel-type Pokémon.'
 const MOCK_QUESTIONS = [
@@ -55,22 +55,21 @@ export default {
 const Template = {
   render: (args) => <div className="h-full w-full overscroll-none font-proxima">
     <MemoryRouter>
-      <AuthLayout
-          {...args}
-          page=<LessonPage {...args}
-            title={args.title || "30 Second Elevator Pitch"}
-            likes={args.likes || 30000}
-            href="https://www.localcivics.io/L_1uo12y431982"
-            description={args.description || MOCK_DESCRIPTION}
-            tags={args.tags || MOCK_TAGS}
-            estimate={args.estimate || "30m"}
-            preview={args.preview || MOCK_QUESTIONS}
-            numberOfQuestions={args.numberOfQuestions || MOCK_QUESTION_COUNT}
-            topics={args.topics || MOCK_TOPICS}
-            rating={args.rating || 4.5}
-            uploadedOn={args.uploadedOn || "12th of May 2023"}
-          />
-      />
+      <AuthLayout>
+        <LessonPage {...args}
+                    title={args.title || "30 Second Elevator Pitch"}
+                    numberOfLikes={args.numberOfLikes || 30000}
+                    href="https://www.localcivics.io/L_1uo12y431982"
+                    description={args.description || MOCK_DESCRIPTION}
+                    tags={args.tags || MOCK_TAGS}
+                    etc={args.etc || "30m"}
+                    preview={args.preview || MOCK_QUESTIONS}
+                    numberOfQuestions={args.numberOfQuestions || MOCK_QUESTION_COUNT}
+                    topics={args.topics || MOCK_TOPICS}
+                    avgRating={args.avgRating || 4.5}
+                    uploadedOn={args.uploadedOn || "12th of May 2023"}
+        />
+      </AuthLayout>
     </MemoryRouter>
   </div>,
 }

@@ -60,15 +60,13 @@ const Template = {
   },
   render: (args) => <div className="h-full w-full overscroll-none font-proxima">
     <MemoryRouter>
-      <AuthLayout
+      <AuthLayout defaultActiveLinkName="Home">
+        <ClassPage
           {...args}
-          defaultActiveLinkName="Home"
-          page=<ClassPage
-            {...args}
-            name={args.name || MOCK_DATA.name}
-            code={args.code || MOCK_DATA.code}
-          />
-      />
+          name={args.name || MOCK_DATA.name}
+          code={args.code || MOCK_DATA.code}
+        />
+      </AuthLayout>
     </MemoryRouter>
   </div>,
 }

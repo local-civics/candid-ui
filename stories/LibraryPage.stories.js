@@ -85,11 +85,9 @@ const MOCK_DATA = [{
 const Template = {
   render: (args) => <div className="h-full w-full overscroll-none font-proxima">
     <MemoryRouter>
-      <AuthLayout
-          {...args}
-          defaultActiveLinkName="Home"
-          page=<LibraryPage {...args} data={args.data || MOCK_DATA}/>
-      />
+      <AuthLayout defaultActiveLinkName="Home">
+        <LibraryPage {...args} items={args.items || MOCK_DATA}/>
+      </AuthLayout>
     </MemoryRouter>
   </div>,
 }

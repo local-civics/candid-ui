@@ -4,7 +4,7 @@ import { AuthLayout } from "../src/layouts/AuthLayout.tsx";
 import { OrganizationListPage } from "../src/pages/organization/OrganizationListPage";
 
 const MOCK_DATA = {
-  organizations: [
+  items: [
     {
       name: "Organization #1",
       status: "admin",
@@ -45,19 +45,19 @@ export default {
 
 const Template = {
   args: {
-    data: {
-      organizations: [],
-      summary: [{
-        title: "Organizations",
-        value: MOCK_DATA.organizations.length,
-        description: "Total # of organizations"
-      }]
-    },
+    ...MOCK_DATA,
+    summary: [{
+      title: "Organizations",
+      value: MOCK_DATA.items.length,
+      description: "Total # of organizations"
+    }]
   },
   render: (args) => (
     <div className="h-full w-full overscroll-none font-proxima">
       <MemoryRouter>
-        <AuthLayout {...args} page=<OrganizationListPage {...args} /> />
+        <AuthLayout>
+          <OrganizationListPage {...args} />
+        </AuthLayout>
       </MemoryRouter>
     </div>
   ),
@@ -65,20 +65,15 @@ const Template = {
 
 export const Empty = {
   ...Template,
+  args: {
+    items: [],
+  }
 };
 
 export const Joined = {
   ...Template,
   args: {
     ...Template.args,
-    data: {
-      ...MOCK_DATA,
-      organizations: MOCK_DATA.organizations.filter((a) => a.status === "member"),
-      summary: [{
-        title: "Organizations",
-        value: MOCK_DATA.organizations.length,
-        description: "Total # of organizations"
-      }]
-    },
+    items: MOCK_DATA.items.filter((a) => a.status === "member"),
   },
 };

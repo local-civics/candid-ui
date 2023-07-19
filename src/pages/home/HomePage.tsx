@@ -1,5 +1,15 @@
 import * as React from "react";
-import { Container, Stack, Button, Center, SimpleGrid, Box, LoadingOverlay, rem, useMantineTheme } from "@mantine/core";
+import {
+  Container,
+  Stack,
+  Button,
+  Center,
+  SimpleGrid,
+  Box,
+  rem,
+  useMantineTheme,
+  Loader
+} from "@mantine/core";
 import { Carousel } from "@mantine/carousel";
 import { useMediaQuery } from "@mantine/hooks";
 import { TaskCard } from "../../components/task/TaskCard";
@@ -10,6 +20,7 @@ const DEFAULT_FILTERS_PREFIX = ["All"];
 const DEFAULT_FILTERS_SUFFIX = [
   "Trending",
   "Top Rated",
+  "New To You",
   "Under 15min.",
   "Elementary (K-5)",
   "Middle (6-8)",
@@ -24,22 +35,20 @@ const DEFAULT_FILTERS_SUFFIX = [
   "Arts & Culture",
   "Volunteer",
   "Live",
-  "New To You",
 ];
 
 /**
  * HomePageProps
  */
 export type HomePageProps = {
-  data?: TaskData[];
-  loading?: boolean;
+  isLoading?: boolean;
   defaultActiveFilter?: string;
   filters?: string[];
+  items: TaskData[];
   onFilterClick?: (name: string) => void;
   onLikeTask?: (data: TaskData) => void;
   onSaveTask?: (data: TaskData) => void;
   onAssignTask?: (data: TaskData) => void;
-  onOpenTask?: (data: TaskData) => void;
 };
 
 /**
@@ -73,18 +82,25 @@ export function HomePage(props: HomePageProps) {
       </Carousel.Slide>
     );
   });
-  const tasks = props.data?.map((p) => {
+  const tasks = props.items?.map((p) => {
     return (
       <TaskCard
-        key={p.href}
+        key={p.url}
         data={p}
         onLikeClick={() => props.onLikeTask && props.onLikeTask(p)}
         onSave={() => props.onSaveTask && props.onSaveTask(p)}
         onAssign={() => props.onAssignTask && props.onAssignTask(p)}
-        onOpen={() => props.onOpenTask && props.onOpenTask(p)}
       />
     );
   });
+
+  if (props.isLoading) {
+    return (
+      <Center style={{ height: 400 }}>
+        <Loader />
+      </Center>
+    );
+  }
 
   return (
     <Container size="lg" pb="xl">
@@ -122,7 +138,6 @@ export function HomePage(props: HomePageProps) {
 
         {/* Content tasks */}
         <Box pos="relative">
-          <LoadingOverlay visible={!!props.loading} overlayBlur={2} />
           <SimpleGrid
             cols={3}
             spacing="lg"

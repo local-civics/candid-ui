@@ -3,23 +3,22 @@
  */
 export type TaskData = {
   title?: string
-  href?: string;
+  url?: string;
   imageURL?:string;
   numberOfLikes?: number;
   description?: string
   etc?: string
   tags?: string[]
+  topics?: string[]
   avgRating?: number
   preview?: {title: string}[]
   numberOfQuestions?: number
   uploadedOn?: string
   items?: FormItemData[];
-  timeSpent?: number;
-  elapsedTime?: number;
-  stopWatchStarted?: boolean;
   syllabus?: SyllabusData
   level?: number
   iconURL?: string
+  userTimeSpent?: number;
   userLiked?: boolean;
   userSaved?: boolean;
   userReflection?: string;
@@ -56,10 +55,11 @@ export type SyllabusData = {
  * SyllabusItemData
  */
 export type SyllabusItemData = {
+  url: string;
   title: string;
   description: string;
-  estimate: string;
-  questionCount: number;
-  videoCount: number;
-  imageCount: number;
+  etc: string;
+  numberOfQuestions: number;
+  numberOfVideos: number;
+  numberOfImages: number;
 };

@@ -17,10 +17,9 @@ export default {
 const Template = {
   render: (args) => <div className="h-full w-full overscroll-none font-proxima">
     <MemoryRouter>
-      <AuthLayout
-          {...args}
-          page=<UserProfilePage {...args}/>
-      />
+      <AuthLayout>
+        <UserProfilePage {...args}/>
+      </AuthLayout>
     </MemoryRouter>
   </div>,
 }

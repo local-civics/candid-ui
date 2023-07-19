@@ -34,23 +34,27 @@ export function BadgeSyllabus(props: BadgeSyllabusProps) {
           <Stack spacing={20}>
             <Group spacing={5}>
               <IconClockFilled size={18} />
-              <Text size="sm">{v.estimate}</Text>
+              <Text size="sm">{v.etc}</Text>
             </Group>
             <Text size="lg">{v.title}</Text>
             <Text size="md">{v.description}</Text>
             <Group spacing={5}>
-              <IconPencil size={18} />
-              <Text size="sm">{v.questionCount} questions</Text>
-              {!!v.videoCount && (
+              {
+                !!v.numberOfQuestions && <>
+                  <IconPencil size={18} />
+                  <Text size="sm">{v.numberOfQuestions} questions</Text>
+                </>
+              }
+              {!!v.numberOfVideos && (
                 <>
                   <IconVideo size={18} />
-                  <Text size="sm">{v.videoCount} videos</Text>
+                  <Text size="sm">{v.numberOfVideos} videos</Text>
                 </>
               )}
-              {!!v.imageCount && (
+              {!!v.numberOfImages && (
                 <>
                   <IconPhoto size={18} />
-                  <Text size="sm">{v.imageCount} images</Text>
+                  <Text size="sm">{v.numberOfImages} images</Text>
                 </>
               )}
             </Group>

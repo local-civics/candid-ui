@@ -1,6 +1,16 @@
 import * as React from "react";
 import { TaskCard } from "../../components/task/TaskCard";
-import { Box, Container, LoadingOverlay, Title, Stack, SimpleGrid, Flex, useMantineTheme } from "@mantine/core";
+import {
+  Box,
+  Container,
+  Title,
+  Stack,
+  SimpleGrid,
+  Flex,
+  useMantineTheme,
+  Center,
+  Loader
+} from "@mantine/core";
 import { IconTimelineEvent } from "@tabler/icons-react";
 import { formatDate } from "../../utils/dates";
 import { TaskData } from "../../models/task";
@@ -9,12 +19,11 @@ import { TaskData } from "../../models/task";
  * HistoryPageProps
  */
 export type HistoryPageProps = {
-  loading?: boolean
-  data?: {date: string, content: TaskData[]}[]
+  isLoading?: boolean
+  items?: {date: string, tasks: TaskData[]}[]
   onLikeTask?: (data: TaskData) => void;
   onSaveTask?: (data: TaskData) => void;
   onAssignTask?: (data: TaskData) => void;
-  onOpenTask?: (data: TaskData) => void;
 };
 
 /**
@@ -24,7 +33,7 @@ export type HistoryPageProps = {
  */
 export function HistoryPage(props: HistoryPageProps) {
   const theme = useMantineTheme()
-  const dates = props.data?.map((d) => {
+  const dates = props.items?.map((d) => {
     return (
       <React.Fragment key={d.date}>
         <Title sx={{textTransform: "capitalize"}} size={30} color="dark.4">{formatDate(d.date)}</Title>
@@ -37,15 +46,14 @@ export function HistoryPage(props: HistoryPageProps) {
           ]}
         >
         {
-          d.content.map(p => {
+          d.tasks.map(p => {
             return <TaskCard
-              key={`${d.date}${p.href}`}
+              key={`${d.date}${p.url}`}
               size="sm"
               data={p}
               onLikeClick={() => props.onLikeTask && props.onLikeTask(p)}
               onSave={() => props.onSaveTask && props.onSaveTask(p)}
               onAssign={() => props.onAssignTask && props.onAssignTask(p)}
-              onOpen={() => props.onOpenTask && props.onOpenTask(p)}
             />
           })
         }
@@ -54,10 +62,17 @@ export function HistoryPage(props: HistoryPageProps) {
     );
   });
 
+  if (props.isLoading) {
+    return (
+      <Center style={{ height: 400 }}>
+        <Loader />
+      </Center>
+    );
+  }
+
   return <Container size="lg" pb="xl">
     {/* Content tasks */}
     <Box pos="relative">
-      <LoadingOverlay visible={!!props.loading} overlayBlur={2} />
       <Stack spacing="lg">
         <Flex align="center" gap={5}>
           <IconTimelineEvent size={30} color={theme.colors.dark[4]}/>

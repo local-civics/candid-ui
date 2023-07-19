@@ -36,7 +36,7 @@ export function AssignmentSummary(props: AssignmentSummaryProps){
     []
   );
 
-  const rows = props.summary.map((row) => {
+  const rows = props.summary?.map((row) => {
     if(row.chart){
       const labelMap: any = {}
       const options = row.options || []

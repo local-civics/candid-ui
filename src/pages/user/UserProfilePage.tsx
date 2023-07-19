@@ -1,5 +1,17 @@
 import * as React from "react";
-import { Container, Grid, Title, Text, Avatar, Stack, Button, Flex, useMantineTheme, Divider } from "@mantine/core";
+import {
+  Container,
+  Grid,
+  Title,
+  Text,
+  Avatar,
+  Stack,
+  Button,
+  Flex,
+  useMantineTheme,
+  Divider,
+  Center, Loader
+} from "@mantine/core";
 import { IconAward } from "@tabler/icons-react";
 import { buildAvatarURL } from "../../components/core/avatar/helpers";
 import { UserData } from "../../models/user";
@@ -12,7 +24,8 @@ import { IconBlockquote } from "@tabler/icons-react";
  * UserProfilePageProps
  */
 export type UserProfilePageProps = UserData & {
-  ctaLabel: string
+  isLoading?: boolean
+  ctaLabel?: string
   onCtaClick?: () => void;
   onBadgeClick?: (badge: TaskData) => void;
 };
@@ -32,11 +45,19 @@ export function UserProfilePage(props: UserProfilePageProps) {
 
   const badgeAchievements = (props.badges || []).map(b => {
     return <BadgeButton
-      key={b.href}
+      key={b.url}
       {...b}
       onClick={() => props.onBadgeClick && props.onBadgeClick(b)}
     />
   })
+
+  if (props.isLoading) {
+    return (
+      <Center style={{ height: 400 }}>
+        <Loader />
+      </Center>
+    );
+  }
 
   return (
     <Container size="lg" pb="xl" pt="lg">

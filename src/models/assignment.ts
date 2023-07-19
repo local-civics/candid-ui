@@ -2,12 +2,14 @@
  * AssignmentData
  */
 export type AssignmentData = {
-  name: string;
-  status: "open" | "assigned to me" | "archived"
-  summary: AssignmentSummaryItemData[]
-  breakdown: AssignmentBreakdownItemData[]
+  url?: string;
+  taskURL?: string
+  name?: string;
+  status?: "open" | "assigned to me" | "archived"
+  summary?: AssignmentSummaryItemData[]
+  breakdown?: AssignmentBreakdownItemData[]
   grouping?: string[]
-  columns: {
+  columns?: {
     accessorKey: string,
     header: string,
     filterVariant?: "select" | "text" | "checkbox" | "date" | "date-range" | "multi-select" | "range",

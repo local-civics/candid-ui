@@ -2,7 +2,7 @@ import * as React from "react";
 import { ClassData, ClassMemberData } from "../../models/class";
 import {
   Container, Title, Stack, Divider, Button, Box, Avatar, Menu, Flex, Text,
-  useMantineTheme, ActionIcon, Card, Group,
+  useMantineTheme, ActionIcon, Card, Group, Center, Loader
 } from "@mantine/core";
 import {
   IconPlus,
@@ -24,6 +24,7 @@ import { UploadCSV } from "../../components/class/modal/UploadCSV";
  * ClassPageProps
  */
 export type ClassPageProps = ClassData & {
+  isLoading?: boolean
   onCopyCode?: () => void;
   onCopyInviteLink?: () => void;
   onRefreshCode?: () => void;
@@ -132,6 +133,14 @@ export function ClassPage(props: ClassPageProps) {
     ],
     [],
   );
+
+  if (props.isLoading) {
+    return (
+      <Center style={{ height: 400 }}>
+        <Loader />
+      </Center>
+    );
+  }
 
   return <>
     <Container size="lg" pb="xl">
