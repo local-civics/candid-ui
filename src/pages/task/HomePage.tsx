@@ -14,6 +14,7 @@ import { Carousel } from "@mantine/carousel";
 import { useMediaQuery } from "@mantine/hooks";
 import { TaskCard } from "../../components/task/TaskCard";
 import {TaskModel } from "../../models/task";
+import { PlaceholderBanner } from "../../components/common/placeholder/PlaceholderBanner";
 
 const DEFAULT_FILTERS_PREFIX = ["All"];
 
@@ -137,18 +138,18 @@ export function HomePage(props: HomePageProps) {
         </Carousel>
 
         {/* Content tasks */}
-        <Box pos="relative">
-          <SimpleGrid
-            cols={3}
-            spacing="lg"
-            breakpoints={[
-              { maxWidth: "70rem", cols: 2, spacing: "sm" },
-              { maxWidth: "36rem", cols: 1, spacing: "sm" },
-            ]}
-          >
-            {tasks}
-          </SimpleGrid>
-        </Box>
+        { !!props.items.length && <SimpleGrid
+          cols={3}
+          spacing="lg"
+          breakpoints={[
+            { maxWidth: "70rem", cols: 2, spacing: "sm" },
+            { maxWidth: "36rem", cols: 1, spacing: "sm" },
+          ]}
+        >
+          {tasks}
+        </SimpleGrid>}
+
+        {!props.items?.length && <PlaceholderBanner title="No results matching selected filter." />}
       </Stack>
     </Container>
   );

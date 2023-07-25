@@ -1,6 +1,6 @@
 import * as React from "react";
 import { MemoryRouter } from "react-router-dom";
-import { HomePage } from "../src/pages/home/HomePage";
+import { HomePage } from "../src/pages/task/HomePage";
 import { AuthLayout } from "../src/layouts/AuthLayout.tsx";
 
 export default {
