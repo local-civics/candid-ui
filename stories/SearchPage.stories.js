@@ -4,7 +4,7 @@ import { SearchPage } from '../src/pages/task/SearchPage';
 import {AuthLayout} from "../src/layouts/AuthLayout.tsx";
 
 export default {
-  title: 'Page/Explore/SearchPage',
+  title: 'Page/Task/SearchPage',
   component: SearchPage,
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/react/writing-docs/autodocs
   tags: ['autodocs'],

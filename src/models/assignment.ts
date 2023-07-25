@@ -1,40 +1,38 @@
 /**
- * AssignmentData
+ * AssignmentModel
  */
-export type AssignmentData = {
+export type AssignmentModel = {
   url?: string;
   taskURL?: string
+  startURL?: string
   name?: string;
-  status?: "open" | "assigned to me" | "archived"
-  summary?: AssignmentSummaryItemData[]
-  breakdown?: AssignmentBreakdownItemData[]
+  code?: string;
+  breakdown?: AssignmentBreakdownItemModel[]
+  assignees?: AssigneeModel[]
+  isArchived?: boolean
+  isAssignor?: boolean
   grouping?: string[]
-  columns?: {
-    accessorKey: string,
-    header: string,
-    filterVariant?: "select" | "text" | "checkbox" | "date" | "date-range" | "multi-select" | "range",
-    mantineFilterSelectProps?: {data: any},
-    size?: number
-  }[]
+  questions?: {itemId?: string, title?: string, options?: string[]}[]
 };
 
 /**
- * AssignmentSummaryItemData
+ * AssigneeModel
  */
-export type AssignmentSummaryItemData = {
-  name: string
-  submissions?: string[][]
-  submissionCount: number
-  options?: string[]
-  chart?: boolean
+export type AssigneeModel = {
+  name?: string
+  url?: string
+  group?: string
+  description?: string
 }
 
 /**
- * AssignmentBreakdownItemData
+ * AssignmentBreakdownItemModel
  */
-export type AssignmentBreakdownItemData = {
-  assignee: string
+export type AssignmentBreakdownItemModel = {
+  assigneeName: string
+  assigneeURL: string
   reflection: string
   avatarURL: string
   status: 'incomplete' | 'in progress' | 'complete'
+  answers?: Record<string, {responses?: string[]}>
 }

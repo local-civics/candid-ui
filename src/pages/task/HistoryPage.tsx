@@ -13,17 +13,18 @@ import {
 } from "@mantine/core";
 import { IconTimelineEvent } from "@tabler/icons-react";
 import { formatDate } from "../../utils/dates";
-import { TaskData } from "../../models/task";
+import { TaskModel } from "../../models/task";
+import { PlaceholderBanner } from "../../components/common/placeholder/PlaceholderBanner";
 
 /**
  * HistoryPageProps
  */
 export type HistoryPageProps = {
   isLoading?: boolean
-  items?: {date: string, tasks: TaskData[]}[]
-  onLikeTask?: (data: TaskData) => void;
-  onSaveTask?: (data: TaskData) => void;
-  onAssignTask?: (data: TaskData) => void;
+  items?: TaskModel[]
+  onLikeTask?: (data: TaskModel) => void;
+  onSaveTask?: (data: TaskModel) => void;
+  onAssignTask?: (data: TaskModel) => void;
 };
 
 /**
@@ -33,7 +34,24 @@ export type HistoryPageProps = {
  */
 export function HistoryPage(props: HistoryPageProps) {
   const theme = useMantineTheme()
-  const dates = props.items?.map((d) => {
+  const itemsByDateMap: Record<string, {date: string, tasks: TaskModel[]}> = {}
+  props.items?.forEach(v => {
+      if(!v.userViewedAt){
+        return
+      }
+
+    const date = new Date(v.userViewedAt).toLocaleDateString()
+    if(!(date in itemsByDateMap)){
+      itemsByDateMap[date] = {date, tasks: []}
+    }
+
+    itemsByDateMap[date].tasks.push(v)
+  })
+
+  const itemsByDate: {date: string, tasks: TaskModel[]}[] = Object.values(itemsByDateMap)
+  itemsByDate.sort((a, b) => new Date(a.date) > new Date(b.date) ? -1 : 1)
+
+  const dates = itemsByDate.map((d) => {
     return (
       <React.Fragment key={d.date}>
         <Title sx={{textTransform: "capitalize"}} size={30} color="dark.4">{formatDate(d.date)}</Title>
@@ -78,7 +96,8 @@ export function HistoryPage(props: HistoryPageProps) {
           <IconTimelineEvent size={30} color={theme.colors.dark[4]}/>
           <Title size={30} color="dark.4">History</Title>
         </Flex>
-        {dates}
+        {!!dates.length && dates}
+        {!dates.length && <PlaceholderBanner title="You have not viewed any tasks yet." />}
       </Stack>
     </Box>
   </Container>

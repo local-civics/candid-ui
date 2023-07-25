@@ -1,14 +1,14 @@
-import { TaskData } from "./task";
+import { TaskModel } from "./task";
 
 /**
- * UserData
+ * UserModel
  */
-export type UserData = {
+export type UserModel = {
   fullName?: string
   firstName?: string
   lastName?: string
   email?: string
   avatarURL?: string
   impactStatement?: string
-  badges?: TaskData[]
+  badges?: TaskModel[]
 }

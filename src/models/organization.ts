@@ -1,7 +1,10 @@
 /**
- * OrganizationData
+ * OrganizationModel
  */
-export type OrganizationData = {
-  name: string
-  status: "member"
+export type OrganizationModel = {
+  name?: string
+  url?: string
+  memberURL?: string
+  inviteURL?: string
+  code?: string
 }

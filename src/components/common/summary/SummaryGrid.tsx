@@ -1,7 +1,7 @@
 import * as React from "react";
 import { createStyles, Group, Paper, Text, ThemeIcon, SimpleGrid } from '@mantine/core';
 import { IconArrowUpRight, IconArrowDownRight, IconPointFilled } from '@tabler/icons-react';
-import { SummaryData } from "./data";
+import { SummaryModel } from "./data";
 
 const useStyles = createStyles((theme) => ({
   label: {
@@ -13,7 +13,7 @@ const useStyles = createStyles((theme) => ({
  * SummaryGridProps
  */
 export type SummaryGridProps = {
-  data?: SummaryData;
+  data?: SummaryModel;
 }
 
 /**

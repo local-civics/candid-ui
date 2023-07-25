@@ -3,8 +3,8 @@ import "external-svg-loader";
 import { useDisclosure } from "@mantine/hooks";
 import { UnstyledButton, Text, Popover, Container, createStyles, Stack, Title } from "@mantine/core";
 import { Link } from "react-router-dom";
-import { TaskData } from "../../models/task";
-import { BadgeIcon } from "./BadgeIcon";
+import { TaskModel } from "../../models/task";
+import { TaskIcon } from "./TaskIcon";
 
 const useStyles = createStyles((theme) => {
   return {
@@ -19,7 +19,7 @@ const useStyles = createStyles((theme) => {
 /**
  * BadgeButtonProps
  */
-export type BadgeButtonProps = TaskData & {
+export type BadgeButtonProps = TaskModel & {
   onClick?: () => void;
 };
 
@@ -35,7 +35,7 @@ export function BadgeButton(props: BadgeButtonProps) {
     <Popover width={400} position="bottom" withArrow shadow="md" opened={opened}>
       <Popover.Target>
         <UnstyledButton<typeof Link> component={Link} to={props.url||"#"} onMouseEnter={open} onMouseLeave={close} onClick={props.onClick}>
-          <BadgeIcon {...props}/>
+          <TaskIcon {...props}/>
         </UnstyledButton>
       </Popover.Target>
       <Popover.Dropdown onMouseEnter={open} onMouseLeave={close}>

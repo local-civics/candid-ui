@@ -24,7 +24,7 @@ import {
   IconSpyOff,
   IconShieldLock, IconIcons
 } from "@tabler/icons-react";
-import { TaskData } from "../../models/task";
+import { TaskModel } from "../../models/task";
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
@@ -44,7 +44,7 @@ const useStyles = createStyles((theme) => ({
 
 const FEATURES_DATA = [
   {
-    title: "Data protection",
+    title: "Model protection",
     description: "We take great care in protecting data for both students and educators like you.",
     icon: IconShieldLock,
   },
@@ -78,7 +78,7 @@ const FEATURES_DATA = [
 /**
  * TaskOverviewProps
  */
-export type TaskOverviewProps = TaskData & {
+export type TaskOverviewProps = TaskModel & {
 
 };
 
@@ -127,13 +127,13 @@ export function TaskOverview(props: TaskOverviewProps) {
             </Text>
           </Group>
         )}
-        <Group mt={10} spacing={5} color="dark.4">
+        {!!props.uploadedOn && <Group mt={10} spacing={5} color="dark.4">
           <IconBookUpload size={18} />
           <Text size="md">Uploaded on</Text>
           <Text weight={700} size="md">
-            {props.uploadedOn}
+            {new Date(props.uploadedOn).toLocaleDateString('en-us', { weekday:"long", year:"numeric", month:"short", day:"numeric"})}
           </Text>
-        </Group>
+        </Group>}
         <Group mt={10} spacing={5} color="dark.4">
           <IconStarFilled size={18} />
           {

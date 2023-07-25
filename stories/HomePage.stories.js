@@ -4,7 +4,7 @@ import { HomePage } from "../src/pages/home/HomePage";
 import { AuthLayout } from "../src/layouts/AuthLayout.tsx";
 
 export default {
-  title: "Page/Explore/HomePage",
+  title: "Page/Task/HomePage",
   component: HomePage,
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/react/writing-docs/autodocs
   tags: ["autodocs"],

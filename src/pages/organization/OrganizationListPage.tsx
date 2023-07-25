@@ -2,26 +2,26 @@ import * as React from "react";
 import {
   ActionIcon, Button,
   Card, Center,
-  Container, createStyles, Divider,
+  Container, CopyButton, createStyles, Divider,
   Flex,
   Group, Loader,
   Menu,
-  Modal, PinInput, rem,
+  PinInput, rem,
   Stack,
   Text,
-  Title,
+  Title, Tooltip,
   useMantineTheme
 } from "@mantine/core";
 import {
   IconBarcode, IconBuildingCommunity, IconDoorExit,
-  IconDotsVertical,
+  IconDotsVertical, IconLink
 } from "@tabler/icons-react";
 import { modals } from "@mantine/modals";
-import { PlaceholderBanner } from "../../components/core/placeholder/PlaceholderBanner";
-import { OrganizationData } from "../../models/organization";
-import { useForm as useMantineForm } from "@mantine/form";
-import { SummaryData } from "../../components/core/summary/data";
-import { SummaryGrid } from "../../components/core/summary/SummaryGrid";
+import { PlaceholderBanner } from "../../components/common/placeholder/PlaceholderBanner";
+import { OrganizationModel } from "../../models/organization";
+import { SummaryModel } from "../../components/common/summary/data";
+import { SummaryGrid } from "../../components/common/summary/SummaryGrid";
+import { fqdn } from "../../utils/urls";
 
 const useStyles = createStyles((theme) => {
   return {
@@ -29,6 +29,7 @@ const useStyles = createStyles((theme) => {
       backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
       height: "max-content",
       width: "20rem",
+      minWidth: "20rem",
     },
 
     section: {
@@ -45,11 +46,10 @@ const useStyles = createStyles((theme) => {
  */
 export type OrganizationListPageProps = {
   isLoading?: boolean
-  summary?: SummaryData
-  items?: OrganizationData[];
+  summary?: SummaryModel
+  items?: OrganizationModel[];
   onJoin?: (code: string) => void;
-  onLeave?: (data: OrganizationData) => void;
-  onOpen?: (data: OrganizationData) => void;
+  onLeave?: (data: OrganizationModel) => void;
 };
 
 /**
@@ -60,10 +60,8 @@ export type OrganizationListPageProps = {
 export function OrganizationListPage(props: OrganizationListPageProps) {
   const theme = useMantineTheme();
   const { classes } = useStyles();
-  const form = useForm(props);
 
-  const joined = props.items?.filter((v) => v.status === "member")
-    .map((v) => {
+  const joined = props.items?.map((v) => {
       return (
         <Card key={v.name} withBorder radius="md" p="md" className={classes.card}>
           <Card.Section
@@ -115,6 +113,15 @@ export function OrganizationListPage(props: OrganizationListPageProps) {
 
           <Card.Section className={classes.section} mt="md">
             <Group spacing={20}>
+              <CopyButton value={fqdn(v.inviteURL).replace(":invite", "/invite")}>
+                {
+                  ({copied, copy}) => <Tooltip label={copied ? "Copied invite link" : "Copy invite link"}>
+                    <ActionIcon onClick={copy} color={copied ? "teal" : "blue"}>
+                      <IconLink />
+                    </ActionIcon>
+                  </Tooltip>
+                }
+              </CopyButton>
             </Group>
           </Card.Section>
         </Card>
@@ -131,9 +138,6 @@ export function OrganizationListPage(props: OrganizationListPageProps) {
 
   return (
     <>
-      <Modal opened={form.opened} onClose={close} size="auto" withCloseButton={false} centered>
-        {form.children()}
-      </Modal>
       <Container size="lg" pb="xl">
         <Stack spacing={10}>
           <Flex>
@@ -141,7 +145,18 @@ export function OrganizationListPage(props: OrganizationListPageProps) {
               <IconBuildingCommunity color={theme.colors.dark[4]} />
               <Title color="dark.4">Organizations</Title>
             </Group>
-            <Button onClick={() => form.open(0)} maw="max-content" variant="subtle" leftIcon={<IconBarcode />}>
+            <Button
+              maw="max-content"
+              variant="subtle"
+              leftIcon={<IconBarcode />}
+              onClick={() => {
+                modals.open({
+                  title: <Title mb={5} size={16} color="dark.4">Join organization</Title>,
+                  centered: true,
+                  size: "auto",
+                  children: <JoinOrganization {...props}/>,
+                });
+              }}>
               Join
             </Button>
           </Flex>
@@ -150,9 +165,9 @@ export function OrganizationListPage(props: OrganizationListPageProps) {
           <Title mt={10} underline size="sm" color="dark.4">
             Joined
           </Title>
-          <Flex mt={10} gap={15}>
+          <Flex mt={10} gap={15} wrap="wrap">
             {!!joined?.length && joined}
-            {!joined?.length && <PlaceholderBanner title="No joined organizations" />}
+            {!joined?.length && <PlaceholderBanner title="You have not joined any organizations yet." />}
           </Flex>
         </Stack>
       </Container>
@@ -160,62 +175,27 @@ export function OrganizationListPage(props: OrganizationListPageProps) {
   );
 }
 
-function useForm(props: OrganizationListPageProps) {
-  const form = useMantineForm({
-    initialValues: {
-      opened: false,
-      stage: -1,
-      node: undefined as React.ReactNode,
-      name: "",
-      code: "",
-    },
-    transformValues: (values) => {
-      return {
-        name: values.name,
-      };
-    },
-  });
-  const open = (stage?: number) => form.setValues({ ...form.values, opened: true, stage });
-  const close = () => form.setValues({ ...form.values, opened: false });
-  const join = () => {
-    close();
-    form.reset();
-    props.onJoin && props.onJoin(form.values.code);
-  };
-
-  const cancel = () => {
-    close();
-    form.reset();
-  };
-
-  return {
-    opened: form.values.opened,
-    open,
-    children: () => {
-      if (form.values.node) {
-        return form.values.node;
-      }
-
-      switch (form.getInputProps("stage").value) {
-        case 0:
-          return <>
-            <Text size={14} pb={10}>Organization code</Text>
-            <PinInput
-              {...form.getInputProps("code")}
-              length={6}
-            />
-            <Group ml="auto" w="max-content" mt="md" spacing={10}>
-              <Button variant="default" type="button" onClick={cancel}>
-                Cancel
-              </Button>
-              <Button disabled={form.values.code.length < 6} type="submit" onClick={join}>
-                Join
-              </Button>
-            </Group>
-          </>
-        default:
-          return null
-      }
-    },
-  };
+function JoinOrganization(props: OrganizationListPageProps){
+    const [code, setCode] = React.useState("")
+    return <>
+      <Text size={14} pb={10}>Organization code</Text>
+      <PinInput autoFocus onChange={setCode} length={6}/>
+      <Group ml="auto" w="max-content" mt="md" spacing={10}>
+        <Button
+          variant="default"
+          type="button"
+          onClick={() => modals.closeAll()}>
+          Cancel
+        </Button>
+        <Button
+          disabled={code.length < 6}
+          type="submit"
+          onClick={() => {
+            props.onJoin && props.onJoin(code);
+            modals.closeAll()
+          }}>
+          Join
+        </Button>
+      </Group>
+    </>
 }

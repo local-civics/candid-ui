@@ -35,7 +35,8 @@ import { compactNumber } from "../../utils/numbers";
 import { Carousel } from "@mantine/carousel";
 import { useMediaQuery } from "@mantine/hooks";
 import { Link } from "react-router-dom";
-import { TaskData } from "../../models/task";
+import { TaskModel } from "../../models/task";
+import { fqdn } from "../../utils/urls";
 
 const useStyles = createStyles((theme) => {
   return {
@@ -102,7 +103,7 @@ const SHARE_LINKS = [
   {
     title: "WhatsApp",
     icon: IconBrandWhatsapp,
-    href: (props: TaskHeroProps) => `https://api.whatsapp.com/send/?text=${encodeURIComponent(props.url||"#")}`,
+    href: (props: TaskHeroProps) => `https://api.whatsapp.com/send/?text=${encodeURIComponent(fqdn(props.url))}`,
   },
   {
     title: "Facebook",
@@ -117,12 +118,12 @@ const SHARE_LINKS = [
   {
     title: "Email",
     icon: IconAt,
-    href: (props: TaskHeroProps) => `mailto:?body=${encodeURIComponent(props.url||"#")}`,
+    href: (props: TaskHeroProps) => `mailto:?body=${encodeURIComponent(fqdn(props.url))}`,
   },
   {
     title: "Reddit",
     icon: IconBrandReddit,
-    href: (props: TaskHeroProps) => `https://www.reddit.com/submit?url=${encodeURIComponent(props.url||"#")}`,
+    href: (props: TaskHeroProps) => `https://www.reddit.com/submit?url=${encodeURIComponent(fqdn(props.url))}`,
   },
   {
     title: "LinkedIn",
@@ -134,13 +135,10 @@ const SHARE_LINKS = [
 /**
  * TaskHeroProps
  */
-export type TaskHeroProps = TaskData & {
-  onStart?: () => void;
+export type TaskHeroProps = TaskModel & {
   onLike?: () => void;
   onSave?: () => void;
   onAssign?: () => void;
-  onCopy?: () => void;
-  onShare?: (via: string) => void;
 }
 
 /**
@@ -166,7 +164,6 @@ export function TaskHero(props: TaskHeroProps){
               component={Link}
               to={!l.href ? "#" : typeof l.href === "string" ? l.href : l.href(props)}
               target="_blank"
-              onClick={() => props.onShare && props.onShare(l.title)}
               rel="noopener noreferrer"
               size="xl"
               variant="light"
@@ -215,8 +212,9 @@ export function TaskHero(props: TaskHeroProps){
       <Title className={classes.title}>{props.title}</Title>
 
       <div style={{ width: "max-content" }}>
-        <Button
-          onClick={props.onStart}
+        <Button<typeof Link>
+          component={Link}
+          to={fqdn(props.startURL).replace(":start", "/start")}
           variant="gradient"
           gradient={{ from: "indigo", to: "cyan" }}
           size="xl"
@@ -284,18 +282,15 @@ export function TaskHero(props: TaskHeroProps){
                 <Input
                   disabled
                   maw="initial"
-                  value={props.url}
+                  value={fqdn(props.url)}
                   icon={<IconCopy size="1rem" />}
-                  placeholder="Uh, something is not right"
+                  placeholder={window.location.href}
                 />
-                <CopyButton value={props.url||"#"}>
+                <CopyButton value={fqdn(props.url)}>
                   {({ copied, copy }) => (
                     <Button
                       color={copied ? "teal" : "blue"}
-                      onClick={() => {
-                        copy();
-                        props.onCopy && props.onCopy();
-                      }}
+                      onClick={copy}
                     >
                       {copied ? "Copied" : "Copy"}
                     </Button>

@@ -5,20 +5,17 @@ import {
   IconSettings,
   IconCertificate2,
   IconUserCircle,
-  IconBatteryEco,
   IconAdjustmentsDollar,
-  IconChalkboard,
-  IconBuildingCommunity,
 } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
-import { buildAvatarURL } from "../core/avatar/helpers";
-import { UserData } from "../../models/user";
+import { buildAvatarURL } from "../../utils/avatars";
+import { UserModel } from "../../models/user";
 import { useUserStyles } from "./styles";
 
 /**
  * UserAvatarButtonProps
  */
-export type UserAvatarButtonProps = UserData & {
+export type UserAvatarButtonProps = UserModel & {
   icon?: React.ReactNode;
   onSignIn?: () => void;
 }
@@ -58,29 +55,15 @@ export function UserAvatarButton(props: UserAvatarButtonProps) {
         <Menu.Item<typeof Link> component={Link} to="/profile" icon={<IconCertificate2 size="1rem" stroke={1.5} />}>
           My profile
         </Menu.Item>
-        <Menu.Item<typeof Link> component={Link} to="/classes" icon={<IconChalkboard size="1rem" stroke={1.5} />}>
-          My classes
-        </Menu.Item>
-        <Menu.Item<typeof Link>
-          component={Link}
-          to="/organizations"
-          icon={<IconBuildingCommunity size="1rem" stroke={1.5} />}
-        >
-          My organizations
-        </Menu.Item>
         <Menu.Item<typeof Link> component={Link} to="/profile/settings" icon={<IconSettings size="1rem" stroke={1.5} />}>
           My settings
         </Menu.Item>
-        <Menu.Divider />
         <Menu.Item<typeof Link>
           component={Link}
-          to="/upgrade"
+          to="https://www.localcivics.io/trial-upgrade-form"
           icon={<IconAdjustmentsDollar size="1rem" stroke={1.5} />}
         >
           Upgrade
-        </Menu.Item>
-        <Menu.Item<typeof Link> component={Link} to="/log-service" icon={<IconBatteryEco size="1rem" stroke={1.5} />}>
-          Log service
         </Menu.Item>
         <Menu.Item<typeof Link> component={Link} to="/sign-out" icon={<IconLogout size="1rem" stroke={1.5} />}>
           Sign out

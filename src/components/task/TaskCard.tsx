@@ -23,8 +23,9 @@ import {
   Box,
 } from "@mantine/core";
 import { Link } from "react-router-dom";
-import { TaskData } from "../../models/task";
-import { BadgeIcon } from "../badge/BadgeIcon";
+import { TaskModel } from "../../models/task";
+import { TaskIcon } from "./TaskIcon";
+import { fqdn } from "../../utils/urls";
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -79,7 +80,7 @@ const MIN_RATING = 0;
  */
 export type TaskCardProps = {
   size?: "sm" | "md" | "lg"
-  data: TaskData;
+  data: TaskModel;
   onLikeClick?: () => void;
   onSave?: () => void;
   onAssign?: () => void;
@@ -140,7 +141,7 @@ export function TaskCard(props: TaskCardProps) {
         <Group mt="xs">
           <Button<typeof Link>
             component={Link}
-            to={props.data.url||""}
+            to={fqdn(props.data.url)}
             px={5}
             radius="md"
             style={{ flex: 1 }}
@@ -168,7 +169,7 @@ export function TaskCard(props: TaskCardProps) {
       <Card.Section w={300} p={0}>
         {!!props.data.iconURL && <UnstyledButton<typeof Link> component={Link} to={props.data.url||""}>
           <Flex sx={{overflow: "hidden"}} py={30} pl={25} h={225} w={300}>
-            <BadgeIcon {...props.data}/>
+            <TaskIcon {...props.data}/>
           </Flex>
         </UnstyledButton>}
 
@@ -226,7 +227,7 @@ export function TaskCard(props: TaskCardProps) {
       <Card.Section>
         {!!props.data.iconURL && <UnstyledButton<typeof Link> component={Link} to={props.data.url||""}>
           <Flex py={20} px={10} h={180}>
-            <BadgeIcon {...props.data} size="lg" />
+            <TaskIcon {...props.data} size="lg" />
           </Flex>
         </UnstyledButton>}
 
@@ -277,7 +278,7 @@ export function TaskCard(props: TaskCardProps) {
       <Group mt="xs">
         <Button<typeof Link>
           component={Link}
-          to={props.data.url||""}
+          to={fqdn(props.data.url)}
           px={5}
           radius="md"
           style={{ flex: 1 }}

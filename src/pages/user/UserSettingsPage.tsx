@@ -14,16 +14,16 @@ import {
   FileInput, Center, Loader
 } from "@mantine/core";
 import { useUserStyles } from "../../components/user/styles";
-import { buildAvatarURL } from "../../components/core/avatar/helpers";
-import { UserData } from "../../models/user";
+import { buildAvatarURL } from "../../utils/avatars";
+import { UserModel } from "../../models/user";
 import { IconPhotoEdit } from "@tabler/icons-react";
 
 /**
  * UserSettingsPageProps
  */
-export type UserSettingsPageProps = UserData & {
+export type UserSettingsPageProps = UserModel & {
   isLoading?: boolean
-  onSubmit?: (user: UserData) => void;
+  onSubmit?: (user: UserModel) => void;
   onEditAvatar?: (file: File | null) => void;
 };
 

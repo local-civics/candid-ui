@@ -13,7 +13,7 @@ import {
 import { Carousel } from "@mantine/carousel";
 import { useMediaQuery } from "@mantine/hooks";
 import { TaskCard } from "../../components/task/TaskCard";
-import {TaskData } from "../../models/task";
+import {TaskModel } from "../../models/task";
 
 const DEFAULT_FILTERS_PREFIX = ["All"];
 
@@ -44,11 +44,11 @@ export type HomePageProps = {
   isLoading?: boolean;
   defaultActiveFilter?: string;
   filters?: string[];
-  items: TaskData[];
+  items: TaskModel[];
   onFilterClick?: (name: string) => void;
-  onLikeTask?: (data: TaskData) => void;
-  onSaveTask?: (data: TaskData) => void;
-  onAssignTask?: (data: TaskData) => void;
+  onLikeTask?: (data: TaskModel) => void;
+  onSaveTask?: (data: TaskModel) => void;
+  onAssignTask?: (data: TaskModel) => void;
 };
 
 /**

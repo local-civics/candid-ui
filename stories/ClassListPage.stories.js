@@ -1,7 +1,7 @@
 import * as React from "react";
 import {MemoryRouter} from "react-router-dom";
-import {AuthLayout} from "../src/layouts/AuthLayout.tsx";
 import { ClassListPage } from '../src/pages/class/ClassListPage';
+import { CandidApp } from "../src/App";
 
 const MOCK_DATA = {
   summary: [{
@@ -13,48 +13,37 @@ const MOCK_DATA = {
     value: 10,
     description: "Total # of students"
   }],
-  members: [
-    [
-      { value: 'react', label: 'React'},
-      { value: 'ng', label: 'Angular'},
-      { value: 'next', label: 'Next.js'},
-      { value: 'blitz', label: 'Blitz.js'},
-      { value: 'gatsby', label: 'Gatsby.js'},
-      { value: 'vue', label: 'Vue'},
-      { value: 'jq', label: 'jQuery'},
-    ],
-    [
-      { value: 'sv', label: 'Svelte' },
-      { value: 'rw', label: 'Redwood' },
-      { value: 'np', label: 'NumPy' },
-      { value: 'dj', label: 'Django' },
-      { value: 'fl', label: 'Flask' },
-    ],
+  users: [
+    { url: 'react', name: 'React'},
+    { url: 'ng', name: 'Angular'},
+    { url: 'next', name: 'Next.js'},
+    { url: 'blitz', name: 'Blitz.js'},
+    { url: 'gatsby', name: 'Gatsby.js'},
+    { url: 'vue', name: 'Vue'},
+    { url: 'jq', name: 'jQuery'},
   ],
   items: [
     {
       name: 'Class #1',
-      status: 'admin',
+      isManager: true,
     },
     {
       name: 'Class #2',
-      status: 'admin',
+      isManager: true,
     },
     {
       name: 'Class #3',
-      status: 'member',
     },
     {
       name: 'Class #4',
-      status: 'member',
     },
     {
       name: 'Class #5',
-      status: 'archived',
+      isArchived: true
     },
     {
       name: 'Class #6',
-      status: 'archived',
+      isArchived: true
     },
   ]
 }
@@ -76,9 +65,9 @@ const Template = {
   },
   render: (args) => <div className="h-full w-full overscroll-none font-proxima">
     <MemoryRouter>
-      <AuthLayout>
+      <CandidApp>
         <ClassListPage {...args}/>
-      </AuthLayout>
+      </CandidApp>
     </MemoryRouter>
   </div>,
 }
@@ -99,7 +88,7 @@ export const Joined = {
   ...Template,
   args: {
     ...Template.args,
-    items: MOCK_DATA.classes.filter(a => a.status === 'member'),
+    items: MOCK_DATA.items.filter(a => !a.isManager),
   }
 };
 
@@ -107,6 +96,6 @@ export const Archived = {
   ...Template,
   args: {
     ...Template.args,
-    items: MOCK_DATA.classes.filter(a => a.status === 'archived'),
+    items: MOCK_DATA.items.filter(a => a.isArchived),
   }
 };

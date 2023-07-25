@@ -4,7 +4,7 @@ import { ExplorePage } from '../src/pages/task/ExplorePage';
 import {AuthLayout} from "../src/layouts/AuthLayout.tsx";
 
 export default {
-  title: 'Page/Explore/ExplorePage',
+  title: 'Page/Task/ExplorePage',
   component: ExplorePage,
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/react/writing-docs/autodocs
   tags: ['autodocs'],

@@ -1,22 +1,22 @@
 import { useBadgeStyles } from "./styles";
 import * as React from "react";
-import { TaskData } from "../../models/task";
+import { TaskModel } from "../../models/task";
 
 /**
- * BadgeIconProps
+ * TaskIconProps
  */
-export type BadgeIconProps = TaskData & {
-  size?: "lg"
+export type TaskIconProps = TaskModel & {
+  size?: "lg" | "xl"
 };
 
 /**
- * BadgeIcon
+ * TaskIcon
  * @param props
  * @constructor
  */
-export function BadgeIcon(props: BadgeIconProps) {
+export function TaskIcon(props: TaskIconProps) {
   const {classes, cx} = useBadgeStyles()
-  return <div className={cx(classes.badgeIcon, {[classes.badgeIconLg]: props.size === "lg"})}>
+  return <div className={cx(classes.badgeIcon, {[classes.badgeIconLg]: props.size === "lg", [classes.badgeIconXl]: props.size === "xl"})}>
     <svg
       style={{width: "100%", height: "100%"}}
       viewBox="0 0 940 1100"
@@ -48,9 +48,9 @@ export function BadgeIcon(props: BadgeIconProps) {
         strokeWidth="44"
       />
     </svg>
-    <div className={classes.badgeIconImageContainer}>
+    <div className={cx(classes.badgeIconImageContainer)}>
       <div style={{display: "flex", height: "100%"}}>
-        <svg data-cache="disabled" data-src={props.iconURL} className={classes.badgeIconImage} viewBox="0 0 32 32" width="32" height="32" fill="none" xmlns="http://www.w3.org/2000/svg"/>
+        <svg data-cache="disabled" data-src={props.iconURL} className={classes.badgeIconImage} viewBox="0 0 32 32" width="50%" height="50%" fill="none" xmlns="http://www.w3.org/2000/svg"/>
       </div>
     </div>
   </div>

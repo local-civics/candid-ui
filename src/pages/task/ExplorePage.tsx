@@ -12,7 +12,8 @@ import {
   useMantineTheme
 } from "@mantine/core";
 import { IconGlobe } from "@tabler/icons-react";
-import { TaskData } from "../../models/task";
+import { TaskModel } from "../../models/task";
+import { PlaceholderBanner } from "../../components/common/placeholder/PlaceholderBanner";
 
 /**
  * ExplorePageProps
@@ -20,10 +21,10 @@ import { TaskData } from "../../models/task";
 export type ExplorePageProps = {
   isLoading?: boolean
   title?: string
-  items?: TaskData[]
-  onLikeTask?: (data: TaskData) => void;
-  onSaveTask?: (data: TaskData) => void;
-  onAssignTask?: (data: TaskData) => void;
+  items?: TaskModel[]
+  onLikeTask?: (data: TaskModel) => void;
+  onSaveTask?: (data: TaskModel) => void;
+  onAssignTask?: (data: TaskModel) => void;
 };
 
 /**
@@ -60,7 +61,7 @@ export function ExplorePage(props: ExplorePageProps) {
           <Title size={30} color="dark.4">Explore</Title>
         </Flex>
         { !!props.title && <Title size={20} color="dark.4">{props.title}</Title> }
-        <SimpleGrid
+        { !!props.items?.length && <SimpleGrid
           cols={3}
           spacing="lg"
           breakpoints={[
@@ -69,7 +70,8 @@ export function ExplorePage(props: ExplorePageProps) {
           ]}
         >
           {tasks}
-        </SimpleGrid>
+        </SimpleGrid>}
+        {!props.items?.length && <PlaceholderBanner title="No results matching selected filter." />}
       </Stack>
     </Box>
   </Container>

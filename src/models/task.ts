@@ -1,9 +1,13 @@
 /**
- * TaskData
+ * TaskModel
  */
-export type TaskData = {
+export type TaskModel = {
   title?: string
   url?: string;
+  startURL?: string
+  advanceURL?: string
+  finishURL?: string
+  group?: string;
   imageURL?:string;
   numberOfLikes?: number;
   description?: string
@@ -14,20 +18,26 @@ export type TaskData = {
   preview?: {title: string}[]
   numberOfQuestions?: number
   uploadedOn?: string
-  items?: FormItemData[];
-  syllabus?: SyllabusData
+  items?: TaskFormatItemModel[];
+  isReflectionRequired?: boolean
+  syllabus?: SyllabusModel
   level?: number
   iconURL?: string
+  userFullName?: string
   userTimeSpent?: number;
   userLiked?: boolean;
   userSaved?: boolean;
   userReflection?: string;
   userRating?: number
-  userStatus?: "unlocked" | "in progress" | "locked" | "completed"
+  userStatus?: "not started" | "in progress" | "locked" | "completed"
+  userViewedAt?: string
 };
 
-export type FormItemData = {
-  displayName?: string;
+/**
+ * TaskFormatItemModel
+ */
+export type TaskFormatItemModel = {
+  title?: string;
   itemId?: string;
   description?: string;
   format?: "question" | "image" | "embed" | "text";
@@ -35,31 +45,36 @@ export type FormItemData = {
   options?: string[];
   paragraph?: boolean;
   required?: boolean;
-  disabled?: boolean;
-  minText?: number;
   url?: string;
-  userAnswer?: {
-    responses?: string[];
-  },
+  userAnswer?: TaskAnswerModel,
 };
 
 /**
- * SyllabusData
+ * TaskAnswerModel
  */
-export type SyllabusData = {
-  title?: string;
-  items?: SyllabusItemData[];
+export type TaskAnswerModel = {
+  responses?: string[];
 }
 
 /**
- * SyllabusItemData
+ * SyllabusModel
  */
-export type SyllabusItemData = {
-  url: string;
-  title: string;
-  description: string;
-  etc: string;
-  numberOfQuestions: number;
-  numberOfVideos: number;
-  numberOfImages: number;
+export type SyllabusModel = {
+  title?: string;
+  items?: SyllabusItemModel[];
+}
+
+/**
+ * SyllabusItemModel
+ */
+export type SyllabusItemModel = {
+  url?: string;
+  startURL?: string
+  title?: string;
+  description?: string;
+  etc?: string;
+  numberOfQuestions?: number;
+  numberOfVideos?: number;
+  numberOfImages?: number;
+  isUserFinished?: boolean
 };

@@ -3,14 +3,12 @@ import { Navbar as MantineNavbar, createStyles, ScrollArea, Title } from "@manti
 import {
   IconHome2,
   IconSectionSign,
-  IconBook,
   IconTimelineEvent,
   IconThumbUp,
   IconClipboardList,
   IconFlame,
   IconCookie,
   IconHourglassLow,
-  Icon360,
   IconLivePhoto,
   IconOlympics,
   IconGavel,
@@ -23,7 +21,7 @@ import {
   IconBallpen,
   IconBookmark,
   IconSunrise,
-  IconBriefcase
+  IconBriefcase, IconChalkboard, IconBuildingCommunity
 } from "@tabler/icons-react";
 import { AppLink } from "./AppLink";
 
@@ -73,24 +71,27 @@ export function AppNavbar(props: AppNavbarProps) {
         {/* Navbar Section I - Personalization */}
         <MantineNavbar.Section className={cx(classes.sectionOne)}>
           <AppLink isActive={active === "Home"} icon={IconHome2} href="/" label="Home" onNavigate={onNavigate} />
+          <AppLink
+            isActive={active === "Organizations"}
+            icon={IconBuildingCommunity}
+            href="/organizations"
+            label="Organizations"
+            onNavigate={onNavigate}
+          />
+          <AppLink
+            isActive={active === "Classes"}
+            icon={IconChalkboard}
+            href="/classes"
+            label="Classes"
+            onNavigate={onNavigate}
+          />
         </MantineNavbar.Section>
 
         {/* Navbar Section II - Library */}
         <MantineNavbar.Section className={cx(classes.section)}>
-          <AppLink
-            isActive={active === "Library"}
-            icon={IconBook}
-            href="/library"
-            label="Library"
-            onNavigate={onNavigate}
-          />
-          <AppLink
-            isActive={active === "Liked content"}
-            icon={IconThumbUp}
-            href="/library/liked-content"
-            label="Liked content"
-            onNavigate={onNavigate}
-          />
+          <Title className={classes.sectionTitle} mb={5} size="medium">
+            Library
+          </Title>
           <AppLink
             isActive={active === "Assignments"}
             icon={IconClipboardList}
@@ -99,16 +100,23 @@ export function AppNavbar(props: AppNavbarProps) {
             onNavigate={onNavigate}
           />
           <AppLink
+            isActive={active === "Liked content"}
+            icon={IconThumbUp}
+            href="/my/liked-content"
+            label="Liked content"
+            onNavigate={onNavigate}
+          />
+          <AppLink
             isActive={active === "Saved for later"}
             icon={IconBookmark}
-            href="/library/saved-for-later"
+            href="/my/saved-for-later"
             label="Saved for later"
             onNavigate={onNavigate}
           />
           <AppLink
             isActive={active === "History"}
             icon={IconTimelineEvent}
-            href="/library/history"
+            href="/my/history"
             label="History"
             onNavigate={onNavigate}
           />
@@ -214,10 +222,9 @@ export function AppNavbar(props: AppNavbarProps) {
 
         {/* Navbar Section IV - Documentation */}
         <MantineNavbar.Section className={cx(classes.section)}>
-          <AppLink icon={Icon360} label="Getting started" href="/getting-started" />
-          <AppLink icon={IconHelpSquareRounded} label="Help" href="/help" />
-          <AppLink icon={IconCookie} label="Privacy Policy" href="/privacy-policy" />
-          <AppLink icon={IconSectionSign} label="Terms & Conditions" href="/terms-and-conditions" />
+          <AppLink icon={IconHelpSquareRounded} label="Help" href="https://localcivics.notion.site/Help-Center-b52300f587b64fc0a61f512686e7626d" />
+          <AppLink icon={IconCookie} label="Privacy Policy" href="https://www.localcivics.io/privacy-policy" />
+          <AppLink icon={IconSectionSign} label="Terms & Conditions" href="https://www.localcivics.io/terms-of-service" />
         </MantineNavbar.Section>
       </MantineNavbar.Section>
     </MantineNavbar>

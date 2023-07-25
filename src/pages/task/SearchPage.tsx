@@ -2,7 +2,8 @@ import * as React from "react";
 import { TaskCard } from "../../components/task/TaskCard";
 import { Box, Center, Container, Flex, Loader, Stack, Title, useMantineTheme } from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
-import { TaskData } from "../../models/task";
+import { TaskModel } from "../../models/task";
+import { PlaceholderBanner } from "../../components/common/placeholder/PlaceholderBanner";
 
 /**
  * SearchPageProps
@@ -10,10 +11,10 @@ import { TaskData } from "../../models/task";
 export type SearchPageProps = {
   isLoading?: boolean
   title?: string
-  items?: TaskData[]
-  onLikeTask?: (data: TaskData) => void;
-  onSaveTask?: (data: TaskData) => void;
-  onAssignTask?: (data: TaskData) => void;
+  items?: TaskModel[]
+  onLikeTask?: (data: TaskModel) => void;
+  onSaveTask?: (data: TaskModel) => void;
+  onAssignTask?: (data: TaskModel) => void;
 };
 
 /**
@@ -51,9 +52,10 @@ export function SearchPage(props: SearchPageProps) {
           <Title size={30} color="dark.4">Search</Title>
         </Flex>
         { !!props.title && <Title size={20} color="dark.4">{props.title}</Title> }
-        <Stack spacing={10}>
+        { !!props.items?.length && <Stack spacing={10}>
           {tasks}
-        </Stack>
+        </Stack> }
+        {!props.items?.length && <PlaceholderBanner title="No results matching the search query." />}
       </Stack>
     </Box>
   </Container>

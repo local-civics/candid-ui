@@ -2,21 +2,22 @@ import * as React from "react";
 import { Container, Grid, Text, Title, Stack, Group, Button } from "@mantine/core";
 import { IconClockFilled, IconPencil, IconPhoto, IconVideo } from "@tabler/icons-react";
 import { useBadgeStyles } from "./styles";
-import { SyllabusData, SyllabusItemData } from "../../models/task";
+import { SyllabusModel } from "../../models/task";
+import { fqdn } from "../../utils/urls";
+import { Link } from "react-router-dom";
 
 /**
- * BadgeSyllabusProps
+ * TaskSyllabusProps
  */
-export type BadgeSyllabusProps = SyllabusData & {
-  onStartSyllabusItem?: (item: SyllabusItemData) => void;
+export type TaskSyllabusProps = SyllabusModel & {
 };
 
 /**
- * BadgeSyllabus
+ * TaskSyllabus
  * @param props
  * @constructor
  */
-export function BadgeSyllabus(props: BadgeSyllabusProps) {
+export function TaskSyllabus(props: TaskSyllabusProps) {
   const { classes, cx } = useBadgeStyles();
   const title = props.title || "What You'll Learn";
   const sessions = props.items?.map((v, i) => {
@@ -60,8 +61,9 @@ export function BadgeSyllabus(props: BadgeSyllabusProps) {
             </Group>
 
             <div style={{ width: "max-content" }}>
-              <Button
-                onClick={() => props.onStartSyllabusItem && props.onStartSyllabusItem(v)}
+              <Button<typeof Link>
+                component={Link}
+                to={fqdn(v.startURL).replace(":start", "/start")}
                 variant="gradient"
                 gradient={{ from: "indigo", to: "cyan" }}
                 size="md"

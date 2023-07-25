@@ -1,23 +1,28 @@
 /**
- * ClassData
+ * ClassModel
  */
-export type ClassData = {
-  name: string
-  status: "admin" | "member" | "archived"
-  code: string
-  members: ClassMemberData[]
+export type ClassModel = {
+  name?: string
+  url?: string
+  memberURL?: string
+  inviteURL?: string
+  assignmentsURL?: string
+  isArchived?: boolean
+  isManager?: boolean
+  code?: string
+  users?: ClassUserModel[]
 }
 
 /**
- * ClassMemberData
+ * ClassUserModel
  */
-export type ClassMemberData = {
-  name: string
-  email: string
-  role: "student" | "educator"
-  avatarURL: string
-  status: "active" | "inactive"
-  numberOfBadgesEarned: number
-  numberOfLessonsCompleted: number
-  impactStatement: string
+export type ClassUserModel = {
+  name?: string
+  url?: string
+  email?: string
+  avatarURL?: string
+  isEducator?: boolean
+  isArchived?: boolean
+  isJoined?: boolean
+  impactStatement?: string
 }

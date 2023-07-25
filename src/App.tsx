@@ -6,8 +6,8 @@ import {
 } from "@mantine/core";
 import { ModalsProvider } from "@mantine/modals";
 import { useMediaQuery } from "@mantine/hooks";
-import { AppHeader, AppHeaderProps } from "./components/core/navigation/AppHeader";
-import { AppNavbar, AppNavbarProps } from "./components/core/navigation/AppNavbar";
+import { AppHeader, AppHeaderProps } from "./components/common/navigation/AppHeader";
+import { AppNavbar, AppNavbarProps } from "./components/common/navigation/AppNavbar";
 import { IconBrandFacebook, IconBrandInstagram, IconBrandLinkedin } from "@tabler/icons-react";
 import { AuthLayout, AuthLayoutProps } from "./layouts/AuthLayout";
 

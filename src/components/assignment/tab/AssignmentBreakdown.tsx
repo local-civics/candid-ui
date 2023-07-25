@@ -1,17 +1,17 @@
 import * as React from "react";
-import { AssignmentData } from "../../../models/assignment";
+import { AssignmentModel } from "../../../models/assignment";
 import { Avatar, Box, Button} from "@mantine/core";
 import { IconDownload } from "@tabler/icons-react";
 import { MantineReactTable, MRT_ColumnDef, MRT_Row } from "mantine-react-table";
 import { useMemo } from "react";
-import { buildAvatarURL } from "../../core/avatar/helpers";
+import { buildAvatarURL } from "../../../utils/avatars";
 import { useAssignmentStyles } from "../styles";
 import { ExportToCsv } from "export-to-csv";
 
 /**
  * AssignmentBreakdownProps
  */
-export type AssignmentBreakdownProps = AssignmentData & {
+export type AssignmentBreakdownProps = AssignmentModel & {
 
 }
 
@@ -22,15 +22,36 @@ export type AssignmentBreakdownProps = AssignmentData & {
  */
 export function AssignmentBreakdown(props: AssignmentBreakdownProps){
   const {classes} = useAssignmentStyles()
+  const answers: Record<string, Record<string, string>> = {}
+  props.breakdown?.forEach(b => {
+    const breakdownAnswers = b.answers || {}
+    Object.keys(breakdownAnswers).forEach(k => {
+      if(!(k in answers)){
+        answers[k] = {}
+      }
+
+      answers[k][b.assigneeURL] = breakdownAnswers[k].responses?.join(",") || ""
+    })
+  })
+
+  const questionColumns = props.questions?.map(q => {
+    return {
+      accessorKey: q.title || "",
+      header: q.title || "",
+      size: 350,
+      accessorFn: (row: any) =>  (answers[q.itemId||""] || {})[row.assigneeURL]
+    }
+  })
+
   const columns = useMemo<MRT_ColumnDef<any>[]>(
     () => [
       {
-        accessorFn: (row) => row.assignee, //accessorFn used to join multiple data into a single cell
-        id: 'assignee',
+        accessorFn: (row) => row.assigneeName, //accessorFn used to join multiple data into a single cell
+        id: 'assigneeName',
         header: 'Assignee',
         size: 250,
         Cell: ({ renderedCellValue, row }) => {
-          const avatarURL = buildAvatarURL(row.original.avatarURL, row.original.assignee);
+          const avatarURL = buildAvatarURL(row.original.avatarURL, row.original.assigneeName);
 
           return <Box
             sx={{
@@ -51,11 +72,11 @@ export function AssignmentBreakdown(props: AssignmentBreakdownProps){
         header: 'Status',
         filterVariant: "select",
         mantineFilterSelectProps: {
-          data: ["Incomplete", "In Progress", "Complete"] as any
+          data: ["Not Started", "In Progress", "Completed"] as any
         },
         size: 200,
       },
-      ...(props.columns || []),
+      ...(questionColumns || []),
     ],
     [],
   );
@@ -76,7 +97,7 @@ export function AssignmentBreakdown(props: AssignmentBreakdownProps){
     csvExporter.generateCsv(rows.map((row) => row.original));
   };
 
-  const handleExportData = () => {
+  const handleExportModel = () => {
     csvExporter.generateCsv(props.breakdown);
   };
 
@@ -105,11 +126,11 @@ export function AssignmentBreakdown(props: AssignmentBreakdownProps){
         <Button
           color="lightblue"
           //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
-          onClick={handleExportData}
+          onClick={handleExportModel}
           leftIcon={<IconDownload />}
           variant="filled"
         >
-          Export All Data
+          Export All Model
         </Button>
         <Button
           disabled={table.getPrePaginationRowModel().rows.length === 0}

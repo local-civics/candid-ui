@@ -5,29 +5,35 @@ import { AssignmentPage } from '../src/pages/assignment/AssignmentPage';
 
 const MOCK_ASSIGMENT_DATA = {
   name: 'Assignment #1',
-  status: 'open',
-  summary: [
-    {
-      name: "An example question",
-      submissions: [["An example response"], ["Another example response"]],
-    },
-    {
-      name: "Another example question",
-      submissionCount: 5,
-    },
-    {
-      name: "A chart example question",
-      chart: true,
-      options: ["A. An example response", "B. Another example response", "C. Three", "D. Four", "E. Five"],
-      submissions: [["A. An example response"], ["B. Another example response"], ["B. Another example response"]]
-    },
-  ],
+  questions: [{
+    itemId: "1",
+    title: "An example question?"
+  },{
+    itemId: "2",
+    title: "Another example question"
+  },{
+    itemId: "3",
+    title: "A chart example question",
+    options: ["A. An example response", "B. Another example response", "C. Three", "D. Four", "E. Five"],
+  }],
   breakdown: [{
     assignee: "John Doe",
-    status: "In Progress",
+    assigneeURL: "jd",
+    status: "in progress",
     reflection: "",
-    "Lesson #1": "In Progress",
-    "An example question?": "An example response"
+    answers: {"1": {responses: ["An example response"]}, "3": {responses: ["A. An example response"]}},
+  },{
+    assignee: "Johnna Doe",
+    assigneeURL: "jjd",
+    status: "in progress",
+    reflection: "",
+    answers: {"1": {responses: ["An example response"]}, "3": {responses: ["B. Another example response"]}},
+  },{
+    assignee: "Lucy Jimmy",
+    assigneeURL: "lj",
+    status: "in progress",
+    reflection: "",
+    answers: {"3": {responses: ["B. Another example response"]}},
   }],
 }
 
@@ -57,10 +63,6 @@ export const Lesson = {
   ...Template,
   args: {
     ...Template.args,
-    columns: [{
-      accessorKey: "An example question?",
-      header: "An example question?"
-    }]
   }
 };
 
@@ -68,20 +70,6 @@ export const Badge = {
   ...Template,
   args: {
     ...Template.args,
-    summary: [
-      {
-        name: "Lesson #1",
-        submissionCount: 5,
-      },
-    ],
-    columns: [{
-      accessorKey: "Lesson #1",
-      header: "Lesson #1",
-      filterVariant: "select",
-      mantineFilterSelectProps: {
-        data: ["Incomplete", "In Progress", "Complete"],
-      },
-      size: 200,
-    }],
+    questions: [],
   }
 };

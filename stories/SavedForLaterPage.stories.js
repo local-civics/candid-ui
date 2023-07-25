@@ -4,7 +4,7 @@ import { SavedForLaterPage } from '../src/pages/task/SavedForLaterPage';
 import {AuthLayout} from "../src/layouts/AuthLayout.tsx";
 
 export default {
-  title: 'Page/Library/SavedForLaterPage',
+  title: 'Page/Task/SavedForLaterPage',
   component: SavedForLaterPage,
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/react/writing-docs/autodocs
   tags: ['autodocs'],

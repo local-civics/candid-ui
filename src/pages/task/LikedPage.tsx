@@ -1,6 +1,6 @@
 import * as React from "react";
 import { TaskCard } from "../../components/task/TaskCard";
-import {TaskData } from "../../models/task";
+import {TaskModel } from "../../models/task";
 import {
   Box,
   Center,
@@ -13,17 +13,18 @@ import {
   useMantineTheme
 } from "@mantine/core";
 import { IconThumbUp } from "@tabler/icons-react";
+import { PlaceholderBanner } from "../../components/common/placeholder/PlaceholderBanner";
 
 /**
  * LikedPageProps
  */
 export type LikedPageProps = {
   isLoading?: boolean
-  items?: TaskData[]
-  onLikeTask?: (data: TaskData) => void;
-  onSaveTask?: (data: TaskData) => void;
-  onAssignTask?: (data: TaskData) => void;
-  onOpenTask?: (data: TaskData) => void;
+  items?: TaskModel[]
+  onLikeTask?: (data: TaskModel) => void;
+  onSaveTask?: (data: TaskModel) => void;
+  onAssignTask?: (data: TaskModel) => void;
+  onOpenTask?: (data: TaskModel) => void;
 };
 
 /**
@@ -60,7 +61,7 @@ export function LikedPage(props: LikedPageProps) {
           <IconThumbUp size={30} color={theme.colors.dark[4]}/>
           <Title size={30} color="dark.4">Liked</Title>
         </Flex>
-        <SimpleGrid
+        { !!props.items?.length && <SimpleGrid
           cols={3}
           spacing="lg"
           breakpoints={[
@@ -69,7 +70,8 @@ export function LikedPage(props: LikedPageProps) {
           ]}
         >
         {tasks}
-        </SimpleGrid>
+        </SimpleGrid> }
+        {!props.items?.length && <PlaceholderBanner title="You don't have any liked tasks yet." />}
       </Stack>
     </Box>
   </Container>

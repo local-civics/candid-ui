@@ -1,12 +1,12 @@
 import * as React from "react";
-import { AssignmentData } from "../../../models/assignment";
+import { AssignmentModel } from "../../../models/assignment";
 import { Card, Stack, Title, Text, ScrollArea } from "@mantine/core";
 import { AxisOptions, Chart } from "react-charts";
 
 /**
  * AssignmentSummaryProps
  */
-export type AssignmentSummaryProps = AssignmentData & {}
+export type AssignmentSummaryProps = AssignmentModel & {}
 
 /**
  * AssignmentSummary
@@ -36,8 +36,38 @@ export function AssignmentSummary(props: AssignmentSummaryProps){
     []
   );
 
-  const rows = props.summary?.map((row) => {
-    if(row.chart){
+  const summary: Record<string, {
+    index: number
+    name: string
+    submissions?: string[][]
+    options?: string[]
+  }> = {}
+
+  props.questions?.forEach(( v, i) => {
+    if(!v.itemId || !v.title){
+      return
+    }
+
+    summary[v.itemId] = {
+      index: i,
+      name: v.title,
+      submissions: [],
+      options: v.options,
+    }
+  })
+
+  props.breakdown?.forEach(b => {
+    const breakdownAnswers = b.answers || {}
+    Object.keys(breakdownAnswers).forEach(k => {
+      !!breakdownAnswers[k].responses && k in summary && summary[k].submissions?.push(breakdownAnswers[k].responses || [])
+    })
+  })
+
+  const summaryValues = Object.values(summary)
+  summaryValues.sort((a, b) => a.index < b.index ? -1 : 1)
+
+  const rows = summaryValues.map((row, i) => {
+    if(!!row.options?.length){
       const labelMap: any = {}
       const options = row.options || []
       options.forEach(o => {
@@ -50,10 +80,10 @@ export function AssignmentSummary(props: AssignmentSummaryProps){
         }
       }))
 
-      return <Card key={row.name} withBorder p="xl" radius="md">
+      return <Card key={i} withBorder p="xl" radius="md">
         <Stack spacing={4}>
           <Title size="lg">{row.name}</Title>
-          <Text size="sm">{row.submissionCount || row.submissions?.length} submissions</Text>
+          <Text size="sm">{row.submissions?.length || 0} submissions</Text>
 
           <div style={{ background: "white", height: "300px", width: "100%", position: 'relative' }}>
             <Chart
@@ -76,17 +106,17 @@ export function AssignmentSummary(props: AssignmentSummaryProps){
       </Card>
     }
 
-    return <Card key={row.name} withBorder p="xl" radius="md">
+    return <Card key={i} withBorder p="xl" radius="md">
       <Stack spacing={4}>
         <Title size="lg">{row.name}</Title>
-        <Text size="sm">{row.submissionCount || row.submissions?.length} submissions</Text>
+        <Text size="sm">{row.submissions?.length || 0} submissions</Text>
 
         <ScrollArea.Autosize mah={600}>
           <Stack spacing={4}>
             {
-              row.submissions?.map(s => {
+              row.submissions?.map((s, i) => {
                 const submissionText = s.join("\n")
-                return <Card key={submissionText} p={5} radius={0} bg="gray.0">
+                return <Card key={i} p={5} radius={0} bg="gray.0">
                   <Text>{submissionText}</Text>
                 </Card>
               })

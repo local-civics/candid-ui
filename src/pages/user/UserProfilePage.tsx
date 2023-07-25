@@ -13,21 +13,21 @@ import {
   Center, Loader
 } from "@mantine/core";
 import { IconAward } from "@tabler/icons-react";
-import { buildAvatarURL } from "../../components/core/avatar/helpers";
-import { UserData } from "../../models/user";
+import { buildAvatarURL } from "../../utils/avatars";
+import { UserModel } from "../../models/user";
 import { useUserStyles } from "../../components/user/styles";
-import {BadgeButton} from "../../components/badge/BadgeButton";
-import { TaskData } from "../../models/task";
+import {BadgeButton} from "../../components/task/BadgeButton";
+import { TaskModel } from "../../models/task";
 import { IconBlockquote } from "@tabler/icons-react";
 
 /**
  * UserProfilePageProps
  */
-export type UserProfilePageProps = UserData & {
+export type UserProfilePageProps = UserModel & {
   isLoading?: boolean
   ctaLabel?: string
   onCtaClick?: () => void;
-  onBadgeClick?: (badge: TaskData) => void;
+  onBadgeClick?: (badge: TaskModel) => void;
 };
 
 /**

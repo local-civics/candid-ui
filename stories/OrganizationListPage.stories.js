@@ -7,27 +7,21 @@ const MOCK_DATA = {
   items: [
     {
       name: "Organization #1",
-      status: "admin",
     },
     {
       name: "Organization #2",
-      status: "admin",
     },
     {
       name: "Organization #3",
-      status: "member",
     },
     {
       name: "Organization #4",
-      status: "member",
     },
     {
       name: "Organization #5",
-      status: "archived",
     },
     {
       name: "Organization #6",
-      status: "archived",
     },
   ],
 };
@@ -74,6 +68,6 @@ export const Joined = {
   ...Template,
   args: {
     ...Template.args,
-    items: MOCK_DATA.items.filter((a) => a.status === "member"),
+    items: MOCK_DATA.items,
   },
 };

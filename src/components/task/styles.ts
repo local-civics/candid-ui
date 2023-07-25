@@ -21,6 +21,26 @@ export const useBadgeStyles = createStyles((theme) => ({
   badgeIconLg: {
     width: '150px',
     height: '150px',
+
+    [theme.fn.smallerThan("sm")]: {
+      width: '100px',
+      height: '100px',
+    },
+  },
+
+  badgeIconXl: {
+    width: '400px',
+    height: '400px',
+
+    [theme.fn.smallerThan("md")]: {
+      width: '200px',
+      height: '200px',
+    },
+
+    [theme.fn.smallerThan("sm")]: {
+      width: '100px',
+      height: '100px',
+    },
   },
 
   badgeIconImageContainer: {
@@ -34,9 +54,9 @@ export const useBadgeStyles = createStyles((theme) => ({
 
   badgeIconImage: {
     margin: "auto",
-    width: "40px",
-    height: "40px",
-    verticalAlign: "middle"
+    verticalAlign: "middle",
+    width: "50%",
+    height: "50%",
   },
 
   badgeSyllabusWrapper: {

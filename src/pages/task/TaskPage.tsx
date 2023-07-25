@@ -4,8 +4,8 @@ import { TaskHero } from "../../components/task/TaskHero";
 import { TaskOverview } from "../../components/task/TaskOverview";
 import { TaskPreview } from "../../components/task/TaskPreview";
 import { TaskFAQ } from "../../components/task/TaskFAQ";
-import { SyllabusItemData, TaskData } from "../../models/task";
-import { BadgeSyllabus } from "../../components/badge/BadgeSyllabus";
+import { TaskModel } from "../../models/task";
+import { TaskSyllabus } from "../../components/task/TaskSyllabus";
 
 const useStyles = createStyles((theme) => {
   return {
@@ -86,15 +86,11 @@ const BADGE_FAQ_QUESTIONS = [
 /**
  * TaskPageProps
  */
-export type TaskPageProps = TaskData & {
+export type TaskPageProps = TaskModel & {
   isLoading?: boolean
-  onStart?: () => void;
-  onLike?: () => void;
-  onSave?: () => void;
-  onAssign?: () => void;
-  onCopy?: () => void;
-  onShare?: (via: string) => void;
-  onStartSyllabusItem?: (item: SyllabusItemData) => void;
+  onLike?: (task: TaskModel) => void;
+  onSave?: (task: TaskModel) => void;
+  onAssign?: (task: TaskModel) => void;
 }
 
 /**
@@ -111,7 +107,7 @@ export function TaskPage(props: TaskPageProps) {
     );
   }
 
-  if(props.syllabus){
+  if(props.group === "Badges"){
     return <BadgePage {...props}/>
   }
 
@@ -123,7 +119,11 @@ function LessonPage(props: TaskPageProps) {
 
   return (
     <Container className={classes.root} fluid size="lg" px={0} pb="xl">
-      <TaskHero {...props} />
+      <TaskHero {...props}
+                onAssign={() => props.onAssign && props.onAssign(props)}
+                onSave={() => props.onSave && props.onSave(props)}
+                onLike={() => props.onLike && props.onLike(props)}
+      />
       <Tabs defaultValue="overview">
         <Tabs.List>
           <Tabs.Tab value="overview">
@@ -166,7 +166,11 @@ function BadgePage(props: TaskPageProps) {
   const { classes } = useStyles();
   return (
     <Container className={classes.root} fluid size="lg" px={0} pb="xl">
-      <TaskHero {...props} />
+      <TaskHero {...props}
+                onAssign={() => props.onAssign && props.onAssign(props)}
+                onSave={() => props.onSave && props.onSave(props)}
+                onLike={() => props.onLike && props.onLike(props)}
+      />
       <Tabs defaultValue="overview">
         <Tabs.List>
           <Tabs.Tab value="overview">
@@ -191,10 +195,9 @@ function BadgePage(props: TaskPageProps) {
         </Tabs.Panel>
 
         <Tabs.Panel value="syllabus" pt="xs">
-          <BadgeSyllabus
+          <TaskSyllabus
             title={props.syllabus?.title}
             items={props.syllabus?.items}
-            onStartSyllabusItem={props.onStartSyllabusItem}
           />
         </Tabs.Panel>
 

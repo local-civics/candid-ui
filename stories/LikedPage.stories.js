@@ -4,7 +4,7 @@ import { LikedPage } from '../src/pages/task/LikedPage';
 import {AuthLayout} from "../src/layouts/AuthLayout.tsx";
 
 export default {
-  title: 'Page/Library/LikedPage',
+  title: 'Page/Task/LikedPage',
   component: LikedPage,
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/react/writing-docs/autodocs
   tags: ['autodocs'],
