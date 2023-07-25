@@ -164,7 +164,22 @@ export function AssignmentListPage(props: AssignmentListPageProps) {
               <CopyButton value={fqdn(v.startURL).replace(":start", "/start")}>
                 {
                   ({copied, copy}) => <Tooltip label={copied ? "Copied invite link" : "Copy invite link"}>
-                    <ActionIcon onClick={copy} color={copied ? "teal" : "blue"}>
+                    <ActionIcon
+                      color={copied ? "teal" : "blue"}
+                      onClick={() => {
+                        modals.openConfirmModal({
+                          title: `Invite makes this assignment publicly accessible`,
+                          centered: true,
+                          children: (
+                            <Text size="sm">
+                              Are you sure you want to copy invite for {`${v.name}`}?
+                            </Text>
+                          ),
+                          labels: { confirm: "Copy", cancel: "No don't copy" },
+                          confirmProps: { color: "blue" },
+                          onConfirm: copy,
+                        });
+                      }}>
                       <IconLink />
                     </ActionIcon>
                   </Tooltip>
@@ -347,11 +362,8 @@ function CreateAssignment(props: AssignmentListPageProps){
 
     if(nextStep === 3){
       props.onCreate && props.onCreate(form.values.name, form.values.taskURL || "", form.values.assignees[1] as AssigneeModel[]);
-
-      if(!props.taskURL){
-        modals.closeAll()
-        form.reset();
-      }
+      modals.closeAll()
+      form.reset();
 
       return;
     }

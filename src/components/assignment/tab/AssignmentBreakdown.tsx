@@ -130,7 +130,7 @@ export function AssignmentBreakdown(props: AssignmentBreakdownProps){
           leftIcon={<IconDownload />}
           variant="filled"
         >
-          Export All Model
+          Export All Data
         </Button>
         <Button
           disabled={table.getPrePaginationRowModel().rows.length === 0}

@@ -129,12 +129,12 @@ export function ClassPage(props: ClassPageProps) {
     initialState: { showColumnFilters: true },
     renderRowActionMenuItems: ({row}) => (
     <>
-      <Menu.Item
+      { !!row.original.url && <Menu.Item
         <typeof Link>
         component={Link}
         to={fqdn(row.original.url)}
         icon={<IconUserCircle size={16} color={theme.colors.dark[4]}/>}
-      >View Profile</Menu.Item>
+      >View Profile</Menu.Item>}
       <Menu.Item
         icon={<IconArrowsExchange size={16} color={theme.colors.dark[4]} />}
         onClick={() => {

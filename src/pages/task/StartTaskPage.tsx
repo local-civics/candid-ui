@@ -44,7 +44,7 @@ export function StartTaskPage(props: StartTaskPageProps) {
   const badge = useBadge(props)
 
   React.useEffect(() => {
-    if(props.isLoading){
+    if(props.isLoading || !props.userIsVisiting){
       return
     }
 

@@ -24,6 +24,7 @@ export type TaskModel = {
   level?: number
   iconURL?: string
   userFullName?: string
+  userIsVisiting?: boolean
   userTimeSpent?: number;
   userLiked?: boolean;
   userSaved?: boolean;
