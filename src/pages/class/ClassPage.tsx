@@ -129,7 +129,7 @@ export function ClassPage(props: ClassPageProps) {
     initialState: { showColumnFilters: true },
     renderRowActionMenuItems: ({row}) => (
     <>
-      { !!row.original.url && <Menu.Item
+      { !!row.original.isJoined && <Menu.Item
         <typeof Link>
         component={Link}
         to={fqdn(row.original.url)}
