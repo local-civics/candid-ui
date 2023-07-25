@@ -91,7 +91,7 @@ export function OrganizationListPage(props: OrganizationListPageProps) {
                     icon={<IconDoorExit size="1rem" stroke={1.5} />}
                     onClick={() => {
                       modals.openConfirmModal({
-                        title: "Leave Organization",
+                        title: <Title mb={5} size={16} color="dark.4">Leave Organization</Title>,
                         centered: true,
                         children: (
                           <Text size="sm">

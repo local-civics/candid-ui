@@ -149,7 +149,7 @@ export function ClassPage(props: ClassPageProps) {
         icon={<IconTrash size={16} color={theme.colors.dark[4]}/>}
         onClick={() => {
           modals.openConfirmModal({
-            title: `Remove ${row.original.name}`,
+            title: <Title mb={5} size={16} color="dark.4">{`Remove ${row.original.name}`}</Title>,
             centered: true,
             children: (
               <Text size="sm">

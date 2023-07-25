@@ -1,6 +1,6 @@
 {
   "name": "@local-civics/candid-ui",
-  "version": "0.0.24-beta.83",
+  "version": "0.0.24-beta.84",
   "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.mjs",

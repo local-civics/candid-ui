@@ -111,7 +111,7 @@ export function ClassListPage(props: ClassListPageProps) {
                     icon={<IconArchive size="1rem" stroke={1.5} />}
                     onClick={() => {
                       modals.openConfirmModal({
-                        title: "Archive Class",
+                        title: <Title mb={5} size={16} color="dark.4">Archive Class</Title>,
                         centered: true,
                         children: (
                           <Text size="sm">
@@ -190,7 +190,7 @@ export function ClassListPage(props: ClassListPageProps) {
                     icon={<IconDoorExit size="1rem" stroke={1.5} />}
                     onClick={() => {
                       modals.openConfirmModal({
-                        title: "Leave Class",
+                        title: <Title mb={5} size={16} color="dark.4">Leave Class</Title>,
                         centered: true,
                         children: (
                           <Text size="sm">

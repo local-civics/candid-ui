@@ -168,11 +168,11 @@ export function AssignmentListPage(props: AssignmentListPageProps) {
                       color={copied ? "teal" : "blue"}
                       onClick={() => {
                         modals.openConfirmModal({
-                          title: `Invite makes this assignment publicly accessible`,
+                          title: <Title mb={5} size={16} color="dark.4">Assignment invite link can be accessed publicly</Title>,
                           centered: true,
                           children: (
                             <Text size="sm">
-                              Are you sure you want to copy invite for {`${v.name}`}?
+                              Are you sure you want to copy invite link for {`${v.name}`}?
                             </Text>
                           ),
                           labels: { confirm: "Copy", cancel: "No don't copy" },
