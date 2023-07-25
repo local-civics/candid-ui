@@ -59,7 +59,7 @@ export function StartTaskPage(props: StartTaskPageProps) {
       closeOnClickOutside: false,
       closeOnEscape: false,
       withCloseButton: false,
-      children: <SetName />
+      children: <SetName {...props} />
     })
   }, [props.isLoading, props.userFullName])
 
