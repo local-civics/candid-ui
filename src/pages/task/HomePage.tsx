@@ -5,7 +5,6 @@ import {
   Button,
   Center,
   SimpleGrid,
-  Box,
   rem,
   useMantineTheme,
   Loader
@@ -45,7 +44,7 @@ export type HomePageProps = {
   isLoading?: boolean;
   defaultActiveFilter?: string;
   filters?: string[];
-  items: TaskModel[];
+  items?: TaskModel[];
   onFilterClick?: (name: string) => void;
   onLikeTask?: (data: TaskModel) => void;
   onSaveTask?: (data: TaskModel) => void;
@@ -138,7 +137,7 @@ export function HomePage(props: HomePageProps) {
         </Carousel>
 
         {/* Content tasks */}
-        { !!props.items.length && <SimpleGrid
+        { !!props.items?.length && <SimpleGrid
           cols={3}
           spacing="lg"
           breakpoints={[
