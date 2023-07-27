@@ -20,6 +20,8 @@ import { modals } from "@mantine/modals";
 import { PlaceholderBanner } from "../../components/core/placeholder/PlaceholderBanner";
 import { OrganizationData } from "../../components/organization/data";
 import { useForm as useMantineForm } from "@mantine/form";
+import { SummaryData } from "../../components/core/summary/data";
+import { SummaryGrid } from "../../components/core/summary/SummaryGrid";
 
 const useStyles = createStyles((theme) => {
   return {
@@ -42,7 +44,7 @@ const useStyles = createStyles((theme) => {
  * OrganizationListPageProps
  */
 export type OrganizationListPageProps = {
-  data: {organizations: OrganizationData[]};
+  data: {summary: SummaryData, organizations: OrganizationData[]};
   onJoin?: (code: string) => void;
   onLeave?: (data: OrganizationData) => void;
   onOpen?: (data: OrganizationData) => void;
@@ -134,6 +136,7 @@ export function OrganizationListPage(props: OrganizationListPageProps) {
               Join
             </Button>
           </Flex>
+          <SummaryGrid data={props.data.summary}/>
           <Divider />
           <Title mt={10} underline size="sm" color="dark.4">
             Joined

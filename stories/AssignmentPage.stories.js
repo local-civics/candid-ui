@@ -32,7 +32,7 @@ const MOCK_ASSIGMENT_DATA = {
 }
 
 export default {
-  title: 'Page/AssignmentPage',
+  title: 'Page/Assignment/AssignmentPage',
   component: AssignmentPage,
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/react/writing-docs/autodocs
   tags: ['autodocs'],

@@ -2,8 +2,8 @@ import * as React from "react";
 import { Container, Stack, Button, Center, SimpleGrid, Box, LoadingOverlay, rem, useMantineTheme } from "@mantine/core";
 import { Carousel } from "@mantine/carousel";
 import { useMediaQuery } from "@mantine/hooks";
-import { ActivityCard } from "../../components/core/activity/ActivityCard";
-import {ActivityData } from "../../components/core/activity/data";
+import { TaskCard } from "../../components/task/TaskCard";
+import {TaskData } from "../../components/task/data";
 
 const DEFAULT_FILTERS_PREFIX = ["All"];
 
@@ -31,15 +31,15 @@ const DEFAULT_FILTERS_SUFFIX = [
  * HomePageProps
  */
 export type HomePageProps = {
-  data?: ActivityData[];
+  data?: TaskData[];
   loading?: boolean;
   defaultActiveFilter?: string;
   filters?: string[];
   onFilterClick?: (name: string) => void;
-  onLikeActivity?: (data: ActivityData) => void;
-  onSaveActivity?: (data: ActivityData) => void;
-  onAssignActivity?: (data: ActivityData) => void;
-  onOpenActivity?: (data: ActivityData) => void;
+  onLikeTask?: (data: TaskData) => void;
+  onSaveTask?: (data: TaskData) => void;
+  onAssignTask?: (data: TaskData) => void;
+  onOpenTask?: (data: TaskData) => void;
 };
 
 /**
@@ -73,15 +73,15 @@ export function HomePage(props: HomePageProps) {
       </Carousel.Slide>
     );
   });
-  const activities = props.data?.map((p) => {
+  const tasks = props.data?.map((p) => {
     return (
-      <ActivityCard
+      <TaskCard
         key={p.href}
         data={p}
-        onLikeClick={() => props.onLikeActivity && props.onLikeActivity(p)}
-        onSave={() => props.onSaveActivity && props.onSaveActivity(p)}
-        onAssign={() => props.onAssignActivity && props.onAssignActivity(p)}
-        onOpen={() => props.onOpenActivity && props.onOpenActivity(p)}
+        onLikeClick={() => props.onLikeTask && props.onLikeTask(p)}
+        onSave={() => props.onSaveTask && props.onSaveTask(p)}
+        onAssign={() => props.onAssignTask && props.onAssignTask(p)}
+        onOpen={() => props.onOpenTask && props.onOpenTask(p)}
       />
     );
   });
@@ -120,7 +120,7 @@ export function HomePage(props: HomePageProps) {
           {filters}
         </Carousel>
 
-        {/* Content activities */}
+        {/* Content tasks */}
         <Box pos="relative">
           <LoadingOverlay visible={!!props.loading} overlayBlur={2} />
           <SimpleGrid
@@ -131,7 +131,7 @@ export function HomePage(props: HomePageProps) {
               { maxWidth: "36rem", cols: 1, spacing: "sm" },
             ]}
           >
-            {activities}
+            {tasks}
           </SimpleGrid>
         </Box>
       </Stack>

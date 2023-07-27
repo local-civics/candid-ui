@@ -5,7 +5,7 @@ import { buildAvatarURL } from "../../components/core/avatar/helpers";
 import { UserData } from "../../components/user/data";
 import { useUserStyles } from "../../components/user/styles";
 import {BadgeButton} from "../../components/badge/BadgeButton";
-import { BadgeData } from "../../components/badge/data";
+import { TaskData } from "../../components/task/data";
 import { IconBlockquote } from "@tabler/icons-react";
 
 /**
@@ -14,7 +14,7 @@ import { IconBlockquote } from "@tabler/icons-react";
 export type UserProfilePageProps = UserData & {
   ctaLabel: string
   onCtaClick?: () => void;
-  onBadgeClick?: (badge: BadgeData) => void;
+  onBadgeClick?: (badge: TaskData) => void;
 };
 
 /**

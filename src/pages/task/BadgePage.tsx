@@ -5,11 +5,11 @@ import {
   Text,
   createStyles,
 } from "@mantine/core";
-import { ActivityFAQ } from "../../components/core/activity/ActivityFAQ";
-import { ActivityOverview } from "../../components/core/activity/ActivityOverview";
-import { ActivityHero } from "../../components/core/activity/ActivityHero";
+import { TaskFAQ } from "../../components/task/TaskFAQ";
+import { TaskOverview } from "../../components/task/TaskOverview";
+import { TaskHero } from "../../components/task/TaskHero";
 import { BadgeSyllabus } from "../../components/badge/BadgeSyllabus";
-import { BadgeData, BadgeSyllabusItemData } from "../../components/badge/data";
+import { TaskData, BadgeSyllabusItemData } from "../../components/task/data";
 
 const useStyles = createStyles((theme) => {
   return {
@@ -60,7 +60,7 @@ const FAQ_QUESTIONS = [
 /**
  * BadgePageProps
  */
-export type BadgePageProps = BadgeData & {
+export type BadgePageProps = TaskData & {
   onStart?: () => void;
   onLike?: () => void;
   onSave?: () => void;
@@ -79,7 +79,7 @@ export function BadgePage(props: BadgePageProps) {
   const { classes } = useStyles();
   return (
     <Container className={classes.root} fluid size="lg" px={0} pb="xl">
-      <ActivityHero {...props} />
+      <TaskHero {...props} />
       <Tabs defaultValue="overview">
         <Tabs.List>
           <Tabs.Tab value="overview">
@@ -100,19 +100,19 @@ export function BadgePage(props: BadgePageProps) {
         </Tabs.List>
 
         <Tabs.Panel value="overview" pt="xs">
-          <ActivityOverview {...props} title="Overview" />
+          <TaskOverview {...props} title="Overview" />
         </Tabs.Panel>
 
         <Tabs.Panel value="syllabus" pt="xs">
           <BadgeSyllabus
-            title={props.syllabus.title}
-            items={props.syllabus.items}
+            title={props.syllabus?.title}
+            items={props.syllabus?.items}
             onStartSyllabusItem={props.onStartSyllabusItem}
           />
         </Tabs.Panel>
 
         <Tabs.Panel value="faq" pt="xs">
-          <ActivityFAQ questions={FAQ_QUESTIONS} />
+          <TaskFAQ questions={FAQ_QUESTIONS} />
         </Tabs.Panel>
       </Tabs>
     </Container>

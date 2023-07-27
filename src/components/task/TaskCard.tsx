@@ -23,7 +23,8 @@ import {
   Box,
 } from "@mantine/core";
 import { Link } from "react-router-dom";
-import { ActivityData } from "./data";
+import { TaskData } from "./data";
+import { BadgeIcon } from "../badge/BadgeIcon";
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -74,11 +75,11 @@ const useStyles = createStyles((theme) => ({
 const MIN_RATING = 0;
 
 /**
- * ActivityCardProps
+ * TaskCardProps
  */
-export type ActivityCardProps = {
+export type TaskCardProps = {
   size?: "sm" | "md" | "lg"
-  data: ActivityData;
+  data: TaskData;
   onLikeClick?: () => void;
   onSave?: () => void;
   onAssign?: () => void;
@@ -86,14 +87,14 @@ export type ActivityCardProps = {
 };
 
 /**
- * ActivityCard
+ * TaskCard
  * @param props
  * @constructor
  */
-export function ActivityCard(props: ActivityCardProps) {
+export function TaskCard(props: TaskCardProps) {
   const { classes } = useStyles();
-  const rating = props.data.rating || 0;
-  const LikeIcon = !props.data.liked ? IconThumbUp : IconThumbUpFilled;
+  const rating = props.data.avgRating || 0;
+  const LikeIcon = !props.data.userLiked ? IconThumbUp : IconThumbUpFilled;
 
   if(props.size === "sm"){
     return (
@@ -138,7 +139,7 @@ export function ActivityCard(props: ActivityCardProps) {
         <Group mt="xs">
           <Button<typeof Link>
             component={Link}
-            to={props.data.href}
+            to={props.data.href||""}
             px={5}
             radius="md"
             style={{ flex: 1 }}
@@ -165,9 +166,15 @@ export function ActivityCard(props: ActivityCardProps) {
   if(props.size === "lg"){
     return <Card withBorder radius="md" p="md" className={classes.cardLg}>
       <Card.Section w={300} p={0}>
-        <UnstyledButton<typeof Link> component={Link} to={props.data.href} onClick={props.onOpen}>
-          <Image h="100%" className={classes.image} src={props.data.image} alt={props.data.title} />
-        </UnstyledButton>
+        {!!props.data.iconURL && <UnstyledButton<typeof Link> component={Link} to={props.data.href||""} onClick={props.onOpen}>
+          <Box py={30} px={20} h="100%">
+            <BadgeIcon {...props.data}/>
+          </Box>
+        </UnstyledButton>}
+
+        {!props.data.iconURL && <UnstyledButton<typeof Link> component={Link} to={props.data.href||""} onClick={props.onOpen}>
+          <Image h="100%" className={classes.image} src={props.data.imageURL} alt={props.data.title} />
+        </UnstyledButton>}
       </Card.Section>
 
       <Card.Section className={classes.sectionRight} mt="md" ml={20}>
@@ -217,9 +224,15 @@ export function ActivityCard(props: ActivityCardProps) {
   return (
     <Card withBorder radius="md" p="md" className={classes.card}>
       <Card.Section>
-        <UnstyledButton<typeof Link> component={Link} to={props.data.href} onClick={props.onOpen}>
-          <Image className={classes.image} src={props.data.image} alt={props.data.title} height={180} />
-        </UnstyledButton>
+        {!!props.data.iconURL && <UnstyledButton<typeof Link> component={Link} to={props.data.href||""} onClick={props.onOpen}>
+          <Box py={20} px={10} h={180}>
+            <BadgeIcon {...props.data} size="lg" />
+          </Box>
+        </UnstyledButton>}
+
+        {!props.data.iconURL && <UnstyledButton<typeof Link> component={Link} to={props.data.href||""} onClick={props.onOpen}>
+          <Image className={classes.image} src={props.data.imageURL} alt={props.data.title} height={180} />
+        </UnstyledButton>}
       </Card.Section>
 
       <Card.Section className={classes.section} mt="md">
@@ -262,7 +275,7 @@ export function ActivityCard(props: ActivityCardProps) {
       <Group mt="xs">
         <Button<typeof Link>
           component={Link}
-          to={props.data.href}
+          to={props.data.href||""}
           px={5}
           radius="md"
           style={{ flex: 1 }}

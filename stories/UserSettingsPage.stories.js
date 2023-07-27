@@ -4,7 +4,7 @@ import { UserSettingsPage } from '../src/pages/user/UserSettingsPage.tsx';
 import {AppLayout} from "../src/layouts/app/AppLayout";
 
 export default {
-  title: 'Page/UserSettingsPage',
+  title: 'Page/User/UserSettingsPage',
   component: UserSettingsPage,
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/react/writing-docs/autodocs
   tags: ['autodocs'],

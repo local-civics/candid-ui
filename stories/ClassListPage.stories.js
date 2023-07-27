@@ -51,7 +51,7 @@ const MOCK_DATA = {
 }
 
 export default {
-  title: 'Page/ClassListPage',
+  title: 'Page/Class/ClassListPage',
   component: ClassListPage,
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/react/writing-docs/autodocs
   tags: ['autodocs'],
@@ -66,6 +66,15 @@ const Template = {
     data: {
       members: MOCK_DATA.members,
       classes: [],
+      summary: [{
+        title: "Classes",
+        value: MOCK_DATA.classes.length,
+        description: "Total # of classes"
+      },{
+        title: "Students",
+        value: 10,
+        description: "Total # of students"
+      }]
     },
   },
   render: (args) => <div className="h-full w-full overscroll-none font-proxima">
@@ -86,7 +95,18 @@ export const WithClasses = {
   ...Template,
   args: {
     ...Template.args,
-    data: MOCK_DATA,
+    data: {
+      ...MOCK_DATA,
+      summary: [{
+        title: "Classes",
+        value: MOCK_DATA.classes.length,
+        description: "Total # of classes"
+      },{
+        title: "Students",
+        value: 10,
+        description: "Total # of students"
+      }]
+    },
   }
 };
 
@@ -96,7 +116,16 @@ export const Joined = {
     ...Template.args,
     data: {
       ...MOCK_DATA,
-      classes: MOCK_DATA.classes.filter(a => a.status === 'member')
+      classes: MOCK_DATA.classes.filter(a => a.status === 'member'),
+      summary: [{
+        title: "Classes",
+        value: MOCK_DATA.classes.length,
+        description: "Total # of classes"
+      },{
+        title: "Students",
+        value: 10,
+        description: "Total # of students"
+      }]
     },
   }
 };
@@ -108,6 +137,15 @@ export const Archived = {
     data: {
       ...MOCK_DATA,
       classes: MOCK_DATA.classes.filter(a => a.status === 'archived'),
+      summary: [{
+        title: "Classes",
+        value: MOCK_DATA.classes.length,
+        description: "Total # of classes"
+      },{
+        title: "Students",
+        value: 10,
+        description: "Total # of students"
+      }]
     }
   }
 };

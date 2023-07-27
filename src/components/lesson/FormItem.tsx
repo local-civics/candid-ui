@@ -1,6 +1,6 @@
 
 import React from "react"
-import { FormItemData } from "./data"
+import { FormItemData } from "../task/data"
 import { FileInput, Checkbox, Radio, Select, Text, Title, Paper, Button, Flex, createStyles, Grid, TextInput, Input, Group, Textarea } from "@mantine/core";
 import { TimeInput } from '@mantine/dates';
 import { IconCircleCheck, IconCircle } from '@tabler/icons-react';
@@ -123,7 +123,7 @@ const useStyles = createStyles((theme) => {
 
 export const FormItem = (props: FormItemProps) => {
     const { classes } = useStyles();
-
+    const displayName = props.displayNameNode || props.displayName
     const responses = props.responses || [];
     const notEmpty = responses.length > 0 && responses[0].trim() !== "";
     const minimum = props.minText !== undefined ? props.minText : 100;
@@ -162,7 +162,7 @@ export const FormItem = (props: FormItemProps) => {
 
     return (
         <Paper className={classes.paperContainer} shadow="md" p="xl" withBorder>
-            {props.displayName && (
+            {displayName && (
                 <Flex gap="md" justify="flex-start" align="flex-start" direction="row" wrap="nowrap">
                     <Flex gap="md" justify="flex-start" align="flex-start" direction="row" wrap="nowrap" >
                         {props.format === "question" && (
@@ -171,9 +171,9 @@ export const FormItem = (props: FormItemProps) => {
                             </div>
                         )}
                         <div>
-                            {props.displayName && (
+                            {displayName && (
                                 <Title order={4} style={{ marginBottom: "1rem" }}>
-                                    {(props.displayName)}
+                                    {(displayName)}
                                 </Title>
                             )}
                             {props.description && (

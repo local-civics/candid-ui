@@ -22,6 +22,7 @@ import {
   IconBackpack,
   IconBallpen,
   IconBookmark,
+  IconSunrise
 } from "@tabler/icons-react";
 import { AppLink } from "./AppLink";
 
@@ -51,7 +52,7 @@ const useStyles = createStyles((theme, _params) => {
 /**
  * AppNavbarProps
  */
-export interface AppNavbarProps {
+export type AppNavbarProps = {
   defaultActiveLinkName?: string;
 }
 
@@ -70,7 +71,7 @@ export function AppNavbar(props: AppNavbarProps) {
       <MantineNavbar.Section component={ScrollArea} grow>
         {/* Navbar Section I - Personalization */}
         <MantineNavbar.Section className={cx(classes.sectionOne)}>
-          <AppLink isActive={active === "Home"} icon={IconHome2} href="/home" label="Home" onNavigate={onNavigate} />
+          <AppLink isActive={active === "Home"} icon={IconHome2} href="/" label="Home" onNavigate={onNavigate} />
         </MantineNavbar.Section>
 
         {/* Navbar Section II - Library */}
@@ -92,7 +93,7 @@ export function AppNavbar(props: AppNavbarProps) {
           <AppLink
             isActive={active === "Assignments"}
             icon={IconClipboardList}
-            href="/library/assignments"
+            href="/assignments"
             label="Assignments"
             onNavigate={onNavigate}
           />
@@ -188,8 +189,15 @@ export function AppNavbar(props: AppNavbarProps) {
             onNavigate={onNavigate}
           />
           <AppLink
-            isActive={active === "Live"}
+            isActive={active === "New to you"}
             icon={IconLivePhoto}
+            href="/feeds/new-to-you"
+            label="New to you"
+            onNavigate={onNavigate}
+          />
+          <AppLink
+            isActive={active === "Live"}
+            icon={IconSunrise}
             href="/feeds/live"
             label="Live"
             onNavigate={onNavigate}
