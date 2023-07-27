@@ -1,6 +1,5 @@
-
 export type FormItemData = {
-  displayName?: string | React.ReactNode;
+  displayName?: string;
   itemId?: string;
   description?: string;
   format?: "question" | "image" | "embed" | "text";
@@ -46,4 +45,3 @@ export type LessonData = {
   elapsedTime?: number;
   stopWatchStarted?: boolean;
 }
-

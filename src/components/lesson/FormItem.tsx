@@ -6,6 +6,7 @@ import { TimeInput } from '@mantine/dates';
 import { IconCircleCheck, IconCircle } from '@tabler/icons-react';
 
 export type FormItemProps = FormItemData & {
+    displayNameNode?: React.ReactNode
     children?: React.ReactNode;
     stopWatch?: React.ReactNode;
 
