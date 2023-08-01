@@ -11,6 +11,7 @@ export const useClassStyles = createStyles((theme) => ({
     backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
     height: "max-content",
     width: "20rem",
+    minWidth: "20rem",
   },
   dropzone: {
     borderWidth: 1,

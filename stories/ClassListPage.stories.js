@@ -1,51 +1,49 @@
 import * as React from "react";
 import {MemoryRouter} from "react-router-dom";
-import {AppLayout} from "../src/layouts/app/AppLayout";
 import { ClassListPage } from '../src/pages/class/ClassListPage';
+import { CandidApp } from "../src/App";
 
 const MOCK_DATA = {
-  members: [
-    [
-      { value: 'react', label: 'React'},
-      { value: 'ng', label: 'Angular'},
-      { value: 'next', label: 'Next.js'},
-      { value: 'blitz', label: 'Blitz.js'},
-      { value: 'gatsby', label: 'Gatsby.js'},
-      { value: 'vue', label: 'Vue'},
-      { value: 'jq', label: 'jQuery'},
-    ],
-    [
-      { value: 'sv', label: 'Svelte' },
-      { value: 'rw', label: 'Redwood' },
-      { value: 'np', label: 'NumPy' },
-      { value: 'dj', label: 'Django' },
-      { value: 'fl', label: 'Flask' },
-    ],
+  summary: [{
+    title: "Classes",
+    value: 6,
+    description: "Total # of classes"
+  },{
+    title: "Students",
+    value: 10,
+    description: "Total # of students"
+  }],
+  users: [
+    { url: 'react', name: 'React'},
+    { url: 'ng', name: 'Angular'},
+    { url: 'next', name: 'Next.js'},
+    { url: 'blitz', name: 'Blitz.js'},
+    { url: 'gatsby', name: 'Gatsby.js'},
+    { url: 'vue', name: 'Vue'},
+    { url: 'jq', name: 'jQuery'},
   ],
-  classes: [
+  items: [
     {
       name: 'Class #1',
-      status: 'admin',
+      isManager: true,
     },
     {
       name: 'Class #2',
-      status: 'admin',
+      isManager: true,
     },
     {
       name: 'Class #3',
-      status: 'member',
     },
     {
       name: 'Class #4',
-      status: 'member',
     },
     {
       name: 'Class #5',
-      status: 'archived',
+      isArchived: true
     },
     {
       name: 'Class #6',
-      status: 'archived',
+      isArchived: true
     },
   ]
 }
@@ -63,70 +61,34 @@ export default {
 
 const Template = {
   args: {
-    data: {
-      members: MOCK_DATA.members,
-      classes: [],
-      summary: [{
-        title: "Classes",
-        value: MOCK_DATA.classes.length,
-        description: "Total # of classes"
-      },{
-        title: "Students",
-        value: 10,
-        description: "Total # of students"
-      }]
-    },
+    ...MOCK_DATA,
   },
   render: (args) => <div className="h-full w-full overscroll-none font-proxima">
     <MemoryRouter>
-      <AppLayout
-          {...args}
-          page=<ClassListPage {...args}/>
-      />
+      <CandidApp>
+        <ClassListPage {...args}/>
+      </CandidApp>
     </MemoryRouter>
   </div>,
 }
 
 export const Empty = {
   ...Template,
+  args: {
+    ...Template.args,
+    items: [],
+  }
 };
 
 export const WithClasses = {
   ...Template,
-  args: {
-    ...Template.args,
-    data: {
-      ...MOCK_DATA,
-      summary: [{
-        title: "Classes",
-        value: MOCK_DATA.classes.length,
-        description: "Total # of classes"
-      },{
-        title: "Students",
-        value: 10,
-        description: "Total # of students"
-      }]
-    },
-  }
 };
 
 export const Joined = {
   ...Template,
   args: {
     ...Template.args,
-    data: {
-      ...MOCK_DATA,
-      classes: MOCK_DATA.classes.filter(a => a.status === 'member'),
-      summary: [{
-        title: "Classes",
-        value: MOCK_DATA.classes.length,
-        description: "Total # of classes"
-      },{
-        title: "Students",
-        value: 10,
-        description: "Total # of students"
-      }]
-    },
+    items: MOCK_DATA.items.filter(a => !a.isManager),
   }
 };
 
@@ -134,18 +96,6 @@ export const Archived = {
   ...Template,
   args: {
     ...Template.args,
-    data: {
-      ...MOCK_DATA,
-      classes: MOCK_DATA.classes.filter(a => a.status === 'archived'),
-      summary: [{
-        title: "Classes",
-        value: MOCK_DATA.classes.length,
-        description: "Total # of classes"
-      },{
-        title: "Students",
-        value: 10,
-        description: "Total # of students"
-      }]
-    }
+    items: MOCK_DATA.items.filter(a => a.isArchived),
   }
 };

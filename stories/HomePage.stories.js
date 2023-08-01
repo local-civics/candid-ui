@@ -1,10 +1,10 @@
 import * as React from "react";
 import { MemoryRouter } from "react-router-dom";
-import { HomePage } from "../src/pages/home/HomePage";
-import { AppLayout } from "../src/layouts/app/AppLayout";
+import { HomePage } from "../src/pages/task/HomePage";
+import { AuthLayout } from "../src/layouts/AuthLayout.tsx";
 
 export default {
-  title: "Page/Explore/HomePage",
+  title: "Page/Task/HomePage",
   component: HomePage,
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/react/writing-docs/autodocs
   tags: ["autodocs"],
@@ -59,7 +59,9 @@ const Template = {
   render: (args) => (
     <div className="h-full w-full overscroll-none font-proxima">
       <MemoryRouter>
-        <AppLayout {...args} defaultActiveLinkName="Home" page=<HomePage {...args} data={args.data || MOCK_POSTS} /> />
+        <AuthLayout {...args} defaultActiveLinkName="Home">
+          <HomePage {...args} items={args.items || MOCK_POSTS} />
+        </AuthLayout>
       </MemoryRouter>
     </div>
   ),

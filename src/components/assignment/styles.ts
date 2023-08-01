@@ -9,6 +9,7 @@ export const useAssignmentStyles = createStyles((theme) => {
       backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
       height: "max-content",
       width: "20rem",
+      minWidth: "20rem",
     },
 
     section: {

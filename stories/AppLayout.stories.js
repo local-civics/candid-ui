@@ -1,10 +1,11 @@
 import * as React from "react";
-import { AppLayout } from '../src/layouts/app/AppLayout';
+import { AuthLayout } from '../src/layouts/AuthLayout.tsx';
 import {MemoryRouter} from "react-router-dom";
+import { CandidApp } from "../src/App.tsx";
 
 export default {
   title: 'Layout/AppLayout',
-  component: AppLayout,
+  component: AuthLayout,
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/react/writing-docs/autodocs
   tags: ['autodocs'],
   parameters: {
@@ -14,11 +15,14 @@ export default {
 };
 
 const Template = {
-  render: (args) => <div className="h-full w-full overscroll-none font-proxima">
-    <MemoryRouter>
-      <AppLayout {...args}/>
-    </MemoryRouter>
-  </div>,
+  render: (args) => {
+    const [isMenuOpen, setMenuOpen] = React.useState(false)
+    return <div className="h-full w-full overscroll-none font-proxima">
+      <MemoryRouter>
+        <CandidApp {...args} isMenuOpen={isMenuOpen} onMenuClick={setMenuOpen}>Welcome</CandidApp>
+      </MemoryRouter>
+    </div>
+  },
 }
 
 export const LoggedIn = {

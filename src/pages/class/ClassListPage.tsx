@@ -1,15 +1,15 @@
 import * as React from "react";
 import {
   ActionIcon, Button,
-  Card,
-  Container,
+  Card, Center,
+  Container, CopyButton,
   createStyles, Divider, Flex,
-  Group,
+  Group, Loader,
   Menu,
-  Modal, PinInput,
+  PinInput,
   rem, Stack,
   Text, TextInput, Title,
-  Tooltip, TransferListData,
+  Tooltip,
   useMantineTheme
 } from "@mantine/core";
 import {
@@ -17,15 +17,15 @@ import {
   IconArchive,
   IconDotsVertical,
   IconClipboardList, IconChalkboard, IconPlus,
-  IconUserEdit, IconLink, IconBarcode, IconDoorExit, IconMaximize,
+  IconLink, IconBarcode, IconDoorExit, IconMaximize,
 } from "@tabler/icons-react";
 import { modals } from "@mantine/modals";
-import { PlaceholderBanner } from "../../components/core/placeholder/PlaceholderBanner";
-import { useForm as useMantineForm } from "@mantine/form";
-import { DataTransferList } from "../../components/core/data/DataTransferList";
-import { ClassData } from "../../components/class/data";
-import { SummaryGrid } from "../../components/core/summary/SummaryGrid";
-import { SummaryData } from "../../components/core/summary/data";
+import { PlaceholderBanner } from "../../components/common/placeholder/PlaceholderBanner";
+import { ClassModel } from "../../models/class";
+import { SummaryGrid } from "../../components/common/summary/SummaryGrid";
+import { SummaryModel } from "../../components/common/summary/data";
+import { Link } from "react-router-dom";
+import { fqdn } from "../../utils/urls";
 
 const useStyles = createStyles((theme) => {
   return {
@@ -33,6 +33,7 @@ const useStyles = createStyles((theme) => {
       backgroundColor: theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
       height: "max-content",
       width: "20rem",
+      minWidth: "20rem",
     },
 
     section: {
@@ -48,16 +49,14 @@ const useStyles = createStyles((theme) => {
  * ClassListPageProps
  */
 export type ClassListPageProps = {
-  data: {members: TransferListData, classes: ClassData[], summary: SummaryData};
-  onCreate?: (name: string, members: TransferListData) => void;
+  isLoading?: boolean
+  summary?: SummaryModel
+  items?: ClassModel[]
+  onCreate?: (name: string) => void;
   onJoin?: (code: string) => void;
-  onRename?: (data: ClassData, newName: string) => void;
-  onArchive?: (data: ClassData) => void;
-  onLeave?: (data: ClassData) => void;
-  onOpen?: (data: ClassData) => void;
-  onOpenAssignments?: (data: ClassData) => void;
-  onUpdateMembers?: (newMembers: TransferListData) => void;
-  onCopyInviteLink?: (data: ClassData) => void;
+  onRename?: (data: ClassModel, newName: string) => void;
+  onArchive?: (data: ClassModel) => void;
+  onLeave?: (data: ClassModel) => void;
 };
 
 /**
@@ -68,9 +67,8 @@ export type ClassListPageProps = {
 export function ClassListPage(props: ClassListPageProps) {
   const theme = useMantineTheme();
   const { classes } = useStyles();
-  const form = useForm(props);
-  const adminClasses = props.data.classes
-    .filter((v) => v.status === "admin")
+
+  const adminClasses = props.items?.filter((v) => !v.isArchived && !!v.isManager)
     .map((v) => {
       return (
         <Card key={v.name} withBorder radius="md" p="md" className={classes.card}>
@@ -102,7 +100,7 @@ export function ClassListPage(props: ClassListPageProps) {
                       modals.open({
                         title: "Rename Class",
                         centered: true,
-                        children: <RenameClass {...props} data={v} />,
+                        children: <RenameClass {...v} onRename={props.onRename} />,
                       });
                     }}
                   >
@@ -113,7 +111,7 @@ export function ClassListPage(props: ClassListPageProps) {
                     icon={<IconArchive size="1rem" stroke={1.5} />}
                     onClick={() => {
                       modals.openConfirmModal({
-                        title: "Archive Class",
+                        title: <Title mb={5} size={16} color="dark.4">Archive Class</Title>,
                         centered: true,
                         children: (
                           <Text size="sm">
@@ -137,33 +135,31 @@ export function ClassListPage(props: ClassListPageProps) {
           <Card.Section className={classes.section} mt="md">
             <Group spacing={20}>
               <Tooltip label="Open class">
-                <ActionIcon onClick={() => props.onOpen && props.onOpen(v)} color="blue">
+                <ActionIcon<typeof Link> component={Link} to={fqdn(v.url)} color="blue">
                   <IconMaximize />
                 </ActionIcon>
               </Tooltip>
               <Tooltip label="Open assignments">
-                <ActionIcon onClick={() => props.onOpenAssignments && props.onOpenAssignments(v)} color="blue">
+                <ActionIcon<typeof Link> component={Link} to={fqdn(v.assignmentsURL)} color="blue">
                   <IconClipboardList />
                 </ActionIcon>
               </Tooltip>
-              <Tooltip label="Edit members">
-                <ActionIcon onClick={form.editMembers} color="blue">
-                  <IconUserEdit />
-                </ActionIcon>
-              </Tooltip>
-              <Tooltip label="Copy invite link">
-                <ActionIcon onClick={() => props.onCopyInviteLink && props.onCopyInviteLink(v)} color="blue">
-                  <IconLink />
-                </ActionIcon>
-              </Tooltip>
+              <CopyButton value={fqdn(v.inviteURL).replace(":invite", "/invite")}>
+                {
+                  ({copied, copy}) => <Tooltip label={copied ? "Copied invite link" : "Copy invite link"}>
+                    <ActionIcon onClick={copy} color={copied ? "teal" : "blue"}>
+                      <IconLink />
+                    </ActionIcon>
+                  </Tooltip>
+                }
+              </CopyButton>
             </Group>
           </Card.Section>
         </Card>
       );
     });
 
-  const joined = props.data.classes
-    .filter((v) => v.status === "member")
+  const joined = props.items?.filter((v) => !v.isArchived && !v.isManager)
     .map((v) => {
       return (
         <Card key={v.name} withBorder radius="md" p="md" className={classes.card}>
@@ -194,7 +190,7 @@ export function ClassListPage(props: ClassListPageProps) {
                     icon={<IconDoorExit size="1rem" stroke={1.5} />}
                     onClick={() => {
                       modals.openConfirmModal({
-                        title: "Leave Class",
+                        title: <Title mb={5} size={16} color="dark.4">Leave Class</Title>,
                         centered: true,
                         children: (
                           <Text size="sm">
@@ -217,7 +213,7 @@ export function ClassListPage(props: ClassListPageProps) {
           <Card.Section className={classes.section} mt="md">
             <Group spacing={20}>
               <Tooltip label="Open assignments">
-                <ActionIcon onClick={() => props.onOpenAssignments && props.onOpenAssignments(v)} color="blue">
+                <ActionIcon<typeof Link> component={Link} to={fqdn(v.assignmentsURL)} color="blue">
                   <IconClipboardList />
                 </ActionIcon>
               </Tooltip>
@@ -227,8 +223,7 @@ export function ClassListPage(props: ClassListPageProps) {
       );
     });
 
-  const archivedClasses = props.data.classes
-    .filter((v) => v.status === "archived")
+  const archivedClasses = props.items?.filter((v) => !!v.isArchived)
     .map((v) => {
       return (
         <Card key={v.name} withBorder radius="md" p="md" className={classes.card}>
@@ -253,7 +248,7 @@ export function ClassListPage(props: ClassListPageProps) {
           <Card.Section className={classes.section} mt="md">
             <Group spacing={20}>
               <Tooltip label="Open assignments">
-                <ActionIcon onClick={() => props.onOpenAssignments && props.onOpenAssignments(v)} color="blue">
+                <ActionIcon<typeof Link> component={Link} to={fqdn(v.assignmentsURL)} color="blue">
                   <IconClipboardList />
                 </ActionIcon>
               </Tooltip>
@@ -263,11 +258,16 @@ export function ClassListPage(props: ClassListPageProps) {
       );
     });
 
+  if (props.isLoading) {
+    return (
+      <Center style={{ height: 400 }}>
+        <Loader />
+      </Center>
+    );
+  }
+
   return (
     <>
-      <Modal opened={form.opened} onClose={close} size="auto" withCloseButton={false} centered>
-        {form.children()}
-      </Modal>
       <Container size="lg" pb="xl">
         <Stack spacing={10}>
           <Flex>
@@ -275,190 +275,125 @@ export function ClassListPage(props: ClassListPageProps) {
               <IconChalkboard color={theme.colors.dark[4]} />
               <Title color="dark.4">Classes</Title>
             </Group>
-            <Button onClick={() => form.open(2)} maw="max-content" variant="subtle" leftIcon={<IconBarcode />}>
+            <Button
+              maw="max-content"
+              variant="subtle"
+              leftIcon={<IconBarcode />}
+              onClick={() => {
+                modals.open({
+                  title: <Title mb={5} size={16} color="dark.4">Join class</Title>,
+                  size: "auto",
+                  centered: true,
+                  children: <JoinClass {...props} />,
+                });
+              }}>
               Join
             </Button>
           </Flex>
-          <SummaryGrid data={props.data.summary}/>
+          <SummaryGrid data={props.summary}/>
           <Divider />
-          <Button onClick={() => form.open(0)} maw="max-content" variant="subtle" leftIcon={<IconPlus />}>
+          <Button
+            maw="max-content"
+            variant="subtle"
+            leftIcon={<IconPlus />}
+            onClick={() => {
+              modals.open({
+                title: <Title mb={5} size={16} color="dark.4">New class</Title>,
+                centered: true,
+                children: <CreateClass {...props}/>,
+              });
+            }}>
             New class
           </Button>
-          <Flex mt={10} gap={15}>
+          <Flex mt={10} gap={15} wrap="wrap">
             {adminClasses}
           </Flex>
           <Title mt={40} underline size="sm" color="dark.4">
             Joined
           </Title>
-          <Flex mt={10} gap={15}>
-            {!!joined.length && joined}
-            {!joined.length && <PlaceholderBanner title="No joined classes" />}
+          <Flex mt={10} gap={15} wrap="wrap">
+            {!!joined?.length && joined}
+            {!joined?.length && <PlaceholderBanner title="You have not joined any classes yet." />}
           </Flex>
-          <Title mt={40} underline size="sm" color="dark.4">
-            Archived
-          </Title>
-          <Flex mt={10} gap={15}>
-            {!!archivedClasses.length && archivedClasses}
-            {!archivedClasses.length && <PlaceholderBanner title="No archived classes" />}
-          </Flex>
+          { !!archivedClasses?.length && <>
+            <Title mt={40} underline size="sm" color="dark.4">Archived</Title>
+            <Flex mt={10} gap={15} wrap="wrap">{archivedClasses}</Flex>
+          </>}
         </Stack>
       </Container>
     </>
   );
 }
 
-type RenameClassProps = {
-  data: ClassData
-  onRename?: (data: ClassData, newName: string) => void;
-}
-
-function RenameClass(props: RenameClassProps) {
+function CreateClass(props: ClassListPageProps) {
   const [newName, setNewName] = React.useState("");
-  const rename = (data: ClassData, newName: string) => {
-    props.onRename && props.onRename(data, newName);
-    setNewName("");
-    modals.closeAll();
-  };
   return (
     <>
       <TextInput
         label="New name"
-        defaultValue={props.data.name}
         placeholder="Class name"
         data-autofocus
         onChange={(e) => setNewName(e.target.value)}
       />
-      <Button fullWidth onClick={() => rename(props.data, newName)} mt="md">
+      <Button fullWidth mt="md"
+              disabled={!newName}
+              onClick={() => {
+                props.onCreate && props.onCreate(newName);
+                modals.closeAll()
+              }}>
+        Create
+      </Button>
+    </>
+  );
+}
+
+type RenameClassProps = ClassModel & {
+  onRename?: (data: ClassModel, newName: string) => void;
+}
+
+function RenameClass(props: RenameClassProps) {
+  const [newName, setNewName] = React.useState("");
+  return (
+    <>
+      <TextInput
+        label="New name"
+        defaultValue={props.name}
+        placeholder="Class name"
+        data-autofocus
+        onChange={(e) => setNewName(e.target.value)}
+      />
+      <Button fullWidth mt="md"
+              onClick={() => {
+                props.onRename && props.onRename(props, newName);
+                modals.closeAll()
+              }}>
         Rename
       </Button>
     </>
   );
 }
 
-function useForm(props: ClassListPageProps) {
-  const form = useMantineForm({
-    initialValues: {
-      opened: false,
-      stage: -1,
-      node: undefined as React.ReactNode,
-      name: "",
-      members: props.data.members,
-      code: "",
-    },
-    transformValues: (values) => {
-      return {
-        name: values.name,
-        members: values.members,
-      };
-    },
-  });
-  const open = (stage?: number) => form.setValues({ ...form.values, opened: true, stage });
-  const close = () => form.setValues({ ...form.values, opened: false });
-  const openStage = (stage: number, node?: React.ReactNode) =>
-    form.setValues({ ...form.values, opened: true, stage, node });
-  const previous = () => openStage(form.values.stage - 1);
-  const next = () => openStage(form.values.stage + 1);
-  const setMembers = (members: TransferListData) => form.setValues({ ...form.values, members });
-  const submit = () => {
-    close();
-    form.reset();
-    props.onCreate && props.onCreate(form.values.name, form.values.members);
-  };
-
-  const join = () => {
-    close();
-    form.reset();
-    props.onJoin && props.onJoin(form.values.code);
-  };
-
-  const cancel = () => {
-    close();
-    form.reset();
-  };
-
-  return {
-    opened: form.values.opened,
-    open,
-    editMembers: () =>
-      openStage(
-        1,
-        <>
-          <DataTransferList value={form.values.members} onChange={(members) => setMembers(members)} />
-          <Group ml="auto" w="max-content" mt="md" spacing={10}>
-            <Button variant="outline" type="button" onClick={cancel}>
-              Cancel
-            </Button>
-            <Button
-              type="submit"
-              onClick={() => {
-                close();
-                form.reset();
-                props.onUpdateMembers && props.onUpdateMembers(form.values.members);
-              }}
-            >
-              Submit
-            </Button>
-          </Group>
-        </>
-      ),
-    children: () => {
-      if (form.values.node) {
-        return form.values.node;
-      }
-
-      switch (form.getInputProps("stage").value) {
-        case 0:
-          return (
-            <>
-              <TextInput
-                miw="25rem"
-                label="Class Name"
-                placeholder="Class Name"
-                {...form.getInputProps("name")}
-              />
-              <Group ml="auto" w="max-content" mt="md" spacing={10}>
-                <Button variant="default" type="button" onClick={cancel}>
-                  Cancel
-                </Button>
-                <Button disabled={!form.getInputProps("name").value} type="button" onClick={next}>
-                  Next
-                </Button>
-              </Group>
-            </>
-          );
-        case 1:
-          return (
-            <>
-              <DataTransferList value={form.values.members} onChange={(members) => setMembers(members)} />
-              <Group ml="auto" w="max-content" mt="md" spacing={10}>
-                <Button variant="outline" type="button" onClick={previous}>
-                  Back
-                </Button>
-                <Button type="submit" onClick={submit}>
-                  Submit
-                </Button>
-              </Group>
-            </>
-          );
-        case 2:
-          return <>
-            <Text size={14} pb={10}>Class code</Text>
-            <PinInput
-              {...form.getInputProps("code")}
-              length={6}
-            />
-            <Group ml="auto" w="max-content" mt="md" spacing={10}>
-              <Button variant="default" type="button" onClick={cancel}>
-                Cancel
-              </Button>
-              <Button disabled={form.values.code.length < 6} type="submit" onClick={join}>
-                Join
-              </Button>
-            </Group>
-          </>
-        default:
-          return null
-      }
-    },
-  };
+function JoinClass(props: ClassListPageProps){
+  const [code, setCode] = React.useState("")
+  return <>
+    <Text size={14} pb={10}>Class code</Text>
+    <PinInput autoFocus onChange={setCode} length={6}/>
+    <Group ml="auto" w="max-content" mt="md" spacing={10}>
+      <Button
+        variant="default"
+        type="button"
+        onClick={() => modals.closeAll()}>
+        Cancel
+      </Button>
+      <Button
+        disabled={code.length < 6}
+        type="submit"
+        onClick={() => {
+          props.onJoin && props.onJoin(code);
+          modals.closeAll()
+        }}>
+        Join
+      </Button>
+    </Group>
+  </>
 }

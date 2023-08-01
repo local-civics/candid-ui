@@ -1,62 +1,57 @@
 import * as React from "react";
 import {MemoryRouter} from "react-router-dom";
-import {AppLayout} from "../src/layouts/app/AppLayout";
 import { AssignmentListPage } from '../src/pages/assignment/AssignmentListPage';
+import { CandidApp } from "../src/App";
 
 const MOCK_ASSIGMENT_DATA = [
   {
     name: 'Assignment #1',
-    status: 'open',
+    isAssignor: true,
   },
   {
     name: 'Assignment #2',
-    status: 'open',
+    isAssignor: true,
   },
   {
     name: 'Assignment #3',
-    status: 'assigned to me',
   },
   {
     name: 'Assignment #4',
-    status: 'assigned to me',
   },
   {
     name: 'Assignment #5',
-    status: 'archived',
+    isArchived: true,
   },
   {
     name: 'Assignment #6',
-    status: 'archived',
+    isArchived: true,
+    isAssignor: true,
   },
 ]
 
 const MOCK_ASSIGNEE_DATA = [
-  [
-    { value: 'react', label: 'React', group: 'Classes'},
-    { value: 'ng', label: 'Angular', group: 'Classes' },
-    { value: 'next', label: 'Next.js', group: 'Classes' },
-    { value: 'blitz', label: 'Blitz.js' , description: 'blitz@js.io', group: 'Students'},
-    { value: 'gatsby', label: 'Gatsby.js', description: 'gatsby@js.io', group: 'Students' },
-    { value: 'vue', label: 'Vue', description: 'vue@js.io', group: 'Students' },
-    { value: 'jq', label: 'jQuery', group: 'Classes' },
-  ],
-  [
-    { value: 'sv', label: 'Svelte' },
-    { value: 'rw', label: 'Redwood' },
-    { value: 'np', label: 'NumPy' },
-    { value: 'dj', label: 'Django' },
-    { value: 'fl', label: 'Flask' },
-  ],
+  { url: 'react', name: 'React', group: "Classes"},
+  { url: 'ng', name: 'Angular', group: "Classes"},
+  { url: 'next', name: 'Next.js', group: "Classes"},
+  { url: 'blitz', name: 'Blitz.js', group: "Classes" , description: 'blitz@js.io'},
+  { url: 'gatsby', name: 'Gatsby.js', group: "Classes", description: 'gatsby@js.io'},
+  { url: 'vue', name: 'Vue', group: "Classes", description: 'vue@js.io'},
+  { url: 'jq', name: 'jQuery', group: "Classes"},
+  { url: 'sv', name: 'Svelte', group: "Users" },
+  { url: 'rw', name: 'Redwood', group: "Users" },
+  { url: 'np', name: 'NumPy', group: "Users" },
+  { url: 'dj', name: 'Django', group: "Users" },
+  { url: 'fl', name: 'Flask', group: "Users" },
 ];
 
-const MOCK_ACTIVITY_DATA = [
-  { value: 'react', label: 'React', group: 'Lessons'},
-  { value: 'ng', label: 'Angular', group: 'Lessons' },
-  { value: 'next', label: 'Next.js', group: 'Lessons' },
-  { value: 'blitz', label: 'Blitz.js' , description: 'blitz@js.io', group: 'Badges'},
-  { value: 'gatsby', label: 'Gatsby.js', description: 'gatsby@js.io', group: 'Badges' },
-  { value: 'vue', label: 'Vue', description: 'vue@js.io', group: 'Badges' },
-  { value: 'jq', label: 'jQuery', group: 'Lessons' },
+const MOCK_TASK_DATA = [
+  { url: 'react', title: 'React', group: 'Lessons'},
+  { url: 'ng', title: 'Angular', group: 'Lessons' },
+  { url: 'next', title: 'Next.js', group: 'Lessons' },
+  { url: 'blitz', title: 'Blitz.js' , description: 'blitz@js.io', group: 'Badges'},
+  { url: 'gatsby', title: 'Gatsby.js', description: 'gatsby@js.io', group: 'Badges' },
+  { url: 'vue', title: 'Vue', description: 'vue@js.io', group: 'Badges' },
+  { url: 'jq', title: 'jQuery', group: 'Lessons' },
 ];
 
 export default {
@@ -72,23 +67,20 @@ export default {
 
 const Template = {
   args: {
-    data: {
-      assignees: MOCK_ASSIGNEE_DATA,
-      tasks: MOCK_ACTIVITY_DATA,
-      assignments: [],
-      summary: [{
-        title: "Assignments",
-        value: 10,
-        description: "Total # of assignments"
-      }]
-    },
+    assigneeOptions: MOCK_ASSIGNEE_DATA,
+    taskOptions: MOCK_TASK_DATA,
+    items: [],
+    summary: [{
+      title: "Assignments",
+      value: 10,
+      description: "Total # of assignments"
+    }]
   },
   render: (args) => <div className="h-full w-full overscroll-none font-proxima">
     <MemoryRouter>
-      <AppLayout
-          {...args}
-          page=<AssignmentListPage {...args}/>
-      />
+      <CandidApp>
+        <AssignmentListPage {...args}/>
+      </CandidApp>
     </MemoryRouter>
   </div>,
 }
@@ -101,10 +93,7 @@ export const WithAssignments = {
   ...Template,
   args: {
     ...Template.args,
-    data: {
-      ...Template.args.data,
-      assignments: MOCK_ASSIGMENT_DATA,
-    },
+    items: MOCK_ASSIGMENT_DATA,
   }
 };
 
@@ -112,10 +101,7 @@ export const AssignedToMe = {
   ...Template,
   args: {
     ...Template.args,
-    data: {
-      ...Template.args.data,
-      assignments: MOCK_ASSIGMENT_DATA.filter(a => a.status === 'assigned to me'),
-    },
+    items: MOCK_ASSIGMENT_DATA.filter(a => !a.isAssignor),
   }
 };
 
@@ -123,9 +109,6 @@ export const Archived = {
   ...Template,
   args: {
     ...Template.args,
-    data: {
-      ...Template.args.data,
-      assignments: MOCK_ASSIGMENT_DATA.filter(a => a.status === 'archived'),
-    },
+    items: MOCK_ASSIGMENT_DATA.filter(a => a.isArchived),
   }
 };

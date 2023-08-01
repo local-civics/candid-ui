@@ -1,4 +1,4 @@
-import { useForm as useMantineForm, UseFormReturnType } from "@mantine/form";
+import { useForm as useMantineForm } from "@mantine/form";
 import { modals } from "@mantine/modals";
 import * as React from "react";
 import {
@@ -10,14 +10,13 @@ import {
   Flex,
   Stack,
   Tooltip,
-  Modal,
   Card,
   Text,
   ActionIcon,
   Menu,
   TextInput,
   useMantineTheme,
-  TransferListData, Autocomplete, AutocompleteItem, Stepper
+  TransferListData, Autocomplete, AutocompleteItem, Stepper, Center, Loader, CopyButton
 } from "@mantine/core";
 import {
   IconPlus,
@@ -27,35 +26,34 @@ import {
   IconArchive,
   IconPlayerPlay,
   IconUserEdit,
-  IconMaximize,
-  IconLink
+  IconAnalyze,
+  IconLink, IconMaximize
 } from "@tabler/icons-react";
-import { PlaceholderBanner } from "../../components/core/placeholder/PlaceholderBanner";
-import { DataTransferList } from "../../components/core/data/DataTransferList";
-import { AssignmentData } from "../../components/assignment/data";
+import { PlaceholderBanner } from "../../components/common/placeholder/PlaceholderBanner";
+import { DataTransferList } from "../../components/common/data/DataTransferList";
+import { AssigneeModel, AssignmentModel } from "../../models/assignment";
 import { useAssignmentStyles } from "../../components/assignment/styles";
-import { SummaryGrid } from "../../components/core/summary/SummaryGrid";
-import { SummaryData } from "../../components/core/summary/data";
+import { SummaryGrid } from "../../components/common/summary/SummaryGrid";
+import { SummaryModel } from "../../components/common/summary/data";
+import { Link } from "react-router-dom";
+import { TaskModel } from "../../models/task";
+import { fqdn } from "../../utils/urls";
 
 /**
  * AssignmentListPageProps
  */
 export type AssignmentListPageProps = {
-  data: {
-    isCreateOpen?: boolean
-    createAssignmentStep?: number
-    summary: SummaryData;
-    tasks: AutocompleteItem[]
-    assignees: TransferListData
-    assignments: AssignmentData[];
-  }
-  onCreate?: (name: string, task: AutocompleteItem, assignees: TransferListData) => void;
-  onRename?: (data: AssignmentData, newName: string) => void;
-  onArchive?: (data: AssignmentData) => void;
-  onOpen?: (data: AssignmentData) => void;
-  onStart?: (data: AssignmentData) => void;
-  onUpdateAssignees?: (newAssignees: TransferListData) => void;
-  onCopyInviteLink: (data: AssignmentData) => void;
+  isLoading?: boolean
+  noCreateButton?: boolean
+  taskURL?: string
+  summary?: SummaryModel;
+  taskOptions?: TaskModel[]
+  assigneeOptions?: AssigneeModel[],
+  items?: AssignmentModel[],
+  onCreate?: (name: string, taskURL: string, assignees: AssigneeModel[]) => void;
+  onRename?: (data: AssignmentModel, newName: string) => void;
+  onArchive?: (data: AssignmentModel) => void;
+  onUpdateAssignees?: (data: AssignmentModel, newAssignees: AssigneeModel[]) => void;
 };
 
 /**
@@ -66,9 +64,14 @@ export type AssignmentListPageProps = {
 export function AssignmentListPage(props: AssignmentListPageProps) {
   const theme = useMantineTheme();
   const { classes } = useAssignmentStyles();
-  const form = useForm(props);
-  const openAssignments = props.data.assignments
-    .filter((v) => v.status === "open")
+
+  React.useEffect(() => {
+    if(!props.isLoading && !!props.taskURL){
+      openNewAssignmentModal()
+    }
+  }, [props.isLoading, props.taskURL])
+
+  const openAssignments = props.items?.filter((v) => !v.isArchived && v.isAssignor)
     .map((v) => {
       return (
         <Card key={v.name} withBorder radius="md" p="md" className={classes.card}>
@@ -98,9 +101,9 @@ export function AssignmentListPage(props: AssignmentListPageProps) {
                     icon={<IconAbc size="1rem" stroke={1.5} />}
                     onClick={() => {
                       modals.open({
-                        title: "Rename assignment",
+                        title: <Title mb={5} size={16} color="dark.4">Rename assignment</Title>,
                         centered: true,
-                        children: <RenameAssignment {...props} data={v} />,
+                        children: <RenameAssignment {...v} onRename={props.onRename} />,
                       });
                     }}
                   >
@@ -111,7 +114,7 @@ export function AssignmentListPage(props: AssignmentListPageProps) {
                     icon={<IconArchive size="1rem" stroke={1.5} />}
                     onClick={() => {
                       modals.openConfirmModal({
-                        title: "Archive assignment",
+                        title: <Title mb={5} size={16} color="dark.4">Archive assignment</Title>,
                         centered: true,
                         children: (
                           <Text size="sm">
@@ -134,34 +137,61 @@ export function AssignmentListPage(props: AssignmentListPageProps) {
 
           <Card.Section className={classes.section} mt="md">
             <Group spacing={20}>
-              <Tooltip label="Open assignment">
-                <ActionIcon onClick={() => props.onOpen && props.onOpen(v)} color="blue">
+              <Tooltip label="Check progress">
+                <ActionIcon<typeof Link> component={Link} to={fqdn(v.url)} color="blue">
+                  <IconAnalyze />
+                </ActionIcon>
+              </Tooltip>
+              <Tooltip label="Preview task">
+                <ActionIcon<typeof Link> component={Link} to={fqdn(v.taskURL)} color="blue">
                   <IconMaximize />
                 </ActionIcon>
               </Tooltip>
-              <Tooltip label="Start assignment">
-                <ActionIcon onClick={() => props.onStart && props.onStart(v)} color="blue">
-                  <IconPlayerPlay />
-                </ActionIcon>
-              </Tooltip>
-              <Tooltip label="Edit assignees">
-                <ActionIcon onClick={form.editAssignees} color="blue">
+              { !props.noCreateButton && <Tooltip label="Edit assignees">
+                <ActionIcon
+                  color="blue"
+                  onClick={() => {
+                    modals.open({
+                      title: <Title mb={5} size={16} color="dark.4">Edit assignees</Title>,
+                      size: "auto",
+                      centered: true,
+                      children: <EditAssignees {...v} assigneeOptions={props.assigneeOptions} onUpdateAssignees={props.onUpdateAssignees} />,
+                    });
+                  }}>
                   <IconUserEdit />
                 </ActionIcon>
-              </Tooltip>
-              <Tooltip label="Copy invite link">
-                <ActionIcon onClick={() => props.onCopyInviteLink && props.onCopyInviteLink(v)} color="blue">
-                  <IconLink />
-                </ActionIcon>
-              </Tooltip>
+              </Tooltip>}
+              <CopyButton value={fqdn(v.startURL).replace(":start", "/start")}>
+                {
+                  ({copied, copy}) => <Tooltip label={copied ? "Copied invite link" : "Copy invite link"}>
+                    <ActionIcon
+                      color={copied ? "teal" : "blue"}
+                      onClick={() => {
+                        modals.openConfirmModal({
+                          title: <Title mb={5} size={16} color="dark.4">Assignment invite link can be accessed publicly</Title>,
+                          centered: true,
+                          children: (
+                            <Text size="sm">
+                              Are you sure you want to copy invite link for {`${v.name}`}?
+                            </Text>
+                          ),
+                          labels: { confirm: "Copy", cancel: "No don't copy" },
+                          confirmProps: { color: "blue" },
+                          onConfirm: copy,
+                        });
+                      }}>
+                      <IconLink />
+                    </ActionIcon>
+                  </Tooltip>
+                }
+              </CopyButton>
             </Group>
           </Card.Section>
         </Card>
       );
     });
 
-  const assignedToMe = props.data.assignments
-    .filter((v) => v.status === "assigned to me")
+  const assignedToMe = props.items?.filter((v) => !v.isArchived && !v.isAssignor)
     .map((v) => {
       return (
         <Card key={v.name} withBorder radius="md" p="md" className={classes.card}>
@@ -186,8 +216,13 @@ export function AssignmentListPage(props: AssignmentListPageProps) {
           <Card.Section className={classes.section} mt="md">
             <Group spacing={20}>
               <Tooltip label="Start assignment">
-                <ActionIcon onClick={() => props.onStart && props.onStart(v)} color="blue">
+                <ActionIcon<typeof Link> component={Link} to={fqdn(v.startURL).replace(":start", "/start")} color="blue">
                   <IconPlayerPlay />
+                </ActionIcon>
+              </Tooltip>
+              <Tooltip label="Preview task">
+                <ActionIcon<typeof Link> component={Link} to={v.taskURL || ""} color="blue">
+                  <IconMaximize />
                 </ActionIcon>
               </Tooltip>
             </Group>
@@ -196,8 +231,7 @@ export function AssignmentListPage(props: AssignmentListPageProps) {
       );
     });
 
-  const archivedAssignments = props.data.assignments
-    .filter((v) => v.status === "archived")
+  const archivedAssignments = props.items?.filter((v) => v.isArchived)
     .map((v) => {
       return (
         <Card key={v.name} withBorder radius="md" p="md" className={classes.card}>
@@ -221,8 +255,13 @@ export function AssignmentListPage(props: AssignmentListPageProps) {
 
           <Card.Section className={classes.section} mt="md">
             <Group spacing={20}>
-              <Tooltip label="Open assignment">
-                <ActionIcon onClick={() => props.onOpen && props.onOpen(v)} color="blue">
+              { !!v.isAssignor && <Tooltip label="Check progress">
+                <ActionIcon<typeof Link> component={Link} to={v.url || ""} color="blue">
+                  <IconAnalyze />
+                </ActionIcon>
+              </Tooltip> }
+              <Tooltip label="Preview task">
+                <ActionIcon<typeof Link> component={Link} to={v.taskURL || ""} color="blue">
                   <IconMaximize />
                 </ActionIcon>
               </Tooltip>
@@ -231,154 +270,101 @@ export function AssignmentListPage(props: AssignmentListPageProps) {
         </Card>
       );
     });
+
+  if (props.isLoading) {
+    return (
+      <Center style={{ height: 400 }}>
+        <Loader />
+      </Center>
+    );
+  }
+  const openNewAssignmentModal = () => {
+    modals.open({
+      title: <Title mb={5} size={16} color="dark.4">New assignment</Title>,
+      size: "auto",
+      centered: true,
+      closeOnClickOutside: !props.taskURL,
+      closeOnEscape: !props.taskURL,
+      withCloseButton: !props.taskURL,
+      children: <CreateAssignment {...props} />,
+    });
+  }
 
   return (
     <>
-      <Modal opened={form.opened} onClose={close} size="auto" withCloseButton={false} centered>
-        {form.children()}
-      </Modal>
       <Container size="lg" pb="xl">
         <Stack spacing={10}>
           <Group>
             <IconClipboardList color={theme.colors.dark[4]} />
             <Title color="dark.4">Assignments</Title>
           </Group>
-          <SummaryGrid data={props.data.summary}/>
+          <SummaryGrid data={props.summary}/>
           <Divider />
-          <Button onClick={form.open} maw="max-content" variant="subtle" leftIcon={<IconPlus />}>
+          { !props.noCreateButton && <Button
+            maw="max-content"
+            variant="subtle"
+            leftIcon={<IconPlus />}
+            onClick={openNewAssignmentModal}>
             New assignment
-          </Button>
-          <Flex mt={10} gap={15}>
+          </Button> }
+          <Flex mt={10} gap={15} wrap="wrap">
             {openAssignments}
           </Flex>
           <Title mt={40} underline size="sm" color="dark.4">
             Assigned to me
           </Title>
-          <Flex mt={10} gap={15}>
-            {!!assignedToMe.length && assignedToMe}
-            {!assignedToMe.length && <PlaceholderBanner title="Nothing assigned" />}
+          <Flex mt={10} gap={15} wrap="wrap">
+            {!!assignedToMe?.length && assignedToMe}
+            {!assignedToMe?.length && <PlaceholderBanner title="You don't have any tasks assigned." />}
           </Flex>
-          <Title mt={40} underline size="sm" color="dark.4">
-            Archived
-          </Title>
-          <Flex mt={10} gap={15}>
-            {!!archivedAssignments.length && archivedAssignments}
-            {!archivedAssignments.length && <PlaceholderBanner title="Nothing archived" />}
-          </Flex>
+          { !!archivedAssignments?.length && <>
+            <Title mt={40} underline size="sm" color="dark.4">Archived</Title>
+            <Flex mt={10} gap={15} wrap="wrap">{archivedAssignments}</Flex>
+          </>}
         </Stack>
       </Container>
     </>
   );
 }
 
-type RenameAssignmentProps = {
-  data: AssignmentData
-  onRename?: (data: AssignmentData, newName: string) => void
-}
-
-function RenameAssignment(props: RenameAssignmentProps) {
-  const [newName, setNewName] = React.useState("");
-  const rename = (data: AssignmentData, newName: string) => {
-    props.onRename && props.onRename(data, newName);
-    setNewName("");
-    modals.closeAll();
-  };
-  return (
-    <>
-      <TextInput
-        label="New name"
-        defaultValue={props.data.name}
-        placeholder="Assignment name"
-        data-autofocus
-        onChange={(e) => setNewName(e.target.value)}
-      />
-      <Button fullWidth onClick={() => rename(props.data, newName)} mt="md">
-        Rename
-      </Button>
-    </>
-  );
-}
-
-function useForm(props: AssignmentListPageProps) {
+function CreateAssignment(props: AssignmentListPageProps){
   const form = useMantineForm({
     initialValues: {
-      opened: props.data.isCreateOpen || false,
-      stage: props.data.createAssignmentStep || 0,
-      node: undefined as React.ReactNode,
       name: "",
-      assignees: props.data.assignees,
-      task: '',
+      task: "",
+      assignees: assigneesToTransferListData(props.assigneeOptions),
+      taskURL: props.taskURL,
     },
     transformValues: (values) => {
       return {
+        taskURL: values.taskURL,
         name: values.name,
         assignees: values.assignees,
       };
     },
   });
-  const open = () => form.setValues({ ...form.values, opened: true });
-  const close = () => form.setValues({ ...form.values, opened: false });
-  const openStage = (stage: number, node?: React.ReactNode) =>
-    form.setValues({ ...form.values, opened: true, stage, node });
-  const setAssignees = (assignees: TransferListData) => form.setValues({ ...form.values, assignees });
 
-  const cancel = () => {
-    close();
-    form.reset();
-  };
-
-  return {
-    opened: form.values.opened,
-    open,
-    editAssignees: () =>
-      openStage(
-        1,
-        <>
-          <DataTransferList value={form.values.assignees} onChange={(assignees) => setAssignees(assignees)} />
-          <Group ml="auto" w="max-content" mt="md" spacing={10}>
-            <Button variant="outline" type="button" onClick={cancel}>
-              Cancel
-            </Button>
-            <Button
-              type="submit"
-              onClick={() => {
-                close();
-                form.reset();
-                props.onUpdateAssignees && props.onUpdateAssignees(form.values.assignees);
-              }}
-            >
-              Submit
-            </Button>
-          </Group>
-        </>
-      ),
-    children: () => {
-      if (form.values.node) {
-        return form.values.node;
-      }
-
-      return <AssignmentStepper {...props} form={form} />
-    },
-  };
-}
-
-function AssignmentStepper(props: AssignmentListPageProps & {form: UseFormReturnType<any>}){
-  const [active, setActive] = React.useState(props.data.createAssignmentStep || 0);
+  const [active, setActive] = React.useState(!!props.taskURL ? 1 : 0);
   const [highestStepVisited, setHighestStepVisited] = React.useState(active);
 
   const handleStepChange = (nextStep: number) => {
     const isOutOfBounds = nextStep > 3 || nextStep < 0;
 
+    if(nextStep <= 0 && !!props.taskURL){
+      return
+    }
+
     if(nextStep === -1){
       modals.closeAll()
-      props.form.reset();
+      form.reset();
       return;
     }
 
     if(nextStep === 3){
+      props.onCreate && props.onCreate(form.values.name, form.values.taskURL || "", form.values.assignees[1] as AssigneeModel[]);
       modals.closeAll()
-      props.form.reset();
-      props.onCreate && props.onCreate(props.form.values.name, props.form.values.task, props.form.values.assignees);
+      form.reset();
+
       return;
     }
 
@@ -392,10 +378,14 @@ function AssignmentStepper(props: AssignmentListPageProps & {form: UseFormReturn
 
   // Allow the user to freely go back and forth between visited steps.
   const shouldAllowSelectStep = (step: number) => {
-    const hasTask = !!props.form.getInputProps("task").value
-    const hasName = !!props.form.getInputProps("name").value
+    const hasTaskURL = !!form.values.taskURL || !!props.taskURL
+    const hasName = !!form.values.name
 
-    if(step >= 0 && !hasTask){
+    if(step <= 0 && !!props.taskURL){
+      return false
+    }
+
+    if(step >= 0 && !hasTaskURL){
       return false
     }
 
@@ -408,40 +398,46 @@ function AssignmentStepper(props: AssignmentListPageProps & {form: UseFormReturn
 
   // Allow the user to freely go back and forth between visited steps.
   const shouldAllowStep = (step: number) => {
-    const hasTask = !!props.form.getInputProps("task").value
-    const hasName = !!props.form.getInputProps("name").value
+    const hasTaskURL = !!form.values.taskURL || !!props.taskURL
+    const hasName = !!form.values.name
 
-    if(step > 0 && !hasTask){
+    if(step <= 0 && !!props.taskURL){
       return false
     }
 
-    if(step > 2 && !hasName){
+    if(step > 0 && !hasTaskURL){
       return false
     }
 
-    return true
+    return !(step > 2 && !hasName);
   };
 
   return <>
-    <Stepper h={400} w={600} size="sm" active={active} onStepClick={setActive} breakpoint="sm">
-      <Stepper.Step label="First step" description="Select an task" allowStepSelect={shouldAllowSelectStep(0)}>
+    <Stepper h="auto" w="auto" size="sm" active={active} onStepClick={setActive} breakpoint="sm">
+      <Stepper.Step label="First step" description="Select a task" allowStepSelect={shouldAllowSelectStep(0)}>
         <Autocomplete
           withAsterisk
-          label="Select an task"
+          disabled={!!props.taskURL}
+          label="Select a task"
           placeholder="Search tasks"
-          data={props.data.tasks}
-          {...props.form.getInputProps("task")}
+          data={tasksToAutocompleteModel(props.taskOptions)}
+          onItemSubmit={(item) => form.setValues({...form.values, taskURL: item.value, task: item.title})}
+          filter={(value, item) =>
+            item.value.toLowerCase().includes(value.toLowerCase().trim()) ||
+            item.title.toLowerCase().includes(value.toLowerCase().trim())
+          }
+          {...form.getInputProps("task")}
         />
       </Stepper.Step>
       <Stepper.Step label="Second step" description="Set assignees" allowStepSelect={shouldAllowSelectStep(1)}>
-        <DataTransferList {...props.form.getInputProps("assignees")} />
+        <DataTransferList {...form.getInputProps("assignees")} />
       </Stepper.Step>
       <Stepper.Step label="Final step" description="Set assignment name" allowStepSelect={shouldAllowSelectStep(2)}>
         <TextInput
           withAsterisk
           label="Assignment Name"
           placeholder="Assignment Name"
-          {...props.form.getInputProps("name")}
+          {...form.getInputProps("name")}
         />
       </Stepper.Step>
     </Stepper>
@@ -453,4 +449,98 @@ function AssignmentStepper(props: AssignmentListPageProps & {form: UseFormReturn
       <Button disabled={!shouldAllowStep(active+1)} onClick={() => handleStepChange(active + 1)}>{active < 2 ? "Next step": "Submit"}</Button>
     </Group>
   </>
+}
+
+type RenameAssignmentProps = AssignmentModel & {
+  onRename?: (data: AssignmentModel, newName: string) => void;
+}
+
+function RenameAssignment(props: RenameAssignmentProps) {
+  const [newName, setNewName] = React.useState("");
+  return (
+    <>
+      <TextInput
+        label="New name"
+        defaultValue={props.name}
+        placeholder="Assignment name"
+        data-autofocus
+        onChange={(e) => setNewName(e.target.value)}
+      />
+      <Button fullWidth mt="md"
+              onClick={() => {
+                props.onRename && props.onRename(props, newName);
+                modals.closeAll()
+              }}>
+        Rename
+      </Button>
+    </>
+  );
+}
+
+type EditAssigneesProps = AssignmentModel & {
+  assigneeOptions?: AssigneeModel[],
+  onUpdateAssignees?: (data: AssignmentModel, newAssignees: AssigneeModel[]) => void;
+}
+
+function EditAssignees(props: EditAssigneesProps) {
+  const [newAssignees, setNewAssignees] = React.useState(assigneesToTransferListData(props.assigneeOptions, props.assignees));
+  return <>
+    <DataTransferList value={newAssignees} onChange={setNewAssignees} />
+    <Group ml="auto" w="max-content" mt="md" spacing={10}>
+      <Button variant="outline" type="button" onClick={() => modals.closeAll()}>
+        Cancel
+      </Button>
+      <Button type="submit"
+              onClick={() => {
+                props.onUpdateAssignees && props.onUpdateAssignees(props, newAssignees[1] as AssigneeModel[]);
+                modals.closeAll()
+              }}>
+        Submit
+      </Button>
+    </Group>
+  </>
+}
+
+const tasksToAutocompleteModel = (data?: TaskModel[]) => {
+  return (data || []).map(v => {
+    return {
+      ...v,
+      value: v.url,
+      label: v.title,
+      description: v.description,
+      group: v.group,
+    }
+  }) as AutocompleteItem[]
+}
+
+const assigneesToTransferListData = (available?: AssigneeModel[], selected?: AssigneeModel[]) => {
+  const cache: Record<string, boolean> = {}
+  const selectedItems = (selected || []).map(v => {
+    const cacheId = v.url || ""
+    cache[cacheId] = true
+    return {
+      ...v,
+      value: v.url,
+      label: v.name,
+      description: v.description,
+      group: v.group
+    }
+  })
+
+  const availableItems = (available || []).map(v => {
+    const cacheId = v.url || ""
+    if(cacheId in cache){
+      return null
+    }
+
+    return {
+      ...v,
+      value: v.url,
+      label: v.name,
+      description: v.description,
+      group: v.group
+    }
+  }).filter(v => v)
+
+  return [availableItems, selectedItems] as TransferListData
 }

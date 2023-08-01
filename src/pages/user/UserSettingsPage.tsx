@@ -1,17 +1,30 @@
 import * as React from "react";
 import { useForm } from "@mantine/form";
-import { Avatar, Box, Button, Container, Divider, Grid, Textarea, TextInput, Title, Text } from "@mantine/core";
+import {
+  Avatar,
+  Box,
+  Button,
+  Container,
+  Divider,
+  Grid,
+  Textarea,
+  TextInput,
+  Title,
+  Text,
+  FileInput, Center, Loader
+} from "@mantine/core";
 import { useUserStyles } from "../../components/user/styles";
-import { buildAvatarURL } from "../../components/core/avatar/helpers";
-import { UserData } from "../../components/user/data";
+import { buildAvatarURL } from "../../utils/avatars";
+import { UserModel } from "../../models/user";
 import { IconPhotoEdit } from "@tabler/icons-react";
 
 /**
  * UserSettingsPageProps
  */
-export type UserSettingsPageProps = UserData & {
-  onSubmit?: (user: UserData) => void;
-  onEditAvatar?: () => void;
+export type UserSettingsPageProps = UserModel & {
+  isLoading?: boolean
+  onSubmit?: (user: UserModel) => void;
+  onEditAvatar?: (file: File | null) => void;
 };
 
 /**
@@ -21,10 +34,12 @@ export type UserSettingsPageProps = UserData & {
  */
 export function UserSettingsPage(props: UserSettingsPageProps) {
   const {classes} = useUserStyles()
-  const avatarURL = buildAvatarURL(props.avatarURL, props.fullName, {
+  const avatarURL = buildAvatarURL(props.avatarURL, props.fullName || props.email, {
     size: 200,
     fontSize: 50,
   });
+
+  const ref = React.useRef<HTMLButtonElement>(null);
 
   const form = useForm({
     initialValues: props,
@@ -32,6 +47,14 @@ export function UserSettingsPage(props: UserSettingsPageProps) {
       ...values,
     }),
   });
+
+  if (props.isLoading) {
+    return (
+      <Center style={{ height: 400 }}>
+        <Loader />
+      </Center>
+    );
+  }
 
   return (
     <Container size="lg" pb="xl" pt="lg">
@@ -46,7 +69,8 @@ export function UserSettingsPage(props: UserSettingsPageProps) {
             <div style={{position: "relative", width: "max-content"}}>
               <Avatar size={200} className={classes.userAvatar} src={avatarURL} radius={200} />
               <div style={{position: "absolute", right: "0px", bottom: "20px", zIndex: 5}}>
-                <Button onClick={props.onEditAvatar} compact variant="default" leftIcon={<IconPhotoEdit size="1rem" />}>
+                <FileInput sx={{display: "none"}} onChange={props.onEditAvatar} ref={ref}/>
+                <Button onClick={() => ref.current?.click()} compact variant="default" leftIcon={<IconPhotoEdit size="1rem" />}>
                   Edit
                 </Button>
               </div>

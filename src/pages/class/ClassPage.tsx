@@ -1,38 +1,44 @@
 import * as React from "react";
-import { ClassData, ClassMemberData } from "../../components/class/data";
+import { ClassModel, ClassUserModel } from "../../models/class";
 import {
   Container, Title, Stack, Divider, Button, Box, Avatar, Menu, Flex, Text,
-  useMantineTheme, ActionIcon, Card, Group,
+  useMantineTheme, ActionIcon, Card, Group, Center, Loader, TextInput, Select, CopyButton
 } from "@mantine/core";
 import {
   IconPlus,
   IconTrash,
   IconUserCircle,
   IconArrowsExchange,
-  IconDotsVertical, IconLink, IconRefresh, IconCopy, IconSum, IconUpload
+  IconDotsVertical,
+  IconRefresh,
+  IconCopy,
+  IconSum,
+  IconUpload,
+  IconGripVertical,
+  IconRowInsertBottom,
+  IconDownload, IconX, IconCloudUpload
 } from "@tabler/icons-react";
-import { MantineReactTable, MRT_ColumnDef } from "mantine-react-table";
+import { MantineReactTable, MRT_ColumnDef, useMantineReactTable } from "mantine-react-table";
 import { useMemo } from "react";
-import { buildAvatarURL } from "../../components/core/avatar/helpers";
+import { buildAvatarURL } from "../../utils/avatars";
 import { useClassStyles } from "../../components/class/styles";
 import { modals } from "@mantine/modals";
-import { ChangeRole } from "../../components/class/modal/ChangeRole";
-import { AddStudents } from "../../components/class/modal/AddStudents";
-import { UploadCSV } from "../../components/class/modal/UploadCSV";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { useForm } from "@mantine/form";
+import { parse, ParseResult, unparse } from "papaparse";
+import { Dropzone, MIME_TYPES } from "@mantine/dropzone";
+import { fqdn } from "../../utils/urls";
+import { Link } from "react-router-dom";
 
 /**
  * ClassPageProps
  */
-export type ClassPageProps = ClassData & {
-  onCopyCode?: () => void;
-  onCopyInviteLink?: () => void;
-  onRefreshCode?: () => void;
-  onViewProfile?: (data: ClassMemberData) => void;
-  onChangeRole?: (data: ClassMemberData, newRole: "student" | "educator") => void;
-  onRemove?: (data: ClassMemberData) => void;
-  onAddStudents?: (newStudents: ClassMemberData[]) => void;
-  onUploadCSV?: (newStudents: ClassMemberData[]) => void;
-  onDownloadTemplate?: () => void;
+export type ClassPageProps = ClassModel & {
+  isLoading?: boolean
+  onRefreshCode?: (c: ClassModel) => void;
+  onChangeRole?: (c: ClassModel, user: ClassUserModel, isEducator: boolean) => void;
+  onRemoveUser?: (c: ClassModel, user: ClassUserModel) => void;
+  onBatchAddUsers?: (c: ClassModel, newUsers: ClassUserModel[]) => void;
 };
 
 /**
@@ -43,7 +49,8 @@ export type ClassPageProps = ClassData & {
 export function ClassPage(props: ClassPageProps) {
   const theme = useMantineTheme();
   const { classes } = useClassStyles();
-  const columns = useMemo<MRT_ColumnDef<ClassMemberData>[]>(
+  const dataKey = JSON.stringify(props.users)
+  const columns = useMemo<MRT_ColumnDef<ClassUserModel>[]>(
     () => [
       {
         accessorFn: (row) => row.name, //accessorFn used to join multiple data into a single cell
@@ -66,7 +73,7 @@ export function ClassPage(props: ClassPageProps) {
         },
         Footer: () => <Flex align="center">
           <IconSum color={theme.colors.dark[4]} size="1rem"/>
-          <Text>Count: {Math.round(props.members.length)}</Text>
+          <Text>Count: {Math.round(props.users?.length || 0)}</Text>
         </Flex>
       },
       {
@@ -80,18 +87,18 @@ export function ClassPage(props: ClassPageProps) {
         id: 'role',
         header: 'Role',
         filterVariant: "select",
-        accessorFn: (originalRow) => originalRow.role.charAt(0).toUpperCase() + originalRow.role.substr(1).toLowerCase(),
+        accessorFn: (originalRow) => originalRow.isEducator ? "Educator" : "Student",
         mantineFilterSelectProps: {
           data: ["Student", "Educator"] as any
         },
         Footer: () => <Flex align="center">
           <IconSum color={theme.colors.dark[4]} size="1rem"/>
-          <Text>Students: {Math.round(props.members.filter(m => m.role === 'student').length)}</Text>
+          <Text>Students: {Math.round((props.users || []).filter(m => !m.isEducator).length)}</Text>
         </Flex>
       },
       {
         accessorKey: 'status',
-        accessorFn: (originalRow) => originalRow.status.toLowerCase().replace(/\b\w/g, (s: string) => s.toUpperCase()),
+        accessorFn: (originalRow) => originalRow.isJoined ? "Active" : "Inactive",
         id: 'status',
         header: 'Status',
         filterVariant: "select",
@@ -101,27 +108,7 @@ export function ClassPage(props: ClassPageProps) {
         size: 200,
         Footer: () => <Flex align="center">
           <IconSum color={theme.colors.dark[4]} size="1rem"/>
-          <Text>Active: {Math.round(props.members.filter(s => s.status === 'active').length)}</Text>
-        </Flex>
-      },
-      {
-        accessorKey: 'numberOfBadgesEarned',
-        header: 'Badges Earned',
-        filterVariant: 'range',
-        size: 100,
-        Footer: () => <Flex align="center">
-          <IconSum color={theme.colors.dark[4]} size="1rem"/>
-          <Text>Sum: {Math.round(props.members.map(s => s.numberOfBadgesEarned).reduce((a, b) => a + b, 0))}</Text>
-        </Flex>
-      },
-      {
-        accessorKey: 'numberOfLessonsCompleted',
-        header: 'Lessons Completed',
-        filterVariant: 'range',
-        size: 100,
-        Footer: () => <Flex align="center">
-          <IconSum color={theme.colors.dark[4]} size="1rem"/>
-          <Text>Sum: {Math.round(props.members.map(s => s.numberOfLessonsCompleted).reduce((a, b) => a + b, 0))}</Text>
+          <Text>Active: {Math.round((props.users || []).filter(s => !!s.isJoined).length)}</Text>
         </Flex>
       },
       {
@@ -130,8 +117,61 @@ export function ClassPage(props: ClassPageProps) {
         size: 300,
       },
     ],
-    [],
+    [dataKey],
   );
+
+  const table = useMantineReactTable({
+    enableColumnOrdering: true,
+    enableColumnFilterModes: true,
+    enableRowActions: true,
+    columns: columns,
+    data: props.users || [],
+    initialState: { showColumnFilters: true },
+    renderRowActionMenuItems: ({row}) => (
+    <>
+      { !!row.original.isJoined && <Menu.Item
+        <typeof Link>
+        component={Link}
+        to={fqdn(row.original.url)}
+        icon={<IconUserCircle size={16} color={theme.colors.dark[4]}/>}
+      >View Profile</Menu.Item>}
+      <Menu.Item
+        icon={<IconArrowsExchange size={16} color={theme.colors.dark[4]} />}
+        onClick={() => {
+          modals.open({
+            title: <Title mb={5} size={16} color="dark.4">{row.original.name}</Title>,
+            centered: true,
+            children: <ChangeRole {...props} data={row.original} onChangeRole={(u, role) => props.onChangeRole && props.onChangeRole(props, u, role)} />,
+          });
+        }}
+      >Change role</Menu.Item>
+      <Menu.Item
+        icon={<IconTrash size={16} color={theme.colors.dark[4]}/>}
+        onClick={() => {
+          modals.openConfirmModal({
+            title: <Title mb={5} size={16} color="dark.4">{`Remove ${row.original.name}`}</Title>,
+            centered: true,
+            children: (
+              <Text size="sm">
+                Are you sure you want to remove {`${row.original.name}`}?
+              </Text>
+            ),
+            labels: { confirm: "Remove", cancel: "No don't remove" },
+            confirmProps: { color: "red" },
+            onConfirm: () => props.onRemoveUser && props.onRemoveUser(props, row.original),
+          });
+        }}
+      >Remove</Menu.Item>
+    </>
+  )})
+
+  if (props.isLoading) {
+    return (
+      <Center style={{ height: 400 }}>
+        <Loader />
+      </Center>
+    );
+  }
 
   return <>
     <Container size="lg" pb="xl">
@@ -164,24 +204,22 @@ export function ClassPage(props: ClassPageProps) {
                   </ActionIcon>
                 </Menu.Target>
                 <Menu.Dropdown>
-                  <Menu.Item
-                    icon={<IconCopy size="1rem" stroke={1.5} />}
-                    onClick={props.onCopyCode}
-                  >
-                    Copy code
-                  </Menu.Item>
-                  <Menu.Item
-                    icon={<IconLink size="1rem" stroke={1.5} />}
-                    onClick={props.onCopyInviteLink}
-                  >
-                    Copy invite link
-                  </Menu.Item>
-                  <Menu.Item
-                    icon={<IconRefresh size="1rem" stroke={1.5} />}
-                    onClick={props.onRefreshCode}
-                  >
-                    Refresh code
-                  </Menu.Item>
+                  <CopyButton value={props.code || ""}>
+                    {
+                      ({copied, copy}) => <Menu.Item
+                        closeMenuOnClick={false}
+                        icon={<IconCopy size="1rem" stroke={1.5} />}
+                        onClick={copy}>
+                        { copied ? "Copied code" : "Copy code" }
+                      </Menu.Item>
+                    }
+                  </CopyButton>
+                    <Menu.Item
+                      icon={<IconRefresh size="1rem" stroke={1.5} />}
+                      onClick={() => props.onRefreshCode && props.onRefreshCode(props)}
+                    >
+                      Refresh code
+                    </Menu.Item>
                 </Menu.Dropdown>
               </Menu>
             </Group>
@@ -189,72 +227,258 @@ export function ClassPage(props: ClassPageProps) {
         </Card>
 
         <Flex>
-          <Button maw="max-content" variant="subtle" leftIcon={<IconPlus />}
-                  onClick={() => {
-                    modals.open({
-                      title: <Title size="medium">Add students</Title>,
-                      centered: true,
-                      children: <AddStudents {...props} />,
-                    });
-                  }}>
+          <Button
+            maw="max-content"
+            variant="subtle"
+            leftIcon={<IconPlus />}
+            onClick={() => {
+              modals.open({
+                title: <Title mb={5} size={16} color="dark.4">Add students</Title>,
+                centered: true,
+                children: <AddStudents {...props} onAddStudents={(ns) => props.onBatchAddUsers && props.onBatchAddUsers(props, ns)} />,
+              });
+            }}>
             Add students
           </Button>
-          <Button maw="max-content" variant="subtle" leftIcon={<IconUpload />}
-                  onClick={() => {
-                    modals.open({
-                      title: <Title size="medium">Upload csv</Title>,
-                      centered: true,
-                      children: <UploadCSV {...props} />,
-                    });
-                  }}>
+          <Button
+            maw="max-content"
+            variant="subtle"
+            leftIcon={<IconUpload />}
+            onClick={() => {
+              modals.open({
+                title: <Title mb={5} size={16} color="dark.4">Upload csv</Title>,
+                centered: true,
+                children: <UploadCSV {...props} onUploadCSV={(ns) => props.onBatchAddUsers && props.onBatchAddUsers(props, ns)} />,
+              });
+            }}>
             Upload csv
           </Button>
         </Flex>
 
-        <MantineReactTable
-          enableColumnOrdering
-          enableColumnFilterModes
-          enableRowActions
-          columns={columns}
-          data={props.members}
-          initialState={{ showColumnFilters: true }}
-          renderRowActionMenuItems={({row}) => (
-            <>
-              <Menu.Item
-                icon={<IconUserCircle size={16} color={theme.colors.dark[4]}/>}
-                onClick={() => props.onViewProfile && props.onViewProfile(row.original)}
-              >View Profile</Menu.Item>
-              <Menu.Item
-                icon={<IconArrowsExchange size={16} color={theme.colors.dark[4]} />}
-                onClick={() => {
-                  modals.open({
-                    title: <Title size="medium">{row.original.name}</Title>,
-                    centered: true,
-                    children: <ChangeRole {...props} data={row.original} />,
-                  });
-                }}
-              >Change role</Menu.Item>
-              <Menu.Item
-                icon={<IconTrash size={16} color={theme.colors.dark[4]}/>}
-                onClick={() => {
-                  modals.openConfirmModal({
-                    title: `Remove ${row.original.name}`,
-                    centered: true,
-                    children: (
-                      <Text size="sm">
-                        Are you sure you want to remove {`${row.original.name}`}?
-                      </Text>
-                    ),
-                    labels: { confirm: "Remove", cancel: "No don't remove" },
-                    confirmProps: { color: "red" },
-                    onConfirm: () => props.onRemove && props.onRemove(row.original),
-                  });
-                }}
-              >Remove</Menu.Item>
-            </>
-          )}
-        />
+        <MantineReactTable table={table}/>
       </Stack>
     </Container>
   </>
+}
+
+/**
+ * AddStudentsProps
+ */
+type AddStudentsProps = {
+  onAddStudents?: (newStudents: ClassUserModel[]) => void;
+}
+
+/**
+ * AddStudents
+ * @param props
+ * @constructor
+ */
+function AddStudents(props: AddStudentsProps){
+  const form = useForm<{students: ClassUserModel[]}>({
+    initialValues: {
+      students: [{}],
+    },
+  });
+
+  const fields = form.values.students.map((_, index) => (
+    <Draggable key={index} index={index} draggableId={index.toString()}>
+      {(provided) => (
+        <Flex ref={provided.innerRef} mt="xs" {...provided.draggableProps} gap={5}>
+          <Center {...provided.dragHandleProps}>
+            <IconGripVertical size="1.2rem" />
+          </Center>
+          <TextInput placeholder="John Doe" {...form.getInputProps(`students.${index}.name`)} />
+          <TextInput
+            placeholder="example@mail.com"
+            {...form.getInputProps(`students.${index}.email`)}
+          />
+        </Flex>
+      )}
+    </Draggable>
+  ));
+
+  return (
+    <Stack spacing={5}>
+      <Button maw="max-content" variant="subtle" leftIcon={<IconRowInsertBottom />}
+              onClick={() => form.insertListItem('students', {})}>
+        New row
+      </Button>
+      <Box maw={500} mx="auto">
+        <DragDropContext
+          onDragEnd={({ destination, source }) =>
+            form.reorderListItem('students', { from: source.index, to: destination ? destination.index : source.index })
+          }
+        >
+          <Droppable droppableId="dnd-list" direction="vertical">
+            {(provided) => (
+              <div {...provided.droppableProps} ref={provided.innerRef}>
+                {fields}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
+      </Box>
+      <Button
+        mt={20}
+        onClick={() => {
+          close();
+          form.reset();
+          props.onAddStudents && props.onAddStudents(form.values.students);
+          modals.closeAll()
+        }}
+      >
+        Submit
+      </Button>
+    </Stack>
+  );
+}
+
+/**
+ * ChangeRoleProps
+ */
+type ChangeRoleProps = {
+  data: ClassUserModel
+  onChangeRole?: (data: ClassUserModel, isEducator: boolean) => void;
+}
+
+/**
+ * ChangeRole
+ * @param props
+ * @constructor
+ */
+function ChangeRole(props: ChangeRoleProps) {
+  const [newRole, setNewRole] = React.useState("");
+  const changeRole = (data: ClassUserModel, newRole: string) => {
+    props.onChangeRole && props.onChangeRole(data, newRole === "educator");
+    modals.closeAll();
+  };
+  return (
+    <>
+      <Select
+        label="New role"
+        defaultValue={props.data.isEducator ? "Educator" : "Student"}
+        placeholder="Pick one"
+        dropdownPosition="bottom"
+        mb={50}
+        data={[{
+          value: "student",
+          label: "Student",
+        },{
+          value: "educator",
+          label: "Educator"
+        }]}
+        onChange={(e) => setNewRole(e || "")}
+      />
+      <Button type="submit" fullWidth mt="md" onClick={() => changeRole(props.data, newRole)}>
+        Submit
+      </Button>
+    </>
+  );
+}
+
+/**
+ * UploadCSVProps
+ */
+type UploadCSVProps = {
+  onUploadCSV?: (newStudents: ClassUserModel[]) => void;
+}
+
+/**
+ * UploadCSV
+ * @param props
+ * @constructor
+ */
+function UploadCSV(props: UploadCSVProps){
+  const { classes, theme } = useClassStyles();
+  const openRef = React.useRef<() => void>(null);
+  const [loading, setLoading] = React.useState(false)
+  const onDrop = React.useCallback((acceptedFiles: File[]) => {
+    setLoading(true)
+    acceptedFiles.forEach((file) => {
+      parse(file, {
+        download: true,
+        header: true,
+        dynamicTyping: true,
+        skipEmptyLines: true,
+        worker: true,
+        complete: function(results: ParseResult<ClassUserModel>) {
+          const data = results.data
+          data.length > 0 && props.onUploadCSV && props.onUploadCSV(data)
+          setLoading(false)
+          modals.closeAll()
+        }
+      })
+    })
+
+  }, [])
+
+  return (
+    <div className={classes.addStudentsWrapper}>
+      <Button mb={10} maw="max-content" variant="subtle" leftIcon={<IconDownload />}
+              onClick={() => {
+                const csv = unparse([
+                  ['name', 'email'],
+                  ['John Doe', 'example@mail.com']
+                ])
+                const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+                const filename = "localcivics-template.csv"
+                const link = document.createElement("a");
+                if (link.download !== undefined) { // feature detection
+                  // Browsers that support HTML5 download attribute
+                  const url = URL.createObjectURL(blob);
+                  link.setAttribute("href", url);
+                  link.setAttribute("download", filename);
+                  link.style.visibility = 'hidden';
+                  document.body.appendChild(link);
+                  link.click();
+                  document.body.removeChild(link);
+                }
+              }}>
+        Download template
+      </Button>
+
+      <Dropzone
+        loading={loading}
+        openRef={openRef}
+        onDrop={onDrop}
+        className={classes.dropzone}
+        radius="md"
+        accept={[MIME_TYPES.csv]}
+        maxSize={5 * 1024 ** 2}
+      >
+        <div style={{ pointerEvents: 'none' }}>
+          <Group position="center">
+            <Dropzone.Accept>
+              <IconDownload size={50} color={theme.colors[theme.primaryColor][6]} stroke={1.5} />
+            </Dropzone.Accept>
+            <Dropzone.Reject>
+              <IconX size={50} color={theme.colors.red[6]} stroke={1.5} />
+            </Dropzone.Reject>
+            <Dropzone.Idle>
+              <IconCloudUpload
+                size={50}
+                color={theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.black}
+                stroke={1.5}
+              />
+            </Dropzone.Idle>
+          </Group>
+
+          <Text align="center" weight={700} size="lg" mt="xl">
+            <Dropzone.Accept>Drop files here</Dropzone.Accept>
+            <Dropzone.Reject>Csv file less than 5mb</Dropzone.Reject>
+            <Dropzone.Idle>Upload csv</Dropzone.Idle>
+          </Text>
+          <Text align="center" size="sm" mt="xs" color="dimmed">
+            Drag&apos;n&apos;drop files here to upload. We can accept only <i>.csv</i> files that
+            are less than 5mb in size.
+          </Text>
+        </div>
+      </Dropzone>
+
+      <Button className={classes.selectFileBtnControl} size="md" radius="xl" onClick={() => openRef.current?.()}>
+        Select file
+      </Button>
+    </div>
+  );
 }

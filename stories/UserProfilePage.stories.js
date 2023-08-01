@@ -1,7 +1,7 @@
 import * as React from "react";
 import {MemoryRouter} from "react-router-dom";
 import { UserProfilePage } from '../src/pages/user/UserProfilePage.tsx';
-import {AppLayout} from "../src/layouts/app/AppLayout";
+import {AuthLayout} from "../src/layouts/AuthLayout.tsx";
 
 export default {
   title: 'Page/User/UserProfilePage',
@@ -17,10 +17,9 @@ export default {
 const Template = {
   render: (args) => <div className="h-full w-full overscroll-none font-proxima">
     <MemoryRouter>
-      <AppLayout
-          {...args}
-          page=<UserProfilePage {...args}/>
-      />
+      <AuthLayout>
+        <UserProfilePage {...args}/>
+      </AuthLayout>
     </MemoryRouter>
   </div>,
 }

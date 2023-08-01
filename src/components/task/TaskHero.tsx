@@ -35,6 +35,8 @@ import { compactNumber } from "../../utils/numbers";
 import { Carousel } from "@mantine/carousel";
 import { useMediaQuery } from "@mantine/hooks";
 import { Link } from "react-router-dom";
+import { TaskModel } from "../../models/task";
+import { fqdn } from "../../utils/urls";
 
 const useStyles = createStyles((theme) => {
   return {
@@ -101,7 +103,7 @@ const SHARE_LINKS = [
   {
     title: "WhatsApp",
     icon: IconBrandWhatsapp,
-    href: (props: TaskHeroProps) => `https://api.whatsapp.com/send/?text=${encodeURIComponent(props.href||"#")}`,
+    href: (props: TaskHeroProps) => `https://api.whatsapp.com/send/?text=${encodeURIComponent(fqdn(props.url))}`,
   },
   {
     title: "Facebook",
@@ -116,12 +118,12 @@ const SHARE_LINKS = [
   {
     title: "Email",
     icon: IconAt,
-    href: (props: TaskHeroProps) => `mailto:?body=${encodeURIComponent(props.href||"#")}`,
+    href: (props: TaskHeroProps) => `mailto:?body=${encodeURIComponent(fqdn(props.url))}`,
   },
   {
     title: "Reddit",
     icon: IconBrandReddit,
-    href: (props: TaskHeroProps) => `https://www.reddit.com/submit?url=${encodeURIComponent(props.href||"#")}`,
+    href: (props: TaskHeroProps) => `https://www.reddit.com/submit?url=${encodeURIComponent(fqdn(props.url))}`,
   },
   {
     title: "LinkedIn",
@@ -133,18 +135,10 @@ const SHARE_LINKS = [
 /**
  * TaskHeroProps
  */
-export type TaskHeroProps = {
-  title?: string
-  href?: string;
-  isLiked?: boolean;
-  isSaved?: boolean;
-  numberOfLikes?: number;
-  onStart?: () => void;
+export type TaskHeroProps = TaskModel & {
   onLike?: () => void;
   onSave?: () => void;
   onAssign?: () => void;
-  onCopy?: () => void;
-  onShare?: (via: string) => void;
 }
 
 /**
@@ -156,10 +150,10 @@ export function TaskHero(props: TaskHeroProps){
   const { classes } = useStyles();
   const theme = useMantineTheme();
   const mobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
-  const LikeIcon = !props.isLiked ? IconThumbUp : IconThumbUpFilled;
-  const SaveIcon = !props.isSaved ? IconBookmark : IconBookmarkOff;
-  const likeLabel = !props.isLiked ? "Like" : "Liked by you";
-  const saveLabel = !props.isSaved ? "Save" : "Saved for later";
+  const LikeIcon = !props.userLiked ? IconThumbUp : IconThumbUpFilled;
+  const SaveIcon = !props.userSaved ? IconBookmark : IconBookmarkOff;
+  const likeLabel = !props.userLiked ? "Like" : "Liked by you";
+  const saveLabel = !props.userSaved ? "Save" : "Saved for later";
   const likes = props.numberOfLikes || 0;
   const shareLinks = SHARE_LINKS.map((l) => {
     return (
@@ -170,7 +164,6 @@ export function TaskHero(props: TaskHeroProps){
               component={Link}
               to={!l.href ? "#" : typeof l.href === "string" ? l.href : l.href(props)}
               target="_blank"
-              onClick={() => props.onShare && props.onShare(l.title)}
               rel="noopener noreferrer"
               size="xl"
               variant="light"
@@ -219,8 +212,9 @@ export function TaskHero(props: TaskHeroProps){
       <Title className={classes.title}>{props.title}</Title>
 
       <div style={{ width: "max-content" }}>
-        <Button
-          onClick={props.onStart}
+        <Button<typeof Link>
+          component={Link}
+          to={fqdn(props.startURL).replace(":start", "/start")}
           variant="gradient"
           gradient={{ from: "indigo", to: "cyan" }}
           size="xl"
@@ -245,7 +239,7 @@ export function TaskHero(props: TaskHeroProps){
         <Button radius="lg" size="xs" leftIcon={<LikeIcon size="1rem" />} variant="filled" onClick={props.onLike}>
           {likeLabel}
         </Button>
-        <Popover position="bottom-end" width={(props.href?.length || 0) * 8} withArrow withinPortal shadow="md">
+        <Popover position="bottom-end" width={(props.url?.length || 0) * 8} withArrow withinPortal shadow="md">
           <Popover.Target>
             <Button size="xs" leftIcon={<IconShare3 size="1rem" />} variant="filled">
               Share
@@ -288,18 +282,15 @@ export function TaskHero(props: TaskHeroProps){
                 <Input
                   disabled
                   maw="initial"
-                  value={props.href}
+                  value={fqdn(props.url)}
                   icon={<IconCopy size="1rem" />}
-                  placeholder="Uh, something is not right"
+                  placeholder={window.location.href}
                 />
-                <CopyButton value={props.href||"#"}>
+                <CopyButton value={fqdn(props.url)}>
                   {({ copied, copy }) => (
                     <Button
                       color={copied ? "teal" : "blue"}
-                      onClick={() => {
-                        copy();
-                        props.onCopy && props.onCopy();
-                      }}
+                      onClick={copy}
                     >
                       {copied ? "Copied" : "Copy"}
                     </Button>

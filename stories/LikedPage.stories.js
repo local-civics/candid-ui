@@ -1,10 +1,10 @@
 import * as React from "react";
 import {MemoryRouter} from "react-router-dom";
 import { LikedPage } from '../src/pages/task/LikedPage';
-import {AppLayout} from "../src/layouts/app/AppLayout";
+import {AuthLayout} from "../src/layouts/AuthLayout.tsx";
 
 export default {
-  title: 'Page/Library/LikedPage',
+  title: 'Page/Task/LikedPage',
   component: LikedPage,
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/react/writing-docs/autodocs
   tags: ['autodocs'],
@@ -44,11 +44,9 @@ const MOCK_DATA = [{
 const Template = {
   render: (args) => <div className="h-full w-full overscroll-none font-proxima">
     <MemoryRouter>
-      <AppLayout
-          {...args}
-          defaultActiveLinkName="Home"
-          page=<LikedPage {...args} data={args.data || MOCK_DATA}/>
-      />
+      <AuthLayout defaultActiveLinkName="Home">
+        <LikedPage {...args} items={args.items || MOCK_DATA}/>
+      </AuthLayout>
     </MemoryRouter>
   </div>,
 }
