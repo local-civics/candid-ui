@@ -19,7 +19,8 @@ export type FormProps = FormPropsData & {
 
 const useStyles = createStyles((theme) => ({
     continueButton: {
-        marginTop: "0.5rem"
+        marginTop: "0.5rem",
+        marginLeft: "0.5rem"
     },
     logService: {
         fontWeight: "bold"
@@ -56,7 +57,6 @@ export const Form = (props: FormProps) => {
 
     return (
         <>
-
             <div>
                 <div>
                     <div>
@@ -69,109 +69,105 @@ export const Form = (props: FormProps) => {
 
                         <form onSubmit={onSubmit}>
                             {props.children}
-
                             {!props.children && (
                                 <>
-                                    <div>
-                                        <Grid>
-                                            <Grid.Col span={6}>
-                                                <FormInput
-                                                    required
-                                                    readonly={inReview}
-                                                    headline="Organization Name"
-                                                    value={responses["organizationName"]}
-                                                    onChange={(value) => setResponse("organizationName", value)}
-                                                />
-                                            </Grid.Col>
-                                            <Grid.Col span={6}>
-                                                <FormInput
-                                                    readonly={inReview}
-                                                    headline="Contact Person"
-                                                    value={responses["contactPerson"]}
-                                                    onChange={(value) => setResponse("contactPerson", value)}
-                                                />
-                                            </Grid.Col>
-                                        </Grid>
-                                        <Grid>
-                                            <Grid.Col span={6}>
-                                                <FormInput
-                                                    readonly={inReview}
-                                                    headline="Contact Phone Number"
-                                                    type="tel"
-                                                    value={responses["contactPhoneNumber"]}
-                                                    onChange={(value) => setResponse("contactPhoneNumber", value)}
-                                                />
-                                            </Grid.Col>
-                                            <Grid.Col span={6}>
-                                                <FormInput
-                                                    readonly={inReview}
-                                                    headline="Contact Email"
-                                                    type="email"
-                                                    value={responses["contactEmail"]}
-                                                    onChange={(value) => setResponse("contactEmail", value)}
-                                                />
-                                            </Grid.Col>
-                                        </Grid>
-                                        <Grid>
-                                            <Grid.Col span={4}>
-                                                <FormInput
-                                                    required
-                                                    readonly={inReview}
-                                                    headline="Service Date"
-                                                    type="date"
-                                                    value={responses["date"]}
-                                                    onChange={(value) => setResponse("date", value)}
-                                                />
-                                            </Grid.Col>
-
-                                            <Grid.Col span={4}>
-                                                <FormInput
-                                                    required
-                                                    readonly={inReview}
-                                                    headline="Service Hours"
-                                                    min={0}
-                                                    max={24}
-                                                    type="number"
-                                                    value={responses["totalHours"]}
-                                                    onChange={(value) => setResponse("totalHours", value)}
-                                                />
-                                            </Grid.Col>
-                                            <Grid.Col span={4}>
-                                                <FormInput
-                                                    required
-                                                    readonly={inReview}
-                                                    headline="Service Type"
-                                                    type="dropdown"
-                                                    value={responses["type"]}
-                                                    options={["Community Service", "Capstone", "Internship", "Project", "Other"]}
-                                                    onChange={(value) => setResponse("type", value)}
-                                                />
-
-                                            </Grid.Col>
-                                        </Grid>
-                                        <div>
+                                    <Grid>
+                                        <Grid.Col span={6}>
                                             <FormInput
                                                 required
                                                 readonly={inReview}
-                                                headline="Tell us about your experience"
-                                                paragraph
-                                                value={responses["description"]}
-                                                onChange={(value) => setResponse("description", value)}
+                                                headline="Organization Name"
+                                                value={responses["organizationName"]}
+                                                onChange={(value) => setResponse("organizationName", value)}
                                             />
-                                        </div>
-                                    </div>
+                                        </Grid.Col>
+                                        <Grid.Col span={6}>
+                                            <FormInput
+                                                readonly={inReview}
+                                                headline="Contact Person"
+                                                value={responses["contactPerson"]}
+                                                onChange={(value) => setResponse("contactPerson", value)}
+                                            />
+                                        </Grid.Col>
+                                    </Grid>
+                                    <Grid>
+                                        <Grid.Col span={6}>
+                                            <FormInput
+                                                readonly={inReview}
+                                                headline="Contact Phone Number"
+                                                type="tel"
+                                                value={responses["contactPhoneNumber"]}
+                                                onChange={(value) => setResponse("contactPhoneNumber", value)}
+                                            />
+                                        </Grid.Col>
+                                        <Grid.Col span={6}>
+                                            <FormInput
+                                                readonly={inReview}
+                                                headline="Contact Email"
+                                                type="email"
+                                                value={responses["contactEmail"]}
+                                                onChange={(value) => setResponse("contactEmail", value)}
+                                            />
+                                        </Grid.Col>
+                                    </Grid>
+                                    <Grid>
+                                        <Grid.Col span={4}>
+                                            <FormInput
+                                                required
+                                                readonly={inReview}
+                                                headline="Service Date"
+                                                type="date"
+                                                value={responses["date"]}
+                                                onChange={(value) => setResponse("date", value)}
+                                            />
+                                        </Grid.Col>
 
-                                    <div className="flex gap-x-4 w-max m-auto">
-                                        {inReview && (
-                                            <Button onClick={() => setInReview(false)} color="dark-blue" size="md"
-                                            >
-                                                Edit
-                                            </Button>
-                                        )}
-                                        <Button className={classes.continueButton} color="dark-blue" size="md">
-                                            {inReview ? "Submit" : "Continue"}
+                                        <Grid.Col span={4}>
+                                            <FormInput
+                                                required
+                                                readonly={inReview}
+                                                headline="Service Hours"
+                                                min={0}
+                                                max={24}
+                                                type="number"
+                                                value={responses["totalHours"]}
+                                                onChange={(value) => setResponse("totalHours", value)}
+                                            />
+                                        </Grid.Col>
+                                        <Grid.Col span={4}>
+                                            <FormInput
+                                                required
+                                                readonly={inReview}
+                                                headline="Service Type"
+                                                type="dropdown"
+                                                value={responses["type"]}
+                                                options={["Community Service", "Capstone", "Internship", "Project", "Other"]}
+                                                onChange={(value) => setResponse("type", value)}
+                                            />
+
+                                        </Grid.Col>
+                                    </Grid>
+
+                                    <FormInput
+                                        required
+                                        readonly={inReview}
+                                        headline="Tell us about your experience"
+                                        paragraph
+                                        value={responses["description"]}
+                                        onChange={(value) => setResponse("description", value)}
+                                    />
+
+
+                                    {inReview && (
+                                        <Button onClick={() => setInReview(false)} color="dark-blue" size="md"
+                                        >
+                                            Edit
                                         </Button>
-                                    </div>
+                                    )}
+                                    <Button className={classes.continueButton} color="dark-blue" type="submit" size="md">
+                                        {inReview ? "Submit" : "Continue"}
+                                    </Button>
+
                                 </>
                             )}
                         </form>
