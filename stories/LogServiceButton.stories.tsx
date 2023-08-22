@@ -1,7 +1,6 @@
 import * as React from "react";
 import { LogServiceButton } from "../src/components/logservice/LogServiceButton";
 import { LogServiceButtonData } from "../src/components/logservice/data";
-import { CandidApp } from "../src/App";
 
 export default {
   title: "Components/LogServiceButton",
@@ -18,9 +17,9 @@ const Template = {
   render: (args) => {
 
     return (
-      <CandidApp>
-        <LogServiceButton {...args} />
-      </CandidApp>
+
+      <LogServiceButton {...args} />
+
     )
   }
 };
