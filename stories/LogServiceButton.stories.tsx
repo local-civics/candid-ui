@@ -1,6 +1,6 @@
 import * as React from "react";
 import { LogServiceButton } from "../src/components/logservice/LogServiceButton";
-import { LogServiceButtonData } from "../src/components/logservice/data";
+import { CandidApp } from "../src/App";
 
 export default {
   title: "Components/LogServiceButton",
@@ -17,9 +17,9 @@ const Template = {
   render: (args) => {
 
     return (
-
-      <LogServiceButton {...args} />
-
+      <CandidApp>
+        <LogServiceButton {...args} />
+      </CandidApp>
     )
   }
 };
@@ -27,5 +27,4 @@ const Template = {
 
 export const Default = {
   ...Template,
-  // args: parksAndGreenForm,
 };
