@@ -1,5 +1,5 @@
 import React from "react";
-import { FormPropsData } from "./data"
+import { FormPropsData } from "./LogServiceButton"
 import { FormInput } from "./FormInput";
 import { Button, Grid, createStyles } from '@mantine/core';
 

@@ -1,13 +1,3 @@
-export type FormPropsData={
-    inReview?: boolean;
-    showSubmitDialogue?: boolean;
-    showExitDialogue?: boolean;
-    children?: React.ReactNode;
-  
-    onSubmit?: (responses: any) => Promise<any>;
-    onClose?: () => void;
-
-}
 
 
 export type LogServiceButtonData = {

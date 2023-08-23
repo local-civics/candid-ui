@@ -1,9 +1,25 @@
 import React from "react";
-import { LogServiceButtonData, FormPropsData } from "./data"
 import { Modal, Button, Group, Text } from '@mantine/core';
 import { Form } from "./Form";
 import { modals } from '@mantine/modals';
 
+
+export type LogServiceButtonData = {
+  text?: string,
+  isOpen?: boolean,
+  form?: FormPropsData,
+};
+
+export type FormPropsData = {
+  inReview?: boolean;
+  showSubmitDialogue?: boolean;
+  showExitDialogue?: boolean;
+  children?: React.ReactNode;
+
+  onSubmit?: (responses: any) => Promise<any>;
+  onClose?: () => void;
+
+}
 
 /**
  * LogServiceButtonProps
